@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f5eef7">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>うちよそ日記 v0.3.8</title>
+<title>うちよそ日記 v0.3.9</title>
 <style>
 :root{--bg:#fbf7fb;--card:#fff;--ink:#4f4a58;--muted:#8f8997;--line:#eadfea;--accent:#8d83c9;--accent2:#c783aa;--soft:#f1edf8;--shadow:#5b47690b}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}.app{min-height:100vh;max-width:720px;margin:auto;padding-bottom:84px}.top{padding:24px 18px 12px}.brand{font-size:25px;font-weight:800;letter-spacing:.03em}.sub{font-size:12px;color:var(--muted);margin-top:4px}.content{padding:8px 16px}.section{margin:18px 0 10px;font-weight:800}.hero{background:linear-gradient(135deg,#eee9f6,#f9edf3);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:14px}.hero h1{margin:0 0 6px;font-size:22px}.hero p{margin:0;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 14px var(--shadow)}.pair{display:flex;gap:12px;align-items:center;cursor:pointer}.thumb{width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,#d8d1ea,#efd7e2);display:grid;place-items:center;font-size:25px;overflow:hidden;flex:none}.thumb img,.avatar img{width:100%;height:100%;object-fit:cover}.pair h3{margin:0;font-size:15px}.pair p{margin:4px 0 0;color:var(--muted);font-size:11px}.action{display:flex;align-items:center;justify-content:center;min-height:96px;cursor:pointer;text-align:center}.action b{display:block;margin-top:5px;font-size:13px}.icon{font-size:25px;color:var(--accent)}.list{display:flex;flex-direction:column;gap:10px}.row{display:flex;align-items:center;gap:12px}.row .grow{flex:1}.pill{font-size:10px;background:var(--soft);padding:5px 8px;border-radius:999px;color:var(--accent)}.bottom{position:fixed;bottom:0;left:0;right:0;background:#fffdfdcc;backdrop-filter:blur(14px);border-top:1px solid var(--line);height:72px;display:flex;justify-content:center;z-index:5}.nav{max-width:720px;width:100%;display:flex;justify-content:space-around}.nav button{border:0;background:none;color:var(--muted);font-size:10px;padding:10px 18px;cursor:pointer}.nav button.active{color:var(--accent);font-weight:800}.nav span{display:block;font-size:21px;margin-bottom:2px}.fab{position:fixed;right:22px;bottom:92px;width:54px;height:54px;border-radius:50%;border:0;background:var(--accent);color:white;font-size:28px;box-shadow:0 8px 20px #554b772e;cursor:pointer;z-index:6}.modal{position:fixed;inset:0;background:#312a3b66;display:none;align-items:flex-end;z-index:10}.sheet{background:var(--card);width:100%;max-width:720px;margin:auto;max-height:92vh;overflow:auto;border-radius:26px 26px 0 0;padding:22px 18px 30px}.sheet h2{margin:0 0 16px}.field{margin:12px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}.field input,.field textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}.field textarea{min-height:90px;resize:vertical}.hue-wrap{display:flex;align-items:center;gap:12px}.hue-slider{width:100%;height:28px;padding:0!important;border:0!important;appearance:none;-webkit-appearance:none;background:linear-gradient(90deg,hsl(0 75% 62%),hsl(60 75% 62%),hsl(120 75% 62%),hsl(180 75% 62%),hsl(240 75% 62%),hsl(300 75% 62%),hsl(360 75% 62%));border-radius:999px}.hue-slider::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid #4f4a58;box-shadow:0 1px 5px #0002}.hue-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid #4f4a58}.color-swatch{width:42px;height:42px;border-radius:13px;border:1px solid var(--line);flex:none;box-shadow:inset 0 0 0 1px #ffffff88}.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.edit-grid .field{margin:6px 0}.edit-hint{font-size:10px;color:var(--muted);line-height:1.5}.primary{width:100%;border:0;border-radius:14px;padding:13px;background:var(--accent);color:#fff;font-weight:800;margin-top:8px}.secondary{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;color:var(--ink);font-weight:700;margin-top:8px}.danger{width:100%;border:1px solid #e4bfc8;border-radius:14px;padding:12px;background:#fff5f6;color:#b45d70;font-weight:800;margin-top:18px}.close{float:right;border:0;background:none;font-size:22px;color:var(--muted)}.empty{text-align:center;padding:28px;color:var(--muted);font-size:13px}.chat{display:flex;flex-direction:column;gap:10px}.bubble{max-width:82%;padding:11px 13px;border-radius:16px;background:#f0edf7}.bubble.right{align-self:flex-end;background:#f6e9f0}.who{font-size:10px;color:var(--muted);margin-bottom:3px}.note{font-size:11px;color:var(--muted);padding:10px 12px;background:#faf7fb;border-radius:12px;text-align:center}.char-card{display:flex;gap:12px;align-items:center}.avatar{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#d8d1ea,#efd7e2);display:grid;place-items:center;overflow:hidden;flex:none;font-size:25px}.meta{font-size:11px;color:var(--muted);margin-top:3px}.detail-block{margin-top:12px}.detail-title{font-weight:800;font-size:13px;margin-bottom:7px}.detail-box{white-space:pre-wrap;background:#faf7fb;border-radius:14px;padding:12px;font-size:12px;line-height:1.65}.other-person-entry{padding:10px;border:1px solid var(--line);border-radius:14px;background:#faf7fb;margin-bottom:8px}.skill-table{width:100%;border-collapse:collapse;font-size:10px}.skill-table td{padding:6px 4px;border-bottom:1px solid var(--line)}.skill-table td:last-child{text-align:right;font-weight:700}.stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.stat-item{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:48px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}.stat-name{font-size:12px;font-weight:500;color:var(--ink)}.stat-value{font-size:12px;font-weight:600;text-align:right;white-space:nowrap}.skill-groups{display:flex;flex-direction:column;gap:12px}.skill-group{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}.skill-group-title{padding:10px 12px;background:#f0edf3;font-weight:800;font-size:13px}.skill-edit-group{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:10px}.skill-edit-group h3{margin:0;padding:10px 12px;background:#f0edf3;font-size:13px}.skill-edit-head,.skill-edit-row{display:grid;grid-template-columns:minmax(0,1fr) 76px 76px 32px;gap:6px;align-items:center;padding:7px 8px}.skill-edit-head{font-size:10px;color:var(--muted);background:#faf7fb;font-weight:800}.skill-edit-row{border-top:1px solid var(--line)}.skill-edit-row input{width:100%;padding:8px 6px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-size:12px}.skill-remove{border:0;background:none;color:#b45d70;font-size:18px;cursor:pointer}.skill-add{margin:8px;width:calc(100% - 16px);border:1px solid var(--line);border-radius:10px;padding:9px;background:#fff;color:var(--ink);font-weight:700;cursor:pointer}.file-name{font-size:11px;color:var(--muted);margin-top:6px;word-break:break-all}.gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
@@ -119,6 +119,9 @@ window.detectFaceFocalPoint = async function(file){
 <script>
 const PAIR_KEY='uchiyoso_pairs_v1', CHAR_KEY='uchiyoso_characters_v1', GALLERY_KEY='uchiyoso_gallery_v1';
 const APP_PROFILE_KEY='uchiyoso_profile_v1', APP_NOTIFY_KEY='uchiyoso_notifications_v1';
+const WORKSPACE_KEY='uchiyoso_workspace_v1';
+let currentWorkspace=JSON.parse(localStorage.getItem(WORKSPACE_KEY)||'null');
+
 let appProfile=JSON.parse(localStorage.getItem(APP_PROFILE_KEY)||'null')||{displayName:'',memo:''};
 let appNotifications=JSON.parse(localStorage.getItem(APP_NOTIFY_KEY)||'null')||{anniversaryReminder:true,reminderDays:7};
 
@@ -192,7 +195,7 @@ async function submitAuth(){
   }catch(e){setAuthMessage('authMsg',authFriendlyError(e))}
 }
 function authFriendlyError(e){const m=String(e?.message||e);if(/Invalid login credentials/i.test(m))return'メールアドレスまたはパスワードが違います。';if(/Email not confirmed/i.test(m))return'メールアドレスの確認がまだです。確認メールを確認してね。';if(/already registered|already been registered/i.test(m))return'そのメールアドレスはすでに登録されています。ログインしてみてね。';if(/Password should be at least/i.test(m))return'パスワードが短すぎます。6文字以上にしてね。';return m}
-async function signOutApp(){if(!supabaseClient)return;const {error}=await supabaseClient.auth.signOut();if(error){toast('ログアウトに失敗しました');return}currentUser=null;appReady=false;updateAuthGate();toast('ログアウトしました')}
+async function signOutApp(){if(!supabaseClient)return;const {error}=await supabaseClient.auth.signOut();if(error){toast('ログアウトに失敗しました');return}currentUser=null;appReady=false;currentWorkspace=null;localStorage.removeItem(WORKSPACE_KEY);updateAuthGate();toast('ログアウトしました')}
 
 let pairs=JSON.parse(localStorage.getItem(PAIR_KEY)||'null')||[{id:1,name:'カナタ × レイ',desc:'世界の隅で、ふたり',date:'2024.06.12',characters:[]},{id:2,name:'ルカ × ソラ',desc:'君と見た夢の先',date:'2024.02.03',characters:[]}];
 const SKILL_GROUPS=['戦闘技能','探索技能','行動技能','交渉技能','知識技能'];
@@ -244,6 +247,102 @@ function save(){localStorage.setItem(PAIR_KEY,JSON.stringify(pairs));localStorag
 
 function toast(t){const x=document.getElementById('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',1800)}
 
+
+async function loadWorkspace(){
+  if(!supabaseClient||!currentUser){currentWorkspace=null;return null;}
+  if(currentWorkspace?.id&&currentWorkspace.owner_id){
+    return currentWorkspace;
+  }
+  try{
+    const {data,error}=await supabaseClient
+      .from('workspace_members')
+      .select('workspace_id,role,workspaces(id,name,invite_code,owner_id)')
+      .eq('user_id',currentUser.id)
+      .limit(1)
+      .maybeSingle();
+    if(error)throw error;
+    const w=data?.workspaces||null;
+    if(w){
+      currentWorkspace=w;
+      localStorage.setItem(WORKSPACE_KEY,JSON.stringify(w));
+      return w;
+    }
+  }catch(e){
+    console.error('ワークスペース取得エラー:',e);
+  }
+  return null;
+}
+async function createWorkspace(){
+  if(!supabaseClient||!currentUser){toast('先にログインしてください');return;}
+  const name=(document.getElementById('workspaceName')?.value||'うちよそ日記').trim()||'うちよそ日記';
+  const btn=document.getElementById('createWorkspaceBtn');
+  if(btn)btn.disabled=true;
+  try{
+    const {data,error}=await supabaseClient
+      .from('workspaces')
+      .insert({name,owner_id:currentUser.id})
+      .select('id,name,invite_code,owner_id')
+      .single();
+    if(error)throw error;
+    currentWorkspace=data;
+    localStorage.setItem(WORKSPACE_KEY,JSON.stringify(data));
+    toast('ワークスペースを作成しました');
+    showWorkspaceSettings();
+  }catch(e){
+    console.error(e);
+    toast('ワークスペースの作成に失敗しました');
+    const m=document.getElementById('workspaceMsg');
+    if(m)m.textContent=e.message||String(e);
+  }finally{
+    if(btn)btn.disabled=false;
+  }
+}
+async function joinWorkspace(){
+  if(!supabaseClient||!currentUser){toast('先にログインしてください');return;}
+  const code=(document.getElementById('inviteCode')?.value||'').trim().toUpperCase();
+  if(!code){toast('招待コードを入力してください');return;}
+  const btn=document.getElementById('joinWorkspaceBtn');
+  if(btn)btn.disabled=true;
+  try{
+    const {data,error}=await supabaseClient.rpc('join_workspace_by_code',{p_invite_code:code});
+    if(error)throw error;
+    const w=Array.isArray(data)?data[0]:data;
+    if(!w?.id)throw new Error('ワークスペースを確認できませんでした');
+    currentWorkspace=w;
+    localStorage.setItem(WORKSPACE_KEY,JSON.stringify(w));
+    toast('ワークスペースに参加しました');
+    showWorkspaceSettings();
+  }catch(e){
+    console.error(e);
+    const m=document.getElementById('workspaceMsg');
+    if(m)m.textContent=e.message||'招待コードを確認してください。';
+  }finally{
+    if(btn)btn.disabled=false;
+  }
+}
+async function showWorkspaceSettings(){
+  const v=document.getElementById('view');
+  document.getElementById('fab').style.display='none';
+  v.innerHTML=`<button class="secondary" onclick="show('settings')">← 設定へ戻る</button>
+  <div class="section">共有ワークスペース</div>
+  <div id="workspaceArea" class="card"><div class="note">読み込み中……</div></div>`;
+  const w=await loadWorkspace();
+  const area=document.getElementById('workspaceArea');
+  if(!area)return;
+  if(w){
+    area.innerHTML=`<div class="row"><span>☁️</span><div class="grow"><b>${esc(w.name)}</b><div class="sub">このワークスペースを共有できます</div></div></div>
+    <div class="account-card"><div class="sub">招待コード</div><div class="account-email" style="letter-spacing:.12em">${esc(w.invite_code)}</div></div>
+    <div class="note">このコードを相手に渡すと、相手のアカウントからこのワークスペースに参加できます。</div>
+    <button class="primary" onclick="show('settings')">設定へ戻る</button>`;
+  }else{
+    area.innerHTML=`<div class="field"><label>新しいワークスペース名</label><input id="workspaceName" value="うちよそ日記" placeholder="例：カナタとレイ"></div>
+    <button id="createWorkspaceBtn" class="primary" onclick="createWorkspace()">ワークスペースを作る</button>
+    <div class="section" style="margin-top:24px">相手のワークスペースに参加</div>
+    <div class="field"><label>招待コード</label><input id="inviteCode" placeholder="招待コードを入力" autocomplete="off"></div>
+    <button id="joinWorkspaceBtn" class="secondary" onclick="joinWorkspace()">招待コードで参加</button>
+    <div id="workspaceMsg" class="note" style="white-space:pre-wrap"></div>`;
+  }
+}
 function showProfileSettings(){
   const v=document.getElementById('view');
   document.getElementById('fab').style.display='none';
@@ -297,7 +396,7 @@ function show(tab){
   }else if(tab==='observe'){
     v.innerHTML=`<div class="hero"><h1>壁越し観測 👀</h1><p>あなたは話しかけません。ふたりが勝手に話しているところを眺めます。</p></div><div class="card chat"><div class="note">カナタとレイが話しています……</div><div class="bubble"><div class="who">レイ</div>ねえ、これ見てよ。このカフェ、雰囲気よさそうじゃない？</div><div class="bubble right"><div class="who">カナタ</div>……また急だな。でも、少しくらいなら付き合う。</div><div class="bubble"><div class="who">レイ</div>やった。じゃあ決まりね。</div><div class="note">※現在はサンプル会話。AI機能は後から接続します。</div></div>`;
   }else{
-    v.innerHTML=`<div class="section">設定</div><div class="card"><div class="row"><span>👤</span><div class="grow"><b>アカウント</b><div class="sub">Supabaseログイン</div></div></div><div class="account-card"><div class="sub">ログイン中</div><div class="account-email">${esc(currentUser?.email||'—')}</div></div><button class="danger-btn" onclick="signOutApp()">ログアウト</button></div><div class="list"><div class="card row" onclick="showProfileSettings()"><span>👤</span><div class="grow"><b>プロフィール</b><div class="sub">${esc(appProfile.displayName||'アプリの基本設定')}</div></div><span>›</span></div><div class="card row" onclick="showNotificationSettings()"><span>🔔</span><div class="grow"><b>通知設定</b><div class="sub">${appNotifications.anniversaryReminder?'記念日のリマインド：ON':'記念日のリマインド：OFF'}</div></div><span>›</span></div><div class="card row" onclick="showAuthConfig()"><span>☁</span><div class="grow"><b>Supabase接続設定</b><div class="sub">接続先を変更</div></div><span>›</span></div></div>`;
+    v.innerHTML=`<div class="section">設定</div><div class="card"><div class="row"><span>👤</span><div class="grow"><b>アカウント</b><div class="sub">Supabaseログイン</div></div></div><div class="account-card"><div class="sub">ログイン中</div><div class="account-email">${esc(currentUser?.email||'—')}</div></div><button class="danger-btn" onclick="signOutApp()">ログアウト</button></div><div class="list"><div class="card row" onclick="showProfileSettings()"><span>👤</span><div class="grow"><b>プロフィール</b><div class="sub">${esc(appProfile.displayName||'アプリの基本設定')}</div></div><span>›</span></div><div class="card row" onclick="showNotificationSettings()"><span>🔔</span><div class="grow"><b>通知設定</b><div class="sub">${appNotifications.anniversaryReminder?'記念日のリマインド：ON':'記念日のリマインド：OFF'}</div></div><span>›</span></div><div class="card row" onclick="showWorkspaceSettings()"><span>☁️</span><div class="grow"><b>共有ワークスペース</b><div class="sub">${currentWorkspace?.name?esc(currentWorkspace.name):'共有の入れ物を作る・参加する'}</div></div><span>›</span></div><div class="card row" onclick="showAuthConfig()"><span>☁</span><div class="grow"><b>Supabase接続設定</b><div class="sub">接続先を変更</div></div><span>›</span></div></div>`;
   }
 }
 
@@ -306,6 +405,9 @@ function navigateTo(tab){
 }
 window.navigateTo=navigateTo;
 window.show=show;
+window.showWorkspaceSettings=showWorkspaceSettings;
+window.createWorkspace=createWorkspace;
+window.joinWorkspace=joinWorkspace;
 
 let galleryFilter='all';
 function renderGallery(){
