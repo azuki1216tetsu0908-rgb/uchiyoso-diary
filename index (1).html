@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5eef7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>うちよそ日記 v0.3.3</title>
+<style>
+:root{--bg:#fbf7fb;--card:#fff;--ink:#4f4a58;--muted:#8f8997;--line:#eadfea;--accent:#8d83c9;--accent2:#c783aa;--soft:#f1edf8;--shadow:#5b47690b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}.app{min-height:100vh;max-width:720px;margin:auto;padding-bottom:84px}.top{padding:24px 18px 12px}.brand{font-size:25px;font-weight:800;letter-spacing:.03em}.sub{font-size:12px;color:var(--muted);margin-top:4px}.content{padding:8px 16px}.section{margin:18px 0 10px;font-weight:800}.hero{background:linear-gradient(135deg,#eee9f6,#f9edf3);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:14px}.hero h1{margin:0 0 6px;font-size:22px}.hero p{margin:0;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 14px var(--shadow)}.pair{display:flex;gap:12px;align-items:center;cursor:pointer}.thumb{width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,#d8d1ea,#efd7e2);display:grid;place-items:center;font-size:25px;overflow:hidden;flex:none}.thumb img,.avatar img{width:100%;height:100%;object-fit:cover}.pair h3{margin:0;font-size:15px}.pair p{margin:4px 0 0;color:var(--muted);font-size:11px}.action{display:flex;align-items:center;justify-content:center;min-height:96px;cursor:pointer;text-align:center}.action b{display:block;margin-top:5px;font-size:13px}.icon{font-size:25px;color:var(--accent)}.list{display:flex;flex-direction:column;gap:10px}.row{display:flex;align-items:center;gap:12px}.row .grow{flex:1}.pill{font-size:10px;background:var(--soft);padding:5px 8px;border-radius:999px;color:var(--accent)}.bottom{position:fixed;bottom:0;left:0;right:0;background:#fffdfdcc;backdrop-filter:blur(14px);border-top:1px solid var(--line);height:72px;display:flex;justify-content:center;z-index:5}.nav{max-width:720px;width:100%;display:flex;justify-content:space-around}.nav button{border:0;background:none;color:var(--muted);font-size:10px;padding:10px 18px;cursor:pointer}.nav button.active{color:var(--accent);font-weight:800}.nav span{display:block;font-size:21px;margin-bottom:2px}.fab{position:fixed;right:22px;bottom:92px;width:54px;height:54px;border-radius:50%;border:0;background:var(--accent);color:white;font-size:28px;box-shadow:0 8px 20px #554b772e;cursor:pointer;z-index:6}.modal{position:fixed;inset:0;background:#312a3b66;display:none;align-items:flex-end;z-index:10}.sheet{background:var(--card);width:100%;max-width:720px;margin:auto;max-height:92vh;overflow:auto;border-radius:26px 26px 0 0;padding:22px 18px 30px}.sheet h2{margin:0 0 16px}.field{margin:12px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}.field input,.field textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}.field textarea{min-height:90px;resize:vertical}.hue-wrap{display:flex;align-items:center;gap:12px}.hue-slider{width:100%;height:28px;padding:0!important;border:0!important;appearance:none;-webkit-appearance:none;background:linear-gradient(90deg,hsl(0 75% 62%),hsl(60 75% 62%),hsl(120 75% 62%),hsl(180 75% 62%),hsl(240 75% 62%),hsl(300 75% 62%),hsl(360 75% 62%));border-radius:999px}.hue-slider::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid #4f4a58;box-shadow:0 1px 5px #0002}.hue-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid #4f4a58}.color-swatch{width:42px;height:42px;border-radius:13px;border:1px solid var(--line);flex:none;box-shadow:inset 0 0 0 1px #ffffff88}.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.edit-grid .field{margin:6px 0}.edit-hint{font-size:10px;color:var(--muted);line-height:1.5}.primary{width:100%;border:0;border-radius:14px;padding:13px;background:var(--accent);color:#fff;font-weight:800;margin-top:8px}.secondary{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;color:var(--ink);font-weight:700;margin-top:8px}.danger{width:100%;border:1px solid #e4bfc8;border-radius:14px;padding:12px;background:#fff5f6;color:#b45d70;font-weight:800;margin-top:18px}.close{float:right;border:0;background:none;font-size:22px;color:var(--muted)}.empty{text-align:center;padding:28px;color:var(--muted);font-size:13px}.chat{display:flex;flex-direction:column;gap:10px}.bubble{max-width:82%;padding:11px 13px;border-radius:16px;background:#f0edf7}.bubble.right{align-self:flex-end;background:#f6e9f0}.who{font-size:10px;color:var(--muted);margin-bottom:3px}.note{font-size:11px;color:var(--muted);padding:10px 12px;background:#faf7fb;border-radius:12px;text-align:center}.char-card{display:flex;gap:12px;align-items:center}.avatar{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#d8d1ea,#efd7e2);display:grid;place-items:center;overflow:hidden;flex:none;font-size:25px}.meta{font-size:11px;color:var(--muted);margin-top:3px}.detail-block{margin-top:12px}.detail-title{font-weight:800;font-size:13px;margin-bottom:7px}.detail-box{white-space:pre-wrap;background:#faf7fb;border-radius:14px;padding:12px;font-size:12px;line-height:1.65}.other-person-entry{padding:10px;border:1px solid var(--line);border-radius:14px;background:#faf7fb;margin-bottom:8px}.skill-table{width:100%;border-collapse:collapse;font-size:10px}.skill-table td{padding:6px 4px;border-bottom:1px solid var(--line)}.skill-table td:last-child{text-align:right;font-weight:700}.stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.stat-item{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:48px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}.stat-name{font-size:12px;font-weight:500;color:var(--ink)}.stat-value{font-size:12px;font-weight:600;text-align:right;white-space:nowrap}.skill-groups{display:flex;flex-direction:column;gap:12px}.skill-group{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}.skill-group-title{padding:10px 12px;background:#f0edf3;font-weight:800;font-size:13px}.skill-edit-group{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:10px}.skill-edit-group h3{margin:0;padding:10px 12px;background:#f0edf3;font-size:13px}.skill-edit-head,.skill-edit-row{display:grid;grid-template-columns:minmax(0,1fr) 76px 76px 32px;gap:6px;align-items:center;padding:7px 8px}.skill-edit-head{font-size:10px;color:var(--muted);background:#faf7fb;font-weight:800}.skill-edit-row{border-top:1px solid var(--line)}.skill-edit-row input{width:100%;padding:8px 6px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-size:12px}.skill-remove{border:0;background:none;color:#b45d70;font-size:18px;cursor:pointer}.skill-add{margin:8px;width:calc(100% - 16px);border:1px solid var(--line);border-radius:10px;padding:9px;background:#fff;color:var(--ink);font-weight:700;cursor:pointer}.file-name{font-size:11px;color:var(--muted);margin-top:6px;word-break:break-all}.gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.gallery-item{overflow:hidden;cursor:pointer;padding:0}
+.gallery-image{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#f1edf8}.gallery-focus{font-size:10px;color:var(--muted);margin-top:4px}
+.gallery-info{padding:10px 11px 12px}
+.gallery-title{font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gallery-meta{font-size:10px;color:var(--muted);margin-top:3px}
+.gallery-filter{display:flex;gap:7px;overflow:auto;margin:8px 0 12px;padding-bottom:2px}
+.gallery-filter button{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 11px;color:var(--muted);font-size:11px}
+.gallery-filter button.active{background:var(--soft);color:var(--accent);font-weight:800;border-color:#d9d0ec}
+.gallery-empty{padding:36px 14px;text-align:center;color:var(--muted);font-size:12px}
+.image-preview{width:100%;max-height:280px;object-fit:contain;border-radius:14px;background:#faf7fb;margin-top:8px}
+.image-lightbox{position:fixed;inset:0;background:#18141dcc;display:none;align-items:center;justify-content:center;z-index:40;padding:18px}
+.image-lightbox img{max-width:100%;max-height:82vh;object-fit:contain;border-radius:12px}
+.image-lightbox .lb-close{position:absolute;top:18px;right:18px;width:42px;height:42px;border:0;border-radius:50%;background:#ffffff22;color:#fff;font-size:24px}
+.gallery-delete{margin-top:8px}
+
+.focus-stage-wrap{margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:16px;background:#faf7fb;text-align:center}.focus-stage{position:relative;display:inline-block;max-width:100%;max-height:58vh;line-height:0;touch-action:none}.focus-stage img{display:block;max-width:100%;max-height:58vh;width:auto;height:auto;user-select:none;-webkit-user-drag:none}.focus-frame{position:absolute;border:3px solid #fff;box-shadow:0 0 0 9999px #2d26384d,0 2px 12px #0004;border-radius:8px;cursor:grab;touch-action:none}.focus-frame:active{cursor:grabbing}.focus-frame::after{content:'ここを表示';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:5px 8px;border-radius:999px;background:#ffffffdd;color:#4f4a58;font-size:10px;font-weight:800;white-space:nowrap}.focus-help{font-size:11px;color:var(--muted);line-height:1.5;margin-top:10px}.focus-coords{font-size:10px;color:var(--muted);margin-top:6px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#4f4a58;color:#fff;padding:10px 14px;border-radius:999px;font-size:12px;display:none;z-index:30}
+
+.auth-gate{position:fixed;inset:0;background:var(--bg);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}.auth-box{width:min(520px,100%);background:var(--card);border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:0 14px 50px #5b476918}.auth-logo{font-size:28px;font-weight:900;margin-bottom:4px}.auth-sub{font-size:12px;color:var(--muted);margin-bottom:18px}.auth-tabs{display:flex;gap:8px;margin:0 0 16px}.auth-tabs button{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px;cursor:pointer;color:var(--ink)}.auth-tabs button.active{background:var(--soft);color:var(--accent);font-weight:800}.field{margin:10px 0}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.field input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-size:14px}.auth-help{font-size:11px;color:var(--muted);line-height:1.7;margin-top:10px}.auth-msg{font-size:12px;padding:10px 12px;border-radius:12px;background:var(--soft);margin:10px 0;display:none}.auth-actions{display:flex;gap:8px;margin-top:14px}.auth-actions button{flex:1}.small-btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:11px 12px;cursor:pointer}.primary{border:0;background:var(--accent);color:#fff;border-radius:12px;padding:11px 14px;cursor:pointer;font-weight:800}.danger-btn{border:1px solid #e9cfd8;background:#fff7fa;color:#a85b76;border-radius:12px;padding:11px 14px;cursor:pointer}.account-card{background:var(--soft);border-radius:16px;padding:14px;margin:10px 0}.account-email{font-weight:800;word-break:break-all}.setup-note{font-size:11px;color:var(--muted);line-height:1.7;margin:8px 0}
+</style>
+
+<script type="module">
+window.__faceDetectorPromise = null;
+window.loadFaceDetector = async function(){
+  if(window.__faceDetectorPromise) return window.__faceDetectorPromise;
+  window.__faceDetectorPromise = (async()=>{
+    const vision = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22");
+    const fileset = await vision.FilesetResolver.forVisionTasks(
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm"
+    );
+    return vision.FaceDetector.createFromOptions(fileset,{
+      baseOptions:{
+        modelAssetPath:"https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite",
+        delegate:"GPU"
+      },
+      runningMode:"IMAGE",
+      minDetectionConfidence:0.35
+    });
+  })();
+  return window.__faceDetectorPromise;
+};
+window.detectFaceFocalPoint = async function(file){
+  try{
+    const detector=await window.loadFaceDetector();
+    const bitmap=await createImageBitmap(file);
+    const result=detector.detect(bitmap);
+    bitmap.close();
+    const detections=result?.detections||[];
+    if(!detections.length) return null;
+    let sx=0,sy=0,total=0;
+    for(const d of detections){
+      const b=d.boundingBox;
+      if(!b) continue;
+      const score=(d.categories?.[0]?.score)||1;
+      sx+=(b.originX+b.width/2)*score;
+      sy+=(b.originY+b.height*0.58)*score;
+      total+=score;
+    }
+    if(!total) return null;
+    return {
+      x:Math.max(0,Math.min(100,sx/total/bitmap.width*100)),
+      y:Math.max(0,Math.min(100,sy/total/bitmap.height*100)),
+      faces:detections.length
+    };
+  }catch(e){
+    console.warn("face focus detection failed",e);
+    return null;
+  }
+};
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="auth-gate" id="authGate">
+  <div class="auth-box">
+    <div class="auth-logo">うちよそ日記</div>
+    <div class="auth-sub">ふたりの物語を、ずっとそばに。</div>
+    <div id="authConfigStep">
+      <div class="section" style="margin-top:0">☁ Supabase接続設定</div>
+      <div class="setup-note">このブラウザからSupabaseへ接続するための設定です。Project URLとPublishable keyを入力します。<br>※ Secret key / service_role key は絶対に入力しないでください。</div>
+      <div class="field"><label>Project URL</label><input id="sbUrl" placeholder="https://xxxxxxxx.supabase.co" autocomplete="off"></div>
+      <div class="field"><label>Publishable key</label><input id="sbKey" placeholder="sb_publishable_..." autocomplete="off"></div>
+      <div class="auth-msg" id="configMsg"></div>
+      <div class="auth-actions"><button class="primary" onclick="saveSupabaseConfig()">接続して続ける</button></div>
+      <div class="auth-help">Supabaseの「Connect」画面から Project URL と Publishable key を取得できます。</div>
+    </div>
+    <div id="authLoginStep" style="display:none">
+      <div class="auth-tabs"><button id="loginTab" class="active" onclick="setAuthMode('login')">ログイン</button><button id="signupTab" onclick="setAuthMode('signup')">新規登録</button></div>
+      <div class="field"><label>メールアドレス</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com"></div>
+      <div class="field"><label>パスワード</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="6文字以上"></div>
+      <div class="auth-msg" id="authMsg"></div>
+      <div class="auth-actions"><button class="primary" id="authSubmit" onclick="submitAuth()">ログイン</button></div>
+      <div class="auth-help" id="authHelp">登録済みのアカウントでログインします。</div>
+      <div class="auth-actions"><button class="small-btn" onclick="resetSupabaseConfig()">接続設定を変更</button></div>
+    </div>
+  </div>
+</div>
+<div class="app"><header class="top"><div class="brand">うちよそ日記</div><div class="sub">ふたりの物語を、ずっとそばに。</div></header><main class="content" id="view"></main><button class="fab" id="fab" onclick="openAddMenu()">＋</button></div>
+<nav class="bottom"><div class="nav"><button data-tab="home" onclick="show('home')"><span>⌂</span>ホーム</button><button data-tab="calendar" onclick="show('calendar')"><span>◷</span>記念日</button><button data-tab="gallery" onclick="show('gallery')"><span>▧</span>ギャラリー</button><button data-tab="observe" onclick="show('observe')"><span>◌</span>観測</button><button data-tab="settings" onclick="show('settings')"><span>⚙</span>設定</button></div></nav>
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="sheet" id="sheet"></div></div><div class="image-lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()"><button class="lb-close" onclick="closeLightbox()">×</button><img id="lightboxImg" alt=""></div><div class="toast" id="toast"></div>
+<script>
+const PAIR_KEY='uchiyoso_pairs_v1', CHAR_KEY='uchiyoso_characters_v1', GALLERY_KEY='uchiyoso_gallery_v1';
+const SB_CONFIG_KEY='uchiyoso_supabase_config_v1';
+let supabaseClient=null, authMode='login', currentUser=null;
+function getSupabaseConfig(){try{return JSON.parse(localStorage.getItem(SB_CONFIG_KEY)||'null')}catch(e){return null}}
+function setAuthMessage(id,msg){const el=document.getElementById(id);if(!el)return;el.textContent=msg;el.style.display=msg?'block':'none'}
+function setAuthMode(mode){authMode=mode;document.getElementById('loginTab')?.classList.toggle('active',mode==='login');document.getElementById('signupTab')?.classList.toggle('active',mode==='signup');document.getElementById('authSubmit').textContent=mode==='login'?'ログイン':'新規登録';document.getElementById('authHelp').textContent=mode==='login'?'登録済みのアカウントでログインします。':'新しいアカウントを作成します。メール確認が必要な場合があります。';setAuthMessage('authMsg','')}
+function showAuthConfig(){document.getElementById('authGate').style.display='flex';document.getElementById('authConfigStep').style.display='block';document.getElementById('authLoginStep').style.display='none';const c=getSupabaseConfig();if(c){document.getElementById('sbUrl').value=c.url||'';document.getElementById('sbKey').value=c.key||''}}
+function showAuthLogin(){document.getElementById('authConfigStep').style.display='none';document.getElementById('authLoginStep').style.display='block'}
+async function initSupabase(){
+  if(!window.supabase?.createClient) throw new Error('Supabaseライブラリを読み込めませんでした。ネット接続を確認してください。');
+  const c=getSupabaseConfig();
+  if(!c?.url||!c?.key){showAuthConfig();return false}
+  try{
+    // 接続設定画面ではネットワーク確認のためにgetSession()を待たない。
+    // GitHub Pages上でセッション確認がハングすると、設定画面から進めなくなるため。
+    supabaseClient=window.supabase.createClient(c.url,c.key,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}});
+    supabaseClient.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;updateAuthGate();});
+    currentUser=null;
+    updateAuthGate();
+    // 保存済みセッションがある場合だけ、短いタイムアウトで復元を試みる。
+    const sessionPromise=supabaseClient.auth.getSession();
+    const timeoutPromise=new Promise(resolve=>setTimeout(()=>resolve({data:{session:null},error:null}),3000));
+    const result=await Promise.race([sessionPromise,timeoutPromise]);
+    if(result?.error) throw result.error;
+    currentUser=result?.data?.session?.user||null;
+    updateAuthGate();
+    return true;
+  }catch(e){setAuthMessage('configMsg','Supabaseの接続確認に失敗しました：'+(e.message||e));showAuthConfig();return false}
+}
+function updateAuthGate(){const gate=document.getElementById('authGate');if(!gate)return;if(currentUser){gate.style.display='none';show('home')}else{gate.style.display='flex';showAuthLogin()}}
+async function saveSupabaseConfig(){
+  const url=document.getElementById('sbUrl').value.trim().replace(/\/$/,'');const key=document.getElementById('sbKey').value.trim();
+  if(!/^https:\/\/[^\s]+\.supabase\.co$/.test(url)){setAuthMessage('configMsg','Project URLの形式を確認してね。');return}
+  if(!key){setAuthMessage('configMsg','Publishable keyを入力してね。');return}
+  if(/^sb_secret_|service_role/i.test(key)){setAuthMessage('configMsg','Secret key / service_role key はここには入力しないでください。');return}
+  localStorage.setItem(SB_CONFIG_KEY,JSON.stringify({url,key}));
+  const ok=await initSupabase();if(ok)toast('Supabaseに接続しました');
+}
+function resetSupabaseConfig(){if(!confirm('このブラウザのSupabase接続設定を削除しますか？'))return;localStorage.removeItem(SB_CONFIG_KEY);supabaseClient=null;currentUser=null;showAuthConfig();}
+async function submitAuth(){
+  if(!supabaseClient){setAuthMessage('authMsg','先にSupabase接続設定をしてください。');return}
+  const email=document.getElementById('authEmail').value.trim();const password=document.getElementById('authPassword').value;
+  if(!email||!password){setAuthMessage('authMsg','メールアドレスとパスワードを入力してね。');return}
+  if(password.length<6){setAuthMessage('authMsg','パスワードは6文字以上にしてね。');return}
+  setAuthMessage('authMsg','処理中…');
+  try{
+    if(authMode==='signup'){
+      const {data,error}=await supabaseClient.auth.signUp({email,password});
+      if(error)throw error;
+      if(data?.session){setAuthMessage('authMsg','登録しました。ログインしています…');}else{setAuthMessage('authMsg','登録完了！確認メールが届いたらメール内のリンクを開いてね。');}
+    }else{
+      const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+      if(error)throw error;currentUser=data?.user||null;updateAuthGate();
+    }
+  }catch(e){setAuthMessage('authMsg',authFriendlyError(e))}
+}
+function authFriendlyError(e){const m=String(e?.message||e);if(/Invalid login credentials/i.test(m))return'メールアドレスまたはパスワードが違います。';if(/Email not confirmed/i.test(m))return'メールアドレスの確認がまだです。確認メールを確認してね。';if(/already registered|already been registered/i.test(m))return'そのメールアドレスはすでに登録されています。ログインしてみてね。';if(/Password should be at least/i.test(m))return'パスワードが短すぎます。6文字以上にしてね。';return m}
+async function signOutApp(){if(!supabaseClient)return;const {error}=await supabaseClient.auth.signOut();if(error){toast('ログアウトに失敗しました');return}currentUser=null;updateAuthGate();toast('ログアウトしました')}
+
+let pairs=JSON.parse(localStorage.getItem(PAIR_KEY)||'null')||[{id:1,name:'カナタ × レイ',desc:'世界の隅で、ふたり',date:'2024.06.12',characters:[]},{id:2,name:'ルカ × ソラ',desc:'君と見た夢の先',date:'2024.02.03',characters:[]}];
+const SKILL_GROUPS=['戦闘技能','探索技能','行動技能','交渉技能','知識技能'];
+const DEFAULT_SKILL_CATEGORIES={
+  '回避':'戦闘技能','キック':'戦闘技能','組み付き':'戦闘技能','こぶし（パンチ）':'戦闘技能','頭突き':'戦闘技能','投擲':'戦闘技能','マーシャルアーツ':'戦闘技能','拳銃':'戦闘技能','サブマシンガン':'戦闘技能','ショットガン':'戦闘技能','マシンガン':'戦闘技能','ライフル':'戦闘技能',
+  '応急手当':'探索技能','鍵開け':'探索技能','隠す':'探索技能','隠れる':'探索技能','聞き耳':'探索技能','忍び歩き':'探索技能','写真術':'探索技能','精神分析':'探索技能','追跡':'探索技能','登攀':'探索技能','図書館':'探索技能','目星':'探索技能',
+  '運転':'行動技能','機械修理':'行動技能','重機械操作':'行動技能','乗馬':'行動技能','水泳':'行動技能','製作':'行動技能','操縦':'行動技能','跳躍':'行動技能','電気修理':'行動技能','ナビゲート':'行動技能','変装':'行動技能',
+  '言いくるめ':'交渉技能','信用':'交渉技能','説得':'交渉技能','値切り':'交渉技能','母国語':'交渉技能','英語':'交渉技能',
+  '医学':'知識技能','オカルト':'知識技能','化学':'知識技能','クトゥルフ神話':'知識技能','芸術(ダンス)':'知識技能','経理':'知識技能','考古学':'知識技能','コンピューター':'知識技能','心理学':'知識技能','人類学':'知識技能','生物学':'知識技能','地質学':'知識技能','電子工学':'知識技能','天文学':'知識技能','博物学':'知識技能','物理学':'知識技能','法律':'知識技能','薬学':'知識技能','歴史':'知識技能'
+};
+function skillCategoryFor(x){const cat=String(x?.category||'');if(SKILL_GROUPS.includes(cat))return cat;const name=String(x?.name||'').trim();return DEFAULT_SKILL_CATEGORIES[name]||'その他'}
+function normalizeSkills(list){return (Array.isArray(list)?list:[]).map((x,i)=>({name:String(x?.name||''),initialValue:String(x?.initialValue??x?.value??''),value:String(x?.value??x?.initialValue??''),category:skillCategoryFor(x),_i:i})).filter(x=>x.name)}
+let characters=JSON.parse(localStorage.getItem(CHAR_KEY)||'[]'); characters.forEach(c=>{c.pairRelations=c.pairRelations||{};Object.keys(c.pairRelations).forEach(k=>{const r=c.pairRelations[k]||{};c.pairRelations[k]={partnerName:r.partnerName??'',position:r.position||'未定',callName:r.callName??'',secondPerson:r.secondPerson??'',thirdPersonCall:r.thirdPersonCall??'',partnerPersonality:r.partnerPersonality??'',otherPeople:Array.isArray(r.otherPeople)?r.otherPeople:[]}});c.birthday=c.birthday||'';c.imageColorHue=Number.isFinite(Number(c.imageColorHue))?Number(c.imageColorHue):270;c.imageColor=hueToColor(c.imageColorHue);c.latestAge=c.latestAge??c.age??'';c.latestHeight=c.latestHeight??c.height??'';c.latestProfile=c.latestProfile??'';c.initialData=c.initialData||{age:c.age||'',job:c.job||'',gender:c.gender||'',height:c.height||'',weight:c.weight||'',birthplace:c.birthplace||'',hair:c.hair||'',eyes:c.eyes||'',firstPerson:c.firstPerson||'',secondPerson:c.secondPerson||'',memo:c.memo||'',quotes:[...(c.quotes||[])]};c.initialStats=Array.isArray(c.initialStats)?cloneStats(c.initialStats):cloneStats(c.initialData?.stats||c.stats||[]);c.initialData.stats=cloneStats(c.initialStats);c.stats=cloneStats(c.stats);c.skills=normalizeSkills(c.skills);c.skills.forEach(x=>{x.category=skillCategoryFor(x)});c.statsHistory=Array.isArray(c.statsHistory)?c.statsHistory.map(h=>({at:h.at||new Date().toISOString(),stats:cloneStats(h.stats)})):[];}); let currentPairId=null;
+
+let gallery=JSON.parse(localStorage.getItem(GALLERY_KEY)||'[]');
+const GALLERY_DB='uchiyoso_gallery_db_v1', GALLERY_STORE='images';
+function saveGalleryMeta(){localStorage.setItem(GALLERY_KEY,JSON.stringify(gallery))}
+function openGalleryDB(){
+  return new Promise((resolve,reject)=>{
+    const req=indexedDB.open(GALLERY_DB,1);
+    req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(GALLERY_STORE))db.createObjectStore(GALLERY_STORE)};
+    req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error);
+  });
+}
+async function putGalleryBlob(id,blob){
+  const db=await openGalleryDB();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(GALLERY_STORE,'readwrite');tx.objectStore(GALLERY_STORE).put(blob,id);
+    tx.oncomplete=()=>{db.close();resolve()};tx.onerror=()=>{db.close();reject(tx.error)};
+  });
+}
+async function getGalleryBlob(id){
+  const db=await openGalleryDB();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(GALLERY_STORE,'readonly');const req=tx.objectStore(GALLERY_STORE).get(id);
+    req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error);
+    tx.oncomplete=()=>db.close();
+  });
+}
+async function deleteGalleryBlob(id){
+  const db=await openGalleryDB();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(GALLERY_STORE,'readwrite');tx.objectStore(GALLERY_STORE).delete(id);
+    tx.oncomplete=()=>{db.close();resolve()};tx.onerror=()=>{db.close();reject(tx.error)};
+  });
+}
+function save(){localStorage.setItem(PAIR_KEY,JSON.stringify(pairs));localStorage.setItem(CHAR_KEY,JSON.stringify(characters));saveGalleryMeta()}
+
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(t){const x=document.getElementById('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',1800)}
+function show(tab){document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));let v=document.getElementById('view');document.getElementById('fab').style.display=tab==='home'?'block':'none';
+if(tab==='home')v.innerHTML=`<section class="hero"><h1>うちよそ</h1><p>あなたの大切なふたりを、ひとつずつ残していこう。</p></section><div class="section">うちよそ一覧</div><div class="list">${pairs.length?pairs.map(p=>`<article class="card pair" onclick="pair(${p.id})"><div class="thumb">♡</div><div><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p><p>${esc(p.date)}</p></div></article>`).join(''):`<div class="empty">まだうちよそがありません。<br>右下の＋から追加できます。</div>`}</div><div class="section">キャラクター</div><article class="card pair" onclick="globalCharacterList()"><div class="thumb">♙</div><div><h3>キャラクター一覧</h3><p>登録済みのキャラクターをまとめて見る</p><p>${characters.length}人登録中</p></div><div style="margin-left:auto;font-size:22px;color:var(--muted)">›</div></article>`;
+else if(tab==='calendar')v.innerHTML=`<div class="section">記念日</div><div class="card"><h2>2026年9月</h2><p>大切な日を登録すると、ここから確認できます。</p></div><div class="section">登録予定</div><div class="list"><div class="card row"><span class="icon">○</span><div class="grow"><b>初セッション記念日</b><div class="sub">カナタ × レイ</div></div><span class="pill">あと10日</span></div></div>`;
+else if(tab==='gallery')renderGallery();
+else if(tab==='observe')v.innerHTML=`<div class="hero"><h1>壁越し観測 👀</h1><p>あなたは話しかけません。ふたりが勝手に話しているところを眺めます。</p></div><div class="card chat"><div class="note">カナタとレイが話しています……</div><div class="bubble"><div class="who">レイ</div>ねえ、これ見てよ。このカフェ、雰囲気よさそうじゃない？</div><div class="bubble right"><div class="who">カナタ</div>……また急だな。でも、少しくらいなら付き合う。</div><div class="bubble"><div class="who">レイ</div>やった。じゃあ決まりね。</div><div class="note">※現在はサンプル会話。AI機能は後から接続します。</div></div>`;
+else {v.innerHTML=`<div class="section">設定</div><div class="card"><div class="row"><span>👤</span><div class="grow"><b>アカウント</b><div class="sub">Supabaseログイン</div></div></div><div class="account-card"><div class="sub">ログイン中</div><div class="account-email">${esc(currentUser?.email||'—')}</div></div><button class="danger-btn" onclick="signOutApp()">ログアウト</button></div><div class="list"><div class="card row"><span>👤</span><div class="grow"><b>プロフィール</b><div class="sub">アプリの基本設定</div></div><span>›</span></div><div class="card row"><span>🔔</span><div class="grow"><b>通知設定</b><div class="sub">記念日のリマインド</div></div><span>›</span></div><div class="card row" onclick="showAuthConfig()"><span>☁</span><div class="grow"><b>Supabase接続設定</b><div class="sub">接続先を変更</div></div><span>›</span></div></div>`}
+
+let galleryFilter='all';
+function renderGallery(){
+  document.getElementById('fab').style.display='block';
+  document.getElementById('view').innerHTML=`<div class="section">ギャラリー</div>
+  <div class="gallery-filter">
+    <button class="${galleryFilter==='all'?'active':''}" onclick="setGalleryFilter('all')">すべて</button>
+    <button class="${galleryFilter==='illustration'?'active':''}" onclick="setGalleryFilter('illustration')">イラスト</button>
+    <button class="${galleryFilter==='standing'?'active':''}" onclick="setGalleryFilter('standing')">立ち絵</button>
+  </div>
+  <button class="primary" onclick="openGalleryModal()">＋ 画像を追加</button>
+  <div id="galleryList" style="margin-top:12px"></div>`;
+  refreshGalleryList();
+}
+function setGalleryFilter(f){galleryFilter=f;renderGallery()}
+function applyGalleryObjectPosition(img,focusX,focusY){
+  if(!img||!img.naturalWidth||!img.naturalHeight)return;
+  const cw=img.clientWidth,ch=img.clientHeight;
+  if(!cw||!ch)return;
+  const scale=Math.max(cw/img.naturalWidth,ch/img.naturalHeight);
+  const ow=img.naturalWidth*scale,oh=img.naturalHeight*scale;
+  const fx=Math.max(0,Math.min(100,Number.isFinite(focusX)?focusX:50))/100;
+  const fy=Math.max(0,Math.min(100,Number.isFinite(focusY)?focusY:50))/100;
+  const px=Math.abs(ow-cw)<0.01?50:Math.max(0,Math.min(100,(fx*ow-cw/2)/(ow-cw)*100));
+  const py=Math.abs(oh-ch)<0.01?50:Math.max(0,Math.min(100,(fy*oh-ch/2)/(oh-ch)*100));
+  img.style.objectPosition=`${px}% ${py}%`;
+}
+async function refreshGalleryList(){
+  const box=document.getElementById('galleryList'); if(!box)return;
+  const items=gallery.filter(x=>galleryFilter==='all'||x.type===galleryFilter);
+  if(!items.length){box.innerHTML=`<div class="gallery-empty">まだ画像がありません。<br>「＋ 画像を追加」から保存できます。</div>`;return}
+  box.innerHTML=`<div class="gallery-grid">${items.map(x=>`<article class="card gallery-item" onclick="openGalleryDetail('${x.id}')"><img class="gallery-image" id="gimg-${x.id}" alt="" style="object-position:50% 50%"><div class="gallery-info"><div class="gallery-title">${esc(x.title||'無題')}</div><div class="gallery-meta">${x.type==='standing'?'立ち絵':'イラスト'}${x.date?' ・ '+esc(x.date):''}</div></div></article>`).join('')}</div>`;
+  for(const x of items){
+    try{const blob=await getGalleryBlob(x.id);if(blob){const url=URL.createObjectURL(blob);const img=document.getElementById('gimg-'+x.id);if(img){img.onload=()=>{applyGalleryObjectPosition(img,x.focusX,x.focusY);URL.revokeObjectURL(url)};img.src=url;if(img.complete)applyGalleryObjectPosition(img,x.focusX,x.focusY)}}}catch(e){}
+  }
+}
+function openGalleryModal(){
+  document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>画像を追加</h2>
+  <div class="field"><label>画像</label><input id="galleryFile" type="file" accept="image/*" onchange="previewGalleryFile(event)"><div class="file-name" id="galleryFileName"></div><img id="galleryPreview" class="image-preview" style="display:none" alt=""></div>
+  <div class="field"><label>タイトル</label><input id="galleryTitle" placeholder="例：夏祭りのふたり"></div>
+  <div class="field"><label>種類</label><select id="galleryType" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)"><option value="illustration">イラスト</option><option value="standing">立ち絵</option></select></div><div class="note" style="margin-top:8px">立ち絵は顔の位置を自動解析します。検出できなかった場合は、保存後に白い枠を動かして表示位置を手動で決められます。元画像は加工せずそのまま保存します。</div>
+  <div class="field"><label>日付</label><input id="galleryDate" type="date"></div>
+  <div class="field"><label>タグ</label><input id="galleryTags" placeholder="例：夏祭り、私服、二人"></div>
+  <div class="field"><label>コメント</label><textarea id="galleryMemo" placeholder="この絵について残しておきたいこと"></textarea></div>
+  <button class="primary" onclick="saveGalleryImage()">保存する</button>`;
+  document.getElementById('modal').style.display='flex';
+}
+function previewGalleryFile(e){
+  const f=e.target.files?.[0];if(!f)return;
+  document.getElementById('galleryFileName').textContent=f.name;
+  const img=document.getElementById('galleryPreview');img.src=URL.createObjectURL(f);img.style.display='block';
+}
+async function saveGalleryImage(){
+  const f=document.getElementById('galleryFile').files?.[0];if(!f){toast('画像を選んでください');return}
+  if(!f.type.startsWith('image/')){toast('画像ファイルを選んでください');return}
+  const id='g_'+Date.now()+'_'+Math.floor(Math.random()*1000);
+  const item={id,title:document.getElementById('galleryTitle').value.trim()||f.name.replace(/\.[^.]+$/,''),type:document.getElementById('galleryType').value,date:document.getElementById('galleryDate').value,tags:document.getElementById('galleryTags').value.trim(),memo:document.getElementById('galleryMemo').value.trim(),createdAt:new Date().toISOString(),focusX:50,focusY:50,faceCount:0};
+  try{
+    let detectionFailed=false;
+    if(item.type==='standing'){
+      toast('顔の位置を解析しています…');
+      const focus=await window.detectFaceFocalPoint?.(f);
+      if(focus){item.focusX=focus.x;item.focusY=focus.y;item.faceCount=focus.faces}
+      else detectionFailed=true;
+    }
+    await putGalleryBlob(id,f);gallery.unshift(item);saveGalleryMeta();closeModal();
+    renderGallery();
+    if(item.type==='standing'&&detectionFailed){
+      toast('顔を検出できませんでした。表示位置を手動で選べます');
+      await openGalleryFocusEditor(id);
+    }else{
+      toast(item.type==='standing'&&item.faceCount?'顔を中心に保存しました':'画像を保存しました');
+    }
+  }catch(e){console.error(e);toast('画像の保存に失敗しました')}
+}
+async function openGalleryDetail(id){
+  const x=gallery.find(g=>g.id===id);if(!x)return;
+  document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>${esc(x.title||'無題')}</h2><div id="galleryDetailImage"></div>
+  <div class="detail-box" style="margin-top:10px">${esc((x.type==='standing'?'立ち絵':'イラスト')+(x.date?'\\n日付：'+x.date:'')+(x.tags?'\\nタグ：'+x.tags:'')+(x.memo?'\\n\\n'+x.memo:''))}</div>
+  <button class="secondary" onclick="showGalleryImage('${x.id}')">画像を大きく見る</button>
+  ${x.type==='standing'?`<button class="secondary" onclick="reanalyzeGalleryFace('${x.id}')">◎ 顔の位置を再解析</button><button class="secondary" onclick="openGalleryFocusEditor('${x.id}')">✥ 表示位置を手動で調整</button>`:''}
+  <button class="secondary" onclick="downloadGalleryImage('${x.id}')">↓ 元画像を保存</button>
+  <button class="danger gallery-delete" onclick="deleteGalleryItem('${x.id}')">この画像を削除</button>`;
+  document.getElementById('modal').style.display='flex';
+  const blob=await getGalleryBlob(id);if(blob){const url=URL.createObjectURL(blob);document.getElementById('galleryDetailImage').innerHTML=`<img class="image-preview" src="${url}" alt="">`}
+}
+async function showGalleryImage(id){
+  const blob=await getGalleryBlob(id);if(!blob)return;const url=URL.createObjectURL(blob);
+  document.getElementById('lightboxImg').src=url;document.getElementById('lightbox').style.display='flex';
+}
+function closeLightbox(){document.getElementById('lightbox').style.display='none';document.getElementById('lightboxImg').src=''}
+
+async function downloadGalleryImage(id){
+  const x=gallery.find(g=>g.id===id); if(!x)return;
+  const blob=await getGalleryBlob(id); if(!blob){toast('画像を読み込めませんでした');return}
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const safe=(x.title||'image').replace(/[\\/:*?"<>|]/g,'_');
+  const ext=blob.type==='image/png'?'.png':(blob.type==='image/webp'?'.webp':(blob.type==='image/gif'?'.gif':(blob.type==='image/jpeg'?'.jpg':'')));
+  a.download=safe+(ext||'');
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+let focusEditorState=null;
+async function openGalleryFocusEditor(id){
+  const x=gallery.find(g=>g.id===id);if(!x)return;
+  const blob=await getGalleryBlob(id);if(!blob){toast('画像を読み込めませんでした');return}
+  const url=URL.createObjectURL(blob);
+  document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeFocusEditor()">×</button><h2>表示位置を手動で調整</h2>
+  <div class="note">白い枠の中が、ギャラリーの一覧で表示される範囲です。枠を上下・左右に動かして、顔が入る位置で決定してください。決定した枠と同じ範囲になるように表示します。</div>
+  <div class="focus-stage-wrap"><div class="focus-stage" id="focusStage"><img id="focusEditorImg" src="${url}" alt=""><div class="focus-frame" id="focusFrame"></div></div></div>
+  <div class="focus-help">タップした場所に枠の中心を移動することもできます。</div>
+  <div class="focus-coords" id="focusCoords"></div>
+  <button class="primary" onclick="saveGalleryFocus('${id}')">この位置で決定</button>
+  <button class="secondary" onclick="closeFocusEditor()">キャンセル</button>`;
+  document.getElementById('modal').style.display='flex';
+  const img=document.getElementById('focusEditorImg');
+  img.onload=()=>setupFocusEditor(id);
+  if(img.complete) setupFocusEditor(id);
+  focusEditorState={id,url,dragging:false,startX:0,startY:0,startLeft:0,startTop:0,side:0,maxLeft:0,maxTop:0};
+}
+function setupFocusEditor(id){
+  const st=focusEditorState;if(!st||st.id!==id)return;
+  const stage=document.getElementById('focusStage'),img=document.getElementById('focusEditorImg'),frame=document.getElementById('focusFrame');
+  if(!stage||!img||!frame)return;
+  const w=img.getBoundingClientRect().width,h=img.getBoundingClientRect().height;
+  if(!w||!h)return;
+  st.side=Math.min(w,h);st.maxLeft=Math.max(0,w-st.side);st.maxTop=Math.max(0,h-st.side);
+  const x=Number.isFinite(gallery.find(g=>g.id===id)?.focusX)?gallery.find(g=>g.id===id).focusX:50;
+  const y=Number.isFinite(gallery.find(g=>g.id===id)?.focusY)?gallery.find(g=>g.id===id).focusY:50;
+  const left=Math.max(0,Math.min(st.maxLeft,w*x/100-st.side/2));
+  const top=Math.max(0,Math.min(st.maxTop,h*y/100-st.side/2));
+  frame.style.width=st.side+'px';frame.style.height=st.side+'px';frame.style.left=left+'px';frame.style.top=top+'px';
+  updateFocusCoords();
+  frame.onpointerdown=(e)=>{
+    e.preventDefault();st.dragging=true;st.startX=e.clientX;st.startY=e.clientY;st.startLeft=parseFloat(frame.style.left)||0;st.startTop=parseFloat(frame.style.top)||0;frame.setPointerCapture?.(e.pointerId);
+  };
+  frame.onpointermove=(e)=>{
+    if(!st.dragging)return;e.preventDefault();
+    const nx=Math.max(0,Math.min(st.maxLeft,st.startLeft+e.clientX-st.startX));
+    const ny=Math.max(0,Math.min(st.maxTop,st.startTop+e.clientY-st.startY));
+    frame.style.left=nx+'px';frame.style.top=ny+'px';updateFocusCoords();
+  };
+  const stop=()=>{st.dragging=false};
+  frame.onpointerup=stop;frame.onpointercancel=stop;frame.onlostpointercapture=stop;
+  stage.onclick=(e)=>{
+    if(st.dragging)return;
+    if(e.target===frame||frame.contains(e.target))return;
+    const r=stage.getBoundingClientRect();
+    const cx=e.clientX-r.left,cy=e.clientY-r.top;
+    const nx=Math.max(0,Math.min(st.maxLeft,cx-st.side/2));
+    const ny=Math.max(0,Math.min(st.maxTop,cy-st.side/2));
+    frame.style.left=nx+'px';frame.style.top=ny+'px';updateFocusCoords();
+  };
+}
+function updateFocusCoords(){
+  const st=focusEditorState,frame=document.getElementById('focusFrame'),coords=document.getElementById('focusCoords');if(!st||!frame||!coords)return;
+  const img=document.getElementById('focusEditorImg');const w=img?.getBoundingClientRect().width||0,h=img?.getBoundingClientRect().height||0;
+  if(!w||!h)return;
+  const cx=(parseFloat(frame.style.left)||0)+st.side/2;const cy=(parseFloat(frame.style.top)||0)+st.side/2;
+  coords.textContent=`表示位置：${Math.round(cx/w*100)}% / ${Math.round(cy/h*100)}%`;
+}
+function saveGalleryFocus(id){
+  const x=gallery.find(g=>g.id===id),st=focusEditorState,frame=document.getElementById('focusFrame'),img=document.getElementById('focusEditorImg');if(!x||!st||!frame||!img)return;
+  const w=img.getBoundingClientRect().width,h=img.getBoundingClientRect().height;
+  const left=parseFloat(frame.style.left)||0,top=parseFloat(frame.style.top)||0;
+  x.focusX=Math.max(0,Math.min(100,(left+st.side/2)/w*100));x.focusY=Math.max(0,Math.min(100,(top+st.side/2)/h*100));x.focusManual=true;x.faceCount=0;saveGalleryMeta();
+  closeFocusEditor();renderGallery();toast('表示位置を保存しました');
+}
+function closeFocusEditor(){
+  const u=focusEditorState?.url;if(u)URL.revokeObjectURL(u);focusEditorState=null;closeModal();
+}
+async function reanalyzeGalleryFace(id){
+  const x=gallery.find(g=>g.id===id);if(!x)return;
+  const blob=await getGalleryBlob(id);if(!blob){toast('画像を読み込めませんでした');return}
+  toast('顔の位置を解析しています…');
+  const focus=await window.detectFaceFocalPoint?.(blob);
+  if(!focus){
+    toast('顔を検出できませんでした。表示位置を手動で選べます');
+    await openGalleryFocusEditor(id);
+    return;
+  }
+  x.focusX=focus.x;x.focusY=focus.y;x.faceCount=focus.faces;x.focusManual=false;saveGalleryMeta();closeModal();renderGallery();toast('顔を中心に表示しました');
+}
+async function deleteGalleryItem(id){
+  const x=gallery.find(g=>g.id===id);if(!x)return;
+  if(!confirm(`「${x.title||'無題'}」を削除しますか？\n\nこの操作は取り消せません。`))return;
+  try{await deleteGalleryBlob(id)}catch(e){}
+  gallery=gallery.filter(g=>g.id!==id);saveGalleryMeta();closeModal();toast('画像を削除しました');renderGallery();
+}
+function pair(id){currentPairId=id;let p=pairs.find(x=>x.id===id);let chars=characters.filter(c=>c.pairIds?.includes(id));document.getElementById('fab').style.display='block';document.getElementById('view').innerHTML=`<button class="secondary" onclick="show('home')">← うちよそ一覧へ戻る</button><div class="hero" style="margin-top:10px"><h1>${esc(p.name)}</h1><p>${esc(p.desc)}</p></div><div class="grid"><div class="card action" onclick="characterList(${id})"><div><div class="icon">♙</div><b>キャラクター</b></div></div><div class="card action"><div><div class="icon">▤</div><b>セッションログ</b></div></div><div class="card action" onclick="show('gallery')"><div><div class="icon">▧</div><b>イラスト</b></div></div><div class="card action"><div><div class="icon">◷</div><b>記念日</b></div></div><div class="card action"><div><div class="icon">🎲</div><b>卓報告</b></div></div><div class="card action" onclick="show('observe')"><div><div class="icon">◌</div><b>壁越しチャット</b></div></div></div><div class="section">キャラクター</div><div class="list">${chars.length?chars.map(c=>charRow(c)).join(''):`<div class="card empty">まだキャラクターがありません。<br>「キャラクター」から、いあきゃらのテキストを読み込めます。</div>`}</div><div class="section">これから追加する機能</div><div class="note">HTMLログ取り込み → 口調・関係性の抽出 → AI新規会話生成、の順で拡張予定です。</div>`}
+function charRow(c){return `<article class="card char-card" onclick="characterDetail(${c.id})"><div class="avatar">${c.iconUrls?.[0]?`<img src="${esc(c.iconUrls[0])}" alt="">`:'♙'}</div><div class="grow"><b>${esc(c.name)}</b><div class="meta">${esc([c.job,(c.latestAge||c.age)&&((c.latestAge||c.age)+'歳'),c.gender,(c.latestHeight||c.height)&&((c.latestHeight||c.height)+'cm')].filter(Boolean).join(' / '))}</div><div class="meta">一人称：${esc(c.firstPerson||'—')}　 二人称：${esc(c.secondPerson||'—')}</div></div></article>`}
+function characterList(pairId){currentPairId=pairId;let p=pairs.find(x=>x.id===pairId),chars=characters.filter(c=>c.pairIds?.includes(pairId));document.getElementById('view').innerHTML=`<button class="secondary" onclick="pair(${pairId})">← ${esc(p.name)}へ戻る</button><div class="section">キャラクター一覧</div><div class="list">${chars.length?chars.map(charRow).join(''):`<div class="empty">まだキャラクターがいません。</div>`}</div><button class="primary" onclick="openCharacterModal(${pairId})">＋ キャラクターを追加</button>`;document.getElementById('fab').style.display='none'}
+function globalCharacterList(){currentPairId=null;document.getElementById('view').innerHTML=`<button class="secondary" onclick="show('home')">← ホームへ戻る</button><div class="section">キャラクター一覧</div><div class="list">${characters.length?characters.map(charRow).join(''):`<div class="empty">まだキャラクターがありません。<br>＋から登録できます。</div>`}</div><button class="primary" onclick="openCharacterModal()">＋ キャラクターを追加</button>`;document.getElementById('fab').style.display='none'}
+function characterDetail(id){let c=characters.find(x=>x.id===id);if(!c)return;let back=currentPairId?`characterList(${currentPairId})`:`globalCharacterList()`;document.getElementById('view').innerHTML=`<button class="secondary" onclick="${back}">← キャラクター一覧へ戻る</button><div class="hero" style="margin-top:10px"><div class="char-card"><div class="avatar" style="width:84px;height:84px">${c.iconUrls?.[0]?`<img src="${esc(c.iconUrls[0])}" alt="">`:'♙'}</div><div><h1 style="margin:0">${esc(c.name)}</h1><p>${esc([c.job,(c.latestAge||c.age)&&((c.latestAge||c.age)+'歳'),c.gender,(c.latestHeight||c.height)&&((c.latestHeight||c.height)+'cm')].filter(Boolean).join(' / '))}</p></div></div></div><button class="primary" onclick="openEditCharacter(${c.id})" style="margin:0 0 12px">✎ 情報を編集する</button><div class="detail-block"><div class="detail-title">基本情報</div><div class="detail-box">一人称：${esc(c.firstPerson||'—')}\n二人称：${esc(c.secondPerson||'—')}\n誕生日：${esc(c.birthday||'—')}\n出身：${esc(c.birthplace||'—')}\n髪：${esc(c.hair||'—')}　瞳：${esc(c.eyes||'—')}\nイメージカラー：${esc(c.imageColor||'未設定')}\nすきなもの：${esc(c.likes||'—')}\nきらいなもの：${esc(c.dislikes||'—')}</div></div><div class="detail-block"><div class="detail-title">最新設定</div><div class="detail-box">現在の年齢：${esc(c.latestAge||c.age||'—')}\n現在の身長：${esc(c.latestHeight||c.height||'—')}cm\n${esc(c.latestProfile||'最新の性格・設定はまだ登録されていません。')}</div><div class="note" style="margin-top:7px">壁越し観測AIでは、この最新設定をいあきゃらの初期設定より優先して使う予定です。</div></div>${currentPairId&&getPartnerRelation(c)?(()=>{const r=getPartnerRelation(c),name=r.partnerName||'うちよそ相手';const other=(r.otherPeople||[]).map(x=>`対象：${esc(x.target||'—')}\n${esc(x.memo||'—')}`).join('\n\n');return `<div class="detail-block"><div class="detail-title">${esc(name)}とのうちよそ</div><div class="detail-box">相手の氏名：${esc(r.partnerName||'—')}\nポジション：${esc(r.position||'未定')}\n相手への呼び方：${esc(r.callName||'—')}\n相手への二人称：${esc(r.secondPerson||'—')}\n他の人への呼称：${esc(r.thirdPersonCall||'—')}\n\n相手への性格・接し方：\n${esc(r.partnerPersonality||'—')}</div></div>${other?`<div class="detail-block"><div class="detail-title">その他の人への接し方</div><div class="detail-box">${esc(other)}</div></div>`:''}`})():''}${c.memo?`<div class="detail-block"><div class="detail-title">メモ・人物設定</div><div class="detail-box">${esc(c.memo)}</div></div>`:''}${c.quotes?.length?`<div class="detail-block"><div class="detail-title">セリフ例</div><div class="detail-box">${c.quotes.map(q=>'「'+esc(q)+'」').join('\n')}</div></div>`:''}${(c.sanCurrent||c.sanMax)?`<div class="detail-block"><div class="detail-title">正気度</div><div class="card" style="text-align:center;font-size:14px;font-weight:600">${esc(c.sanCurrent||'—')} / ${esc(c.sanMax||'—')}</div></div>`:''}${c.stats?.length?statsCurrentHtml(c):''}${c.skills?.length?skillDetailHtml(c):''}<div class="note" style="margin-top:12px">このデータは、いあきゃらテキストから取り込んだ内容を端末内に保存しています。編集内容もこの端末に保存されます。</div><button class="danger" onclick="deleteCharacter(${c.id})">このキャラクターを削除</button>`;document.getElementById('fab').style.display='none'}
+function getPartnerRelation(c){
+  if(!c.pairRelations)c.pairRelations={};
+  const key=currentPairId?String(currentPairId):'__default__';
+  if(!c.pairRelations[key])c.pairRelations[key]={partnerName:'',position:'未定',callName:'',secondPerson:'',thirdPersonCall:'',partnerPersonality:'',otherPeople:[]};
+  const r=c.pairRelations[key];
+  r.partnerName=r.partnerName??'';r.position=r.position||'未定';r.callName=r.callName??'';r.secondPerson=r.secondPerson??'';r.thirdPersonCall=r.thirdPersonCall??'';r.partnerPersonality=r.partnerPersonality??'';r.otherPeople=Array.isArray(r.otherPeople)?r.otherPeople:[];
+  return r;
+}
+function hueToColor(h){return `hsl(${Number(h)||0} 80% 50%)`}
+function updateHuePreview(v){const sw=document.getElementById('huePreview');const out=document.getElementById('hueValue');if(sw)sw.style.background=hueToColor(v);if(out)out.textContent=`${v}°`}
+function openEditCharacter(id){
+  const c=characters.find(x=>x.id===id); if(!c)return;
+  window.editingCharacterId=id;
+  const stats=(c.stats||[]).filter(x=>x.name!=='正気度').map(x=>`${x.name} ${x.value}`).join('\n');
+  const sanCurrent=c.sanCurrent??''; const sanMax=c.sanMax??'';
+  const skills=(c.skills||[]).map((x,i)=>({...x,_i:i}));
+  const quotes=(c.quotes||[]).map(x=>`「${x}」`).join('\n');
+  document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>キャラクター情報を編集</h2>
+  <div class="edit-grid">
+    <div class="field"><label>名前</label><input id="editName" value="${esc(c.name)}"></div>
+    <div class="field"><label>職業</label><input id="editJob" value="${esc(c.job)}"></div>
+    <div class="field"><label>現在の年齢</label><input id="editAge" value="${esc(c.latestAge??c.age)}" inputmode="numeric"><div class="edit-hint">いあきゃら取り込み時：${esc(c.initialData?.age||c.age||'未設定')}</div></div>
+    <div class="field"><label>性別</label><input id="editGender" value="${esc(c.gender)}"></div>
+    <div class="field"><label>初期身長</label><input id="editHeight" value="${esc(c.initialData?.height??c.height)}" inputmode="decimal" disabled><div class="edit-hint">いあきゃら取り込み時の記録。現在の身長は「最新設定」で変更します。</div></div>
+    <div class="field"><label>体重</label><input id="editWeight" value="${esc(c.weight)}"></div>
+  </div>
+  <div class="field"><label>出身</label><input id="editBirthplace" value="${esc(c.birthplace)}"></div>
+  <div class="edit-grid">
+    <div class="field"><label>髪の色</label><input id="editHair" value="${esc(c.hair)}"></div>
+    <div class="field"><label>瞳の色</label><input id="editEyes" value="${esc(c.eyes)}"></div>
+  </div>
+  <div class="edit-grid">
+    <div class="field"><label>一人称</label><input id="editFirst" value="${esc(c.firstPerson)}"></div>
+    <div class="field"><label>二人称</label><input id="editSecond" value="${esc(c.secondPerson)}"></div>
+  </div>
+  <div class="section" style="margin-top:16px">最新設定</div>
+  <div class="note">いあきゃらから取り込んだ内容は「初期設定」として残し、ここには現在の性格・年齢・変化などを書きます。壁越し観測AIでは、この欄を最優先に参照します。</div>
+  <div class="edit-grid"><div class="field"><label>現在の年齢</label><input id="editLatestAge" value="${esc(c.latestAge??c.age)}" inputmode="numeric" placeholder="例：19"></div><div class="field"><label>現在の身長</label><input id="editLatestHeight" value="${esc(c.latestHeight??c.height)}" inputmode="decimal" placeholder="例：175"></div></div>
+  <div class="field"><label>現在の性格・最新設定</label><textarea id="editLatestProfile" placeholder="例：以前より人見知りが薄れた。相手には素直に甘えるようになった。現在は大学生。">${esc(c.latestProfile||'')}</textarea></div>
+  <div class="edit-hint">※いあきゃらの初期設定を消さずに、現在の状態を上書き情報として追加できます。</div>
+  <div class="section" style="margin-top:16px">追加設定</div>
+  <div class="edit-grid">
+    <div class="field"><label>誕生日</label><input id="editBirthday" value="${esc(c.birthday||'')}" placeholder="例：10/9" inputmode="numeric"></div>
+    <div class="field"><label>イメージカラー</label><div class="hue-wrap"><input id="editHue" class="hue-slider" type="range" min="0" max="360" step="1" value="${Number.isFinite(Number(c.imageColorHue))?c.imageColorHue:270}" oninput="updateHuePreview(this.value)"><div id="huePreview" class="color-swatch" style="background:${esc(c.imageColor||hueToColor(c.imageColorHue||270))}"></div></div><div class="edit-hint">色相をスライダーで選択：<span id="hueValue">${Number.isFinite(Number(c.imageColorHue))?c.imageColorHue:270}°</span></div></div>
+  </div>
+  <div class="edit-grid">
+    <div class="field"><label>すきなもの</label><textarea id="editLikes" placeholder="例：ダンス、猫、コーヒー">${esc(c.likes||'')}</textarea></div>
+    <div class="field"><label>きらいなもの</label><textarea id="editDislikes" placeholder="例：大きな音、虫">${esc(c.dislikes||'')}</textarea></div>
+  </div>
+  <div class="note">うちよそペアごとの設定です。相手のキャラクターデータを将来同期できるよう、氏名は今は手入力で保存します。</div><div class="edit-grid"><div class="field"><label>うちよそ相手の氏名</label><input id="editPartnerName" value="${esc(getPartnerRelation(c).partnerName||'')}" placeholder="例：○○"></div><div class="field"><label>ポジション</label><select id="editPartnerPosition" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)"><option value="攻め" ${getPartnerRelation(c).position==='攻め'?'selected':''}>攻め</option><option value="受け" ${getPartnerRelation(c).position==='受け'?'selected':''}>受け</option><option value="リバ" ${getPartnerRelation(c).position==='リバ'?'selected':''}>リバ</option><option value="未定" ${(!getPartnerRelation(c).position||getPartnerRelation(c).position==='未定')?'selected':''}>未定</option></select></div><div class="field"><label>うちよそ相手への呼び方</label><input id="editPartnerCall" value="${esc(getPartnerRelation(c).callName||'')}" placeholder="例：晋、しん、晋くん"></div><div class="field"><label>うちよそ相手への二人称</label><input id="editPartnerSecond" value="${esc(getPartnerRelation(c).secondPerson||'')}" placeholder="例：おまえ、あんた"></div></div><div class="field"><label>他の人への呼称</label><input id="editPartnerThirdCall" value="${esc(getPartnerRelation(c).thirdPersonCall||'')}" placeholder="例：あいつ、あの子"><div class="edit-hint">うちよそ相手のことを第三者に話すときの呼び方。</div></div><div class="field"><label>うちよそ相手への性格</label><textarea id="editPartnerPersonality" placeholder="例：普段はぶっきらぼうだが、相手には甘える。">${esc(getPartnerRelation(c).partnerPersonality||'')}</textarea></div><div class="field"><label>その他の人への接し方</label><div id="otherPeopleEditor"></div><button type="button" class="secondary" onclick="addOtherPeopleEntry()">＋ 接し方を追加</button></div>
+  <div class="field"><label>アイコンURL（1行1件）</label><textarea id="editIcons">${esc((c.iconUrls||[]).join('\n'))}</textarea></div>
+  <div class="field"><label>メモ・人物設定</label><textarea id="editMemo">${esc(c.memo||'')}</textarea></div>
+  <div class="field"><label>セリフ例（1行1件。「」は付けても付けなくてもOK）</label><textarea id="editQuotes">${esc(quotes)}</textarea></div>
+  <div class="section" style="margin-top:16px">正気度</div><div class="note">正気度は「現在値 / 上限値」で管理します。</div><div class="edit-grid"><div class="field"><label>現在値</label><input id="editSanCurrent" value="${esc(sanCurrent)}" inputmode="numeric" placeholder="例：60"></div><div class="field"><label>上限値</label><input id="editSanMax" value="${esc(sanMax)}" inputmode="numeric" placeholder="例：75"></div></div><div class="section" style="margin-top:16px">能力値</div><div class="note">現在の能力値は変更できます。いあきゃら取り込み時の「初期設定」は別に保存し、変更するたびに履歴を追加します。</div><div class="field"><label>現在の能力値（1行1件：STR 14）</label><textarea id="editStats">${esc(stats)}</textarea></div>${(c.initialStats||[]).length?`<div class="field"><label>初期設定（いあきゃら・編集不可）</label><textarea disabled>${esc((c.initialStats||[]).map(x=>`${x.name} ${x.value}`).join("\n"))}</textarea></div>`:''}
+  <div class="section" style="margin-top:16px">技能</div>
+  <div class="note">いあきゃら取り込み時は「合計値」を登録時の初期値として保存します。成長したら現在値だけを更新し、初期値は残します。</div>
+  <div id="skillEditor"></div>
+  <div class="edit-hint">誕生日・イメージカラー・すきなもの・きらいなものはキャラクター情報として保存します。うちよそ関連の項目は、うちよそごとに保存します。</div>
+  <button class="primary" onclick="saveCharacterEdit()">変更を保存</button>`;
+  document.getElementById('modal').style.display='flex';
+  window.editingOtherPeople=(getPartnerRelation(c).otherPeople||[]).map(x=>({target:String(x?.target||''),memo:String(x?.memo||'')}));
+  renderOtherPeopleEditor();
+  renderSkillEditor(c.skills||[]);
+}
+function renderOtherPeopleEditor(){const box=document.getElementById('otherPeopleEditor');if(!box)return;const list=window.editingOtherPeople||[];box.innerHTML=list.length?list.map((x,i)=>`<div class="other-person-entry"><div class="field"><label>対象</label><input value="${esc(x.target)}" oninput="window.editingOtherPeople[${i}].target=this.value" placeholder="例：家族"></div><div class="field"><label>メモ</label><textarea oninput="window.editingOtherPeople[${i}].memo=this.value" placeholder="その対象への接し方を記入">${esc(x.memo)}</textarea></div><button type="button" class="danger" style="margin-top:0" onclick="removeOtherPeopleEntry(${i})">この項目を削除</button></div>`).join(''):`<div class="edit-hint">まだ登録されていません。</div>`}
+function addOtherPeopleEntry(){window.editingOtherPeople=window.editingOtherPeople||[];window.editingOtherPeople.push({target:'',memo:''});renderOtherPeopleEditor();setTimeout(()=>{const els=document.querySelectorAll('#otherPeopleEditor input');els[els.length-1]?.focus()},0)}
+function removeOtherPeopleEntry(i){if(!window.editingOtherPeople?.[i])return;window.editingOtherPeople.splice(i,1);renderOtherPeopleEditor()}
+function renderSkillEditor(list){const box=document.getElementById('skillEditor');if(!box)return;const skills=normalizeSkills(list);window.editingSkills=skills;const groups=[...SKILL_GROUPS,'その他'];box.innerHTML=`<div class="skill-groups">${groups.map(group=>{const rows=skills.map((x,i)=>({...x,_i:i})).filter(x=>x.category===group);return `<div class="skill-edit-group"><h3>${esc(group)}</h3><div class="skill-edit-head"><div>技能名</div><div>初期値</div><div>現在値</div><div></div></div><div id="skillRows_${groups.indexOf(group)}">${rows.map(x=>skillEditRow(x._i,x)).join('')}</div><button type="button" class="skill-add" onclick="addSkillRow('${group}')">＋ ${esc(group)}を追加</button></div>`}).join('')}</div>`}
+function skillEditRow(i,x){return `<div class="skill-edit-row" data-skill-index="${i}"><input value="${esc(x.name)}" oninput="updateSkillField(${i},'name',this.value)"><input value="${esc(x.initialValue)}" inputmode="numeric" oninput="updateSkillField(${i},'initialValue',this.value)" title="登録時の値"><input value="${esc(x.value)}" inputmode="numeric" oninput="updateSkillField(${i},'value',this.value)" title="現在の値"><button type="button" class="skill-remove" onclick="removeSkillRow(${i})" aria-label="削除">×</button></div>`}
+function updateSkillField(i,key,value){if(window.editingSkills?.[i])window.editingSkills[i][key]=value}
+function addSkillRow(category){window.editingSkills=normalizeSkills(window.editingSkills||[]);const row={name:'新しい技能',initialValue:'',value:'',category};const i=window.editingSkills.length;window.editingSkills.push(row);renderSkillEditor(window.editingSkills);setTimeout(()=>{const el=document.querySelector(`[data-skill-index="${i}"] input`);el?.focus();el?.select()},0)}
+function removeSkillRow(i){if(!window.editingSkills?.[i])return;const name=window.editingSkills[i].name||'この技能';if(!confirm(`「${name}」を削除しますか？`))return;window.editingSkills.splice(i,1);renderSkillEditor(window.editingSkills)}
+function collectSkills(){return normalizeSkills(window.editingSkills||[]).map(x=>({name:x.name.trim(),initialValue:String(x.initialValue??'').trim(),value:String(x.value??'').trim(),category:x.category})).filter(x=>x.name)}
+function saveCharacterEdit(){const id=window.editingCharacterId,c=characters.find(x=>x.id===id);if(!c)return;const prev=cloneStats(c.stats||[]),nextStats=parseSimpleList(document.getElementById('editStats')?.value||'');c.name=document.getElementById('editName')?.value.trim()||c.name;c.job=document.getElementById('editJob')?.value.trim()||'';c.age=document.getElementById('editAge')?.value.trim()||c.age;c.latestAge=document.getElementById('editLatestAge')?.value.trim()||'';c.gender=document.getElementById('editGender')?.value.trim()||'';c.weight=document.getElementById('editWeight')?.value.trim()||'';c.birthplace=document.getElementById('editBirthplace')?.value.trim()||'';c.hair=document.getElementById('editHair')?.value.trim()||'';c.eyes=document.getElementById('editEyes')?.value.trim()||'';c.firstPerson=document.getElementById('editFirst')?.value.trim()||'';c.secondPerson=document.getElementById('editSecond')?.value.trim()||'';c.latestHeight=document.getElementById('editLatestHeight')?.value.trim()||'';c.latestProfile=document.getElementById('editLatestProfile')?.value||'';c.birthday=document.getElementById('editBirthday')?.value.trim()||'';const hue=Number(document.getElementById('editHue')?.value);if(Number.isFinite(hue))c.imageColorHue=hue;c.imageColor=hueToColor(c.imageColorHue??270);c.likes=document.getElementById('editLikes')?.value||'';c.dislikes=document.getElementById('editDislikes')?.value||'';c.iconUrls=(document.getElementById('editIcons')?.value||'').split(/\n/).map(x=>x.trim()).filter(Boolean);c.memo=document.getElementById('editMemo')?.value||'';c.quotes=(document.getElementById('editQuotes')?.value||'').split(/\n/).map(x=>x.trim()).filter(Boolean).map(x=>x.replace(/^「|」$/g,''));c.sanCurrent=document.getElementById('editSanCurrent')?.value.trim()||'';c.sanMax=document.getElementById('editSanMax')?.value.trim()||'';if(!sameStats(prev,nextStats)){c.statsHistory=Array.isArray(c.statsHistory)?c.statsHistory:[];c.statsHistory.push({at:new Date().toISOString(),stats:cloneStats(nextStats)})}c.stats=nextStats;c.skills=collectSkills();const r=getPartnerRelation(c);r.partnerName=document.getElementById('editPartnerName')?.value.trim()||'';r.position=document.getElementById('editPartnerPosition')?.value||'未定';r.callName=document.getElementById('editPartnerCall')?.value.trim()||'';r.secondPerson=document.getElementById('editPartnerSecond')?.value.trim()||'';r.thirdPersonCall=document.getElementById('editPartnerThirdCall')?.value.trim()||'';r.partnerPersonality=document.getElementById('editPartnerPersonality')?.value||'';r.otherPeople=(window.editingOtherPeople||[]).map(x=>({target:String(x.target||'').trim(),memo:String(x.memo||'')})).filter(x=>x.target||x.memo);c.initialData=c.initialData||{};c.initialData.age=c.initialData.age??c.age;c.initialData.height=c.initialData.height??c.height;c.initialStats=Array.isArray(c.initialStats)?c.initialStats:cloneStats(c.stats);save();closeModal();toast('変更を保存しました');characterDetail(id)}
+function parseSimpleList(text){return String(text||'').split('\n').map(x=>x.trim()).filter(Boolean).map(line=>{const m=line.match(/^(.+?)\s+(\d+)$/);return m?{name:m[1].trim(),value:m[2]}:{name:line,value:''}})}
+function cloneStats(list){return (Array.isArray(list)?list:[]).map(x=>({name:String(x?.name||''),value:String(x?.value??'')}))}
+function sameStats(a,b){return JSON.stringify(cloneStats(a))===JSON.stringify(cloneStats(b))}
+function formatHistoryDate(iso){try{return new Date(iso).toLocaleString('ja-JP',{year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}catch(e){return iso||'日時不明'}}
+function skillDetailHtml(c){const skills=normalizeSkills(c.skills||[]);const groups=[...SKILL_GROUPS,'その他'];const body=groups.map(group=>{const rows=skills.filter(x=>x.category===group).map(x=>{const iv=x.initialValue??x.value??'';const cv=x.value??'';const chain=iv!==''&&cv!==''&&iv!==cv?`${esc(iv)} <span style="opacity:.45">→</span> <strong>${esc(cv)}</strong>`:`<strong>${esc(cv||iv||'—')}</strong>`;return `<tr><td>${esc(x.name)}</td><td>${chain}</td></tr>`}).join('');return rows?`<div class="skill-group"><div class="skill-group-title">${esc(group)}</div><table class="skill-table">${rows}</table></div>`:''}).join('');return `<div class="detail-block"><div class="detail-title">技能</div><div class="skill-groups">${body}</div></div>`}
+function statsCurrentHtml(c){const initial=cloneStats(c.initialStats||c.initialData?.stats||[]), history=Array.isArray(c.statsHistory)?c.statsHistory:[], current=cloneStats(c.stats||[]); if(!current.length&&!initial.length)return ''; const names=[]; [...initial,...current,...history.flatMap(h=>Array.isArray(h.stats)?h.stats:[])].forEach(x=>{if(x?.name&&!names.includes(x.name))names.push(x.name)}); const getVal=(list,name)=>{const x=list.find(v=>v.name===name);return x?String(x.value??''):''}; const makeItems=(groupNames)=>groupNames.map(name=>{const values=[]; let last=getVal(initial,name); if(last!=='')values.push(last); for(const h of history){const v=getVal(h.stats||[],name); if(v!==''&&v!==last){values.push(v);last=v}} const cur=getVal(current,name); if(cur!==''&&cur!==last)values.push(cur); if(!values.length&&cur==='')return ''; const chain=values.length>1?values.map((v,i)=>i===values.length-1?`<strong>${esc(v)}</strong>`:esc(v)).join(' <span style="opacity:.45">→</span> '):`<strong>${esc(cur||values[0]||'—')}</strong>`; return `<div class="stat-item"><div class="stat-name">${esc(name)}</div><div class="stat-value">${chain}</div></div>`}).filter(Boolean).join(''); const block=(title,groupNames)=>{const items=makeItems(groupNames); if(!items)return ''; return `<div class="detail-block"><div class="detail-title">${title}</div><div class="card"><div class="stat-grid">${items}</div></div></div>`}; const first=['STR','CON','POW','DEX','APP','SIZ','INT','EDU']; const second=['HP','MP','IDE','幸運','知識']; const used=new Set([...first,...second]); const extra=names.filter(n=>!used.has(n)); let html=block('能力値（STR〜EDU）',first)+block('能力値（HP〜知識）',second); if(extra.length)html+=block('その他の能力値',extra); return html}
+function openAddMenu(){document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>追加するもの</h2><button class="primary" onclick="openPairModal()">＋ うちよそを追加</button>${pairs.length?`<button class="secondary" onclick="openCharacterModal(${pairs[0].id})">♙ キャラクターを追加</button>`:''}<button class="secondary" onclick="openGalleryModal()">▧ 画像を追加</button>`;document.getElementById('modal').style.display='flex'}
+function openPairModal(){document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>うちよそを追加</h2><div class="field"><label>うちよその名前</label><input id="pairName" placeholder="例：カナタ × レイ"></div><div class="field"><label>ひとこと</label><input id="pairDesc" placeholder="例：世界の隅で、ふたり"></div><button class="primary" onclick="addPair()">保存する</button>`;document.getElementById('modal').style.display='flex'}
+function openCharacterModal(pairId){if(pairId!==undefined)currentPairId=pairId;document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>キャラクターを追加</h2><div class="note">いあきゃらの「テキスト出力」で保存した .txt ファイルを選んでください。読み込んだ内容は確認後に登録します。</div><div class="field"><label>いあきゃらテキスト</label><input id="charFile" type="file" accept=".txt,text/plain" onchange="handleCharFile(event)"><div class="file-name" id="fileName"></div></div><div id="importPreview"></div>`;document.getElementById('modal').style.display='flex'}
+function handleCharFile(e){let f=e.target.files?.[0];if(!f)return;document.getElementById('fileName').textContent=f.name;let r=new FileReader();r.onload=()=>{let c=parseIaChara(String(r.result||''));window.pendingCharacter=c;renderImportPreview(c)};r.readAsText(f)}
+function parseIaChara(text){let lines=text.replace(/\r/g,'').split('\n');let get=(label)=>{let re=new RegExp('(?:^|/)\\s*'+label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\s*:\s*([^/\\r\\n]*)');for(const raw of lines){let m=raw.match(re);if(m)return m[1].trim()}return ''};let name=get('名前');let job=get('職業');let basicLine=lines.find(x=>x.trim().startsWith('年齢:'))||'';let field=(label,line)=>{let re=new RegExp('(?:^|/)\\s*'+label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\s*:\s*([^/\\r\\n]*)');let m=String(line||'').match(re);return m?m[1].trim():''};let age=field('年齢',basicLine);let gender=field('性別',basicLine);let heightRaw=field('身長',basicLine);let directHeight=(heightRaw.match(/\d+(?:\.\d+)?/)||[''])[0];let c={id:Date.now()+Math.floor(Math.random()*1000),name,tag:get('タグ'),job,age,gender,height:directHeight,weight:get('体重'),birthplace:get('出身'),hair:'',eyes:'',skin:'',iconUrls:[],firstPerson:'',secondPerson:'',birthday:'',imageColorHue:270,imageColor:hueToColor(270),pairRelations:{},memo:'',quotes:[],stats:[],sanCurrent:'',sanMax:'',skills:[],pairIds:[currentPairId],source:'iachara_text_v6',latestAge:age,latestProfile:'',initialData:null};
+let appearanceLine=lines.find(x=>x.trim().startsWith('髪の色:'))||'';c.hair=field('髪の色',appearanceLine);c.eyes=field('瞳の色',appearanceLine);c.skin=field('肌の色',appearanceLine);
+let inIcon=false;for(const line of lines){let t=line.trim();if(t==='【アイコン】'){inIcon=true;continue}if(inIcon&&t.startsWith('【')){inIcon=false}if(inIcon&&t.includes(':http')){let u=t.substring(t.indexOf(':')+1).trim();if(u)c.iconUrls.push(u)}}
+let memStart=lines.findIndex(x=>x.trim()==='【メモ】');if(memStart>=0){let end=lines.findIndex((x,i)=>i>memStart&&x.trim().startsWith('【'));if(end<0)end=lines.length;let memLines=lines.slice(memStart+1,end).map(x=>x.trim()).filter(Boolean);c.memo=memLines.join('\n');let fp=memLines.find(x=>x.startsWith('一人称'));let sp=memLines.find(x=>x.startsWith('二人称'));if(fp)c.firstPerson=fp.replace(/^一人称\s*/,'').trim();if(sp)c.secondPerson=sp.replace(/^二人称\s*/,'').trim();let bd=memLines.find(x=>/生まれ$/.test(x)&&/\d{1,2}\s*[\/月]\s*\d{1,2}/.test(x));if(bd){let bm=bd.match(/(\d{1,2})\s*[\/月]\s*(\d{1,2})/);if(bm)c.birthday=`${bm[1]}/${bm[2]}`}c.quotes=memLines.filter(x=>/^「.*」$/.test(x)).map(x=>x.replace(/^「|」$/g,''))}
+c.initialData={age:c.age,job:c.job,gender:c.gender,height:c.height,weight:c.weight,birthplace:c.birthplace,hair:c.hair,eyes:c.eyes,firstPerson:c.firstPerson,secondPerson:c.secondPerson,memo:c.memo,quotes:[...(c.quotes||[])]};
+let st=lines.findIndex(x=>x.trim()==='【能力値】');if(st>=0){let end=lines.findIndex((x,i)=>i>st&&x.trim().startsWith('【'));if(end<0)end=lines.length;for(const l of lines.slice(st+1,end)){let x=l.trim().match(/^([^\s]+)\s+(\d+)/);if(x&&['STR','CON','POW','DEX','APP','SIZ','INT','EDU','HP','MP','正気度','IDE','幸運','知識'].includes(x[1]))c.stats.push({name:x[1],value:x[2]})}}
+let sanLine=lines.find(x=>/^\s*正気度\s+\d+\s*\/\s*\d+/.test(x.trim()))||'';let sanMatch=sanLine.trim().match(/^正気度\s+(\d+)\s*\/\s*(\d+)/);if(sanMatch){c.sanCurrent=sanMatch[1];c.sanMax=sanMatch[2];}c.stats=c.stats.filter(x=>x.name!=='正気度');c.initialStats=cloneStats(c.stats);c.initialData.stats=cloneStats(c.stats);c.statsHistory=[];
+let sk=lines.findIndex(x=>x.trim()==='【技能値】');if(sk>=0){let end=lines.findIndex((x,i)=>i>sk&&x.trim().startsWith('【武器】'));if(end<0)end=lines.length;let category='その他';for(const l of lines.slice(sk,end)){let t=l.trim();let gm=t.match(/^『(.+技能)』$/);if(gm){category=SKILL_GROUPS.includes(gm[1])?gm[1]:'その他';continue}let x=t.match(/^(.+?)\s+(\d+)\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+$/);if(x&&x[1]&&!/^(技能名|職業ポイント|興味ポイント|『|【)/.test(x[1]))c.skills.push({name:x[1].trim(),initialValue:x[2],value:x[2],category})}}
+}
+return c}
+function renderImportPreview(c){let box=document.getElementById('importPreview');box.innerHTML=`<div class="section">読み込み結果</div><div class="card char-card"><div class="avatar">${c.iconUrls?.[0]?`<img src="${esc(c.iconUrls[0])}" alt="">`:'♙'}</div><div><b>${esc(c.name||'名前を取得できませんでした')}</b><div class="meta">${esc([c.job,(c.latestAge||c.age)&&((c.latestAge||c.age)+'歳'),c.gender,(c.latestHeight||c.height)&&((c.latestHeight||c.height)+'cm')].filter(Boolean).join(' / '))}</div><div class="meta">一人称：${esc(c.firstPerson||'—')}　 二人称：${esc(c.secondPerson||'—')}</div></div></div><div class="note" style="margin-top:10px">アイコン ${c.iconUrls.length}件 / 能力値 ${c.stats.length}件 / 技能 ${c.skills.length}件 / メモ ${c.memo? 'あり':'なし'} / セリフ例 ${c.quotes.length}件</div><div class="note" style="margin-top:7px">取り込み内容は初期設定として保存。あとから最新設定を追加できます。</div><button class="primary" onclick="confirmCharacterImport()">この内容で登録</button>`}
+function confirmCharacterImport(){let c=window.pendingCharacter;if(!c?.name){toast('名前を読み取れませんでした');return}c.pairIds=currentPairId?[currentPairId]:[];c.pairRelations=c.pairRelations||{};c.birthday=c.birthday||'';c.imageColorHue=Number.isFinite(Number(c.imageColorHue))?Number(c.imageColorHue):270;c.imageColor=c.imageColor||hueToColor(c.imageColorHue);characters.push(c);save();window.pendingCharacter=null;closeModal();toast('キャラクターを登録しました');if(currentPairId)characterList(currentPairId);else globalCharacterList()}
+function deleteCharacter(id){const c=characters.find(x=>x.id===id);if(!c)return;const ok=confirm(`「${c.name}」を削除しますか？\n\nこの操作は取り消せません。`);if(!ok)return;characters=characters.filter(x=>x.id!==id);pairs.forEach(p=>{if(Array.isArray(p.characters))p.characters=p.characters.filter(x=>x!==id);});save();toast('キャラクターを削除しました');if(currentPairId)characterList(currentPairId);else globalCharacterList()}
+function closeModal(){document.getElementById('modal').style.display='none'}
+function addPair(){let n=document.getElementById('pairName').value.trim();if(!n)return;let p={id:Date.now(),name:n,desc:document.getElementById('pairDesc').value.trim()||'ふたりの物語',date:new Date().toLocaleDateString('ja-JP'),characters:[]};pairs.push(p);save();closeModal();show('home');toast('うちよそを登録しました')}
+initSupabase();
+</script>
+</body></html>
