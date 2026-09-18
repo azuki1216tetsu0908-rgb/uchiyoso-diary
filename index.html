@@ -124,14 +124,21 @@ async function initSupabase(){
   const c=getSupabaseConfig();
   if(!c?.url||!c?.key){showAuthConfig();return false}
   try{
+    // 接続設定画面ではネットワーク確認のためにgetSession()を待たない。
+    // GitHub Pages上でセッション確認がハングすると、設定画面から進めなくなるため。
     supabaseClient=window.supabase.createClient(c.url,c.key,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}});
-    const {data,error}=await supabaseClient.auth.getSession();
-    if(error) throw error;
     supabaseClient.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;updateAuthGate();});
-    currentUser=data?.session?.user||null;
+    currentUser=null;
+    updateAuthGate();
+    // 保存済みセッションがある場合だけ、短いタイムアウトで復元を試みる。
+    const sessionPromise=supabaseClient.auth.getSession();
+    const timeoutPromise=new Promise(resolve=>setTimeout(()=>resolve({data:{session:null},error:null}),3000));
+    const result=await Promise.race([sessionPromise,timeoutPromise]);
+    if(result?.error) throw result.error;
+    currentUser=result?.data?.session?.user||null;
     updateAuthGate();
     return true;
-  }catch(e){setAuthMessage('configMsg','接続できませんでした：'+(e.message||e));showAuthConfig();return false}
+  }catch(e){setAuthMessage('configMsg','Supabaseの接続確認に失敗しました：'+(e.message||e));showAuthConfig();return false}
 }
 function updateAuthGate(){const gate=document.getElementById('authGate');if(!gate)return;if(currentUser){gate.style.display='none';show('home')}else{gate.style.display='flex';showAuthLogin()}}
 async function saveSupabaseConfig(){
