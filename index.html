@@ -50,6 +50,8 @@
 .image-lightbox .lb-close{position:absolute;top:18px;right:18px;width:42px;height:42px;border:0;border-radius:50%;background:#ffffff22;color:#fff;font-size:24px}
 .gallery-delete{margin-top:8px}
 
+.pair-crop-wrap{margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:16px;background:#faf7fb}.pair-crop-stage{position:relative;width:min(100%,340px);aspect-ratio:1/1;margin:0 auto;overflow:hidden;border-radius:16px;background:#e7e9eb;touch-action:none;user-select:none}.pair-crop-stage canvas{display:block;width:100%;height:100%;touch-action:none}.pair-crop-help{font-size:11px;color:var(--muted);line-height:1.6;margin-top:9px;text-align:center}.pair-crop-actions{display:flex;gap:8px}.pair-crop-actions>*{flex:1}.pair-crop-preview{width:140px;height:140px;border-radius:16px;overflow:hidden;margin:10px auto;background:#e7e9eb;display:flex;align-items:center;justify-content:center}.pair-crop-preview img{width:100%;height:100%;object-fit:cover}.pair-crop-zoom{display:flex;align-items:center;gap:10px;margin-top:12px}.pair-crop-zoom input{flex:1}.pair-crop-zoom span{font-size:11px;color:var(--muted);white-space:nowrap}
+
 .focus-stage-wrap{margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:16px;background:#faf7fb;text-align:center}.focus-stage{position:relative;display:inline-block;max-width:100%;max-height:58vh;line-height:0;touch-action:none}.focus-stage img{display:block;max-width:100%;max-height:58vh;width:auto;height:auto;user-select:none;-webkit-user-drag:none}.focus-frame{position:absolute;border:3px solid #fff;box-shadow:0 0 0 9999px #2d26384d,0 2px 12px #0004;border-radius:8px;cursor:grab;touch-action:none}.focus-frame:active{cursor:grabbing}.focus-frame::after{content:'ここを表示';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:5px 8px;border-radius:999px;background:#ffffffdd;color:#4f4a58;font-size:10px;font-weight:800;white-space:nowrap}.focus-help{font-size:11px;color:var(--muted);line-height:1.5;margin-top:10px}.focus-coords{font-size:10px;color:var(--muted);margin-top:6px}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#4f4a58;color:#fff;padding:10px 14px;border-radius:999px;font-size:12px;display:none;z-index:30}
 
@@ -242,6 +244,8 @@ let characters=JSON.parse(localStorage.getItem(CHAR_KEY)||'[]'); characters.forE
 let gallery=JSON.parse(localStorage.getItem(GALLERY_KEY)||'[]');
 const pairThumbUrlCache=new Map();
 let galleryPairContextId=null;
+let pendingPairThumbCrop=null;
+let pairThumbCropState=null;
 const GALLERY_DB='uchiyoso_gallery_db_v1', GALLERY_STORE='images';
 function saveGalleryMeta(){localStorage.setItem(GALLERY_KEY,JSON.stringify(gallery))}
 function openGalleryDB(){
@@ -409,8 +413,8 @@ async function savePairThumbnailFile(p,file){
   const localKey=`pairthumb:${String(p.id)}`;
   await putGalleryBlob(localKey,file);
   const oldPath=p.thumbnail?.storagePath||'';
-  const ext=(file.name.split('.').pop()||'png').toLowerCase().replace(/[^a-z0-9]/g,'')||'png';
-  p.thumbnail={fileName:file.name,mime:file.type||'image/png',localKey,updatedAt:new Date().toISOString()};
+  const ext=(file.name?.split('.').pop()||'png').toLowerCase().replace(/[^a-z0-9]/g,'')||'png';
+  p.thumbnail={fileName:file.name||`pair_${String(p.id)}.${ext}`,mime:file.type||'image/png',localKey,updatedAt:new Date().toISOString(),cropped:true};
   if(supabaseClient&&currentUser&&currentWorkspace){
     const path=`${currentWorkspace.id}/pair_${String(p.id)}_${Date.now()}.${ext}`;
     const {error}=await supabaseClient.storage.from('uchiyoso-images').upload(path,file,{upsert:false,contentType:file.type||'image/png',cacheControl:'3600'});
@@ -421,6 +425,56 @@ async function savePairThumbnailFile(p,file){
   pairThumbUrlCache.delete(String(p.id));
   return true;
 }
+function resetPairThumbCrop(){ pairThumbCropState=null; }
+function clearPendingPairThumbCrop(){ pendingPairThumbCrop=null; }
+async function openPairThumbCropEditor(file){
+  if(!file)return;
+  if(!String(file.type||'').startsWith('image/')){toast('画像ファイルを選んでください');return;}
+  const url=URL.createObjectURL(file);
+  const img=new Image();
+  img.onload=()=>{
+    const stage=340;
+    const fit=Math.max(stage/img.naturalWidth,stage/img.naturalHeight);
+    pairThumbCropState={img,scale:fit,zoom:1,x:(stage-img.naturalWidth*fit)/2,y:(stage-img.naturalHeight*fit)/2,stage,fileName:file.name||'pair-thumbnail.png',mime:file.type||'image/png',objectUrl:url};
+    document.getElementById('sheet').innerHTML=`<button class="close" type="button" id="pairCropClose">×</button><h2>うちよそサムネイルを切り抜く</h2><div class="note">全身立ち絵から、バストアップなど好きな範囲を拡大して切り抜けます。</div><div class="pair-crop-wrap"><div class="pair-crop-stage" id="pairCropStage"><canvas id="pairCropCanvas" width="340" height="340"></canvas></div><div class="pair-crop-zoom"><span>拡大</span><input id="pairCropZoom" type="range" min="1" max="3.5" step="0.01" value="1"><span id="pairCropZoomLabel">100%</span></div><div class="pair-crop-help">画像をドラッグして位置を調整。スマホでは指で動かせます。<br>四角の中が、そのままサムネイルになります。</div></div><div class="pair-crop-actions"><button class="secondary" type="button" id="pairCropCancel">やり直す</button><button class="primary" type="button" id="pairCropSave">この範囲で切り抜く</button></div>`;
+    document.getElementById('modal').style.display='flex';
+    drawPairThumbCrop();
+    const stageEl=document.getElementById('pairCropStage');
+    const canvas=document.getElementById('pairCropCanvas');
+    const zoom=document.getElementById('pairCropZoom');
+    let dragging=false,lastX=0,lastY=0;
+    const pointerDown=e=>{dragging=true;lastX=e.clientX;lastY=e.clientY;stageEl.setPointerCapture?.(e.pointerId)};
+    const pointerMove=e=>{if(!dragging)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;pairThumbCropState.x+=dx;pairThumbCropState.y+=dy;drawPairThumbCrop()};
+    const pointerUp=()=>{dragging=false};
+    stageEl.addEventListener('pointerdown',pointerDown);stageEl.addEventListener('pointermove',pointerMove);stageEl.addEventListener('pointerup',pointerUp);stageEl.addEventListener('pointercancel',pointerUp);
+    zoom.addEventListener('input',()=>{const oldZoom=pairThumbCropState.zoom;const next=Number(zoom.value);const cx=pairThumbCropState.stage/2,cy=pairThumbCropState.stage/2;const ratio=next/oldZoom;pairThumbCropState.x=cx-(cx-pairThumbCropState.x)*ratio;pairThumbCropState.y=cy-(cy-pairThumbCropState.y)*ratio;pairThumbCropState.zoom=next;document.getElementById('pairCropZoomLabel').textContent=Math.round(next*100)+'%';drawPairThumbCrop()});
+    document.getElementById('pairCropClose').addEventListener('click',()=>{URL.revokeObjectURL(url);closeModal();resetPairThumbCrop();});
+    document.getElementById('pairCropCancel').addEventListener('click',()=>{URL.revokeObjectURL(url);resetPairThumbCrop();closeModal();openPairEdit(currentPairId);});
+    document.getElementById('pairCropSave').addEventListener('click',async()=>{await commitPairThumbCrop();URL.revokeObjectURL(url);});
+  };
+  img.onerror=()=>{URL.revokeObjectURL(url);toast('画像を読み込めませんでした')};
+  img.src=url;
+}
+function clampPairThumbCropPosition(){
+  const st=pairThumbCropState;if(!st)return;const z=st.scale*st.zoom,w=st.img.naturalWidth*z,h=st.img.naturalHeight*z;st.x=Math.min(0,Math.max(st.stage-w,st.x));st.y=Math.min(0,Math.max(st.stage-h,st.y));
+}
+function drawPairThumbCrop(){
+  const st=pairThumbCropState;if(!st)return;const canvas=document.getElementById('pairCropCanvas');if(!canvas)return;const ctx=canvas.getContext('2d');const z=st.scale*st.zoom;clampPairThumbCropPosition();ctx.clearRect(0,0,st.stage,st.stage);ctx.fillStyle='#e7e9eb';ctx.fillRect(0,0,st.stage,st.stage);ctx.drawImage(st.img,st.x,st.y,st.img.naturalWidth*z,st.img.naturalHeight*z);
+}
+async function commitPairThumbCrop(){
+  const st=pairThumbCropState;if(!st)return;
+  clampPairThumbCropPosition();
+  const z=st.scale*st.zoom;
+  const sx=Math.max(0,Math.min(st.img.naturalWidth-1,(-st.x)/z));
+  const sy=Math.max(0,Math.min(st.img.naturalHeight-1,(-st.y)/z));
+  const sw=Math.min(st.img.naturalWidth-sx,st.stage/z);
+  const sh=Math.min(st.img.naturalHeight-sy,st.stage/z);
+  const out=document.createElement('canvas');out.width=800;out.height=800;const ctx=out.getContext('2d');
+  ctx.drawImage(st.img,sx,sy,sw,sh,0,0,800,800);
+  const type=st.mime.includes('jpeg')||st.mime.includes('jpg')?'image/jpeg':'image/png';
+  out.toBlob(blob=>{if(!blob){toast('切り抜きに失敗しました');return}const ext=type==='image/jpeg'?'jpg':'png';pendingPairThumbCrop={blob,fileName:st.fileName.replace(/\.[^.]+$/,'')+'_thumb.'+ext,mime:blob.type||type};resetPairThumbCrop();closeModal();openPairEdit(currentPairId);toast('切り抜き結果をセットしました。編集画面で保存してください');},type,0.92);
+}
+
 async function syncPairToSupabase(p){
   if(!supabaseClient||!currentUser||!p)return false;
   const w=await getSharedWorkspace();
@@ -783,6 +837,13 @@ function show(tab){
   }
 }
 
+function renderPairCalendar(pairId){
+  const p=pairs.find(x=>String(x.id)===String(pairId));if(!p){show('calendar');return}
+  currentPairId=p.id;document.getElementById('fab').style.display='none';
+  document.getElementById('view').innerHTML=`<button type="button" class="secondary pair-back" id="pairCalendarBackBtn">← ${esc(p.name)}へ戻る</button><div class="section">記念日</div><div class="card anniv-header-card"><h2>2026年9月</h2><p>${esc(p.name)}の大切な日を、ここから確認できます。</p></div><div class="section">登録予定</div><div class="card row"><span class="icon">○</span><div class="grow"><b>初セッション記念日</b><div class="sub">${esc(p.name)}</div></div><span class="pill" style="background:#ffffff22;color:#fff">あと10日</span></div>`;
+  document.getElementById('pairCalendarBackBtn')?.addEventListener('click',()=>pair(p.id));
+}
+
 function navigateTo(tab){
   if(['home','calendar','gallery','observe','settings'].includes(tab))show(tab);
 }
@@ -797,7 +858,7 @@ function renderGallery(pairId=null){
   galleryPairContextId=pairId!=null?String(pairId):null;
   const gp=galleryPairContextId?pairs.find(p=>String(p.id)===galleryPairContextId):null;
   document.getElementById('fab').style.display='block';
-  document.getElementById('view').innerHTML=`${gp?`<button class="secondary pair-back" onclick="pair(${JSON.stringify(String(gp.id))})">← ${esc(gp.name)}へ戻る</button>`:''}<div class="section">ギャラリー</div>
+  document.getElementById('view').innerHTML=`${gp?`<button type="button" class="secondary pair-back" id="galleryPairBackBtn">← ${esc(gp.name)}へ戻る</button>`:''}<div class="section">ギャラリー</div>
   <div class="gallery-filter">
     <button class="${galleryFilter==='all'?'active':''}" onclick="setGalleryFilter('all')">すべて</button>
     <button class="${galleryFilter==='illustration'?'active':''}" onclick="setGalleryFilter('illustration')">イラスト</button>
@@ -805,6 +866,7 @@ function renderGallery(pairId=null){
   </div>
   <button class="primary" onclick="openGalleryModal()">＋ 画像を追加</button>
   <div id="galleryList" style="margin-top:12px"></div>`;
+  const back=document.getElementById('galleryPairBackBtn');if(back)back.addEventListener('click',()=>pair(gp.id));
   refreshGalleryList();
 }
 function setGalleryFilter(f){galleryFilter=f;renderGallery(galleryPairContextId)}
@@ -872,13 +934,14 @@ async function saveGalleryImage(){
 async function openGalleryDetail(id){
   const x=gallery.find(g=>g.id===id);if(!x)return;
   const gp=x.pairId?pairs.find(p=>String(p.id)===String(x.pairId)):null;
-  document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button>${gp?`<button class="secondary pair-back" onclick="closeModal();pair(${JSON.stringify(String(gp.id))})">← ${esc(gp.name)}へ戻る</button>`:''}<h2>${esc(x.title||'無題')}</h2><div id="galleryDetailImage"></div>
+  document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button>${gp?`<button type="button" class="secondary pair-back" id="galleryDetailPairBackBtn">← ${esc(gp.name)}へ戻る</button>`:''}<h2>${esc(x.title||'無題')}</h2><div id="galleryDetailImage"></div>
   <div class="detail-box" style="margin-top:10px">${esc((x.type==='standing'?'立ち絵':'イラスト')+(x.date?'\\n日付：'+x.date:'')+(x.tags?'\\nタグ：'+x.tags:'')+(x.memo?'\\n\\n'+x.memo:''))}</div>
   <button class="secondary" onclick="showGalleryImage('${x.id}')">画像を大きく見る</button>
   ${x.type==='standing'?`<button class="secondary" onclick="reanalyzeGalleryFace('${x.id}')">◎ 顔の位置を再解析</button><button class="secondary" onclick="openGalleryFocusEditor('${x.id}')">✥ 表示位置を手動で調整</button>`:''}
   <button class="secondary" onclick="downloadGalleryImage('${x.id}')">↓ 元画像を保存</button>
   <button class="danger gallery-delete" onclick="deleteGalleryItem('${x.id}')">この画像を削除</button>`;
   document.getElementById('modal').style.display='flex';
+  const gpBack=document.getElementById('galleryDetailPairBackBtn');if(gpBack)gpBack.addEventListener('click',()=>{closeModal();pair(gp.id)});
   const blob=await getGalleryBlob(id);if(blob){const url=URL.createObjectURL(blob);document.getElementById('galleryDetailImage').innerHTML=`<img class="image-preview" src="${url}" alt="">`}
 }
 async function showGalleryImage(id){
@@ -1076,6 +1139,7 @@ window.pair=pair;
 window.characterList=characterList;
 window.renderSessionLogs=renderSessionLogs;
 window.renderGallery=renderGallery;
+window.renderPairCalendar=renderPairCalendar;
 window.openPairEdit=openPairEdit;
 window.showPairWallChat=showPairWallChat;
 function sortPairCharacters(list){return list.map((c,index)=>({c,index})).sort((a,b)=>{const rank={攻め:0,受け:1};const ar=Object.prototype.hasOwnProperty.call(rank,getCharacterPosition(a.c))?rank[getCharacterPosition(a.c)]:2;const br=Object.prototype.hasOwnProperty.call(rank,getCharacterPosition(b.c))?rank[getCharacterPosition(b.c)]:2;return ar-br||a.index-b.index}).map(x=>x.c)}
@@ -1108,7 +1172,7 @@ function pair(id){
     if(action==='characters')characterList(pairId);
     else if(action==='sessions')renderSessionLogs(pairId);
     else if(action==='gallery')renderGallery(pairId);
-    else if(action==='calendar')show('calendar');
+    else if(action==='calendar')renderPairCalendar(pairId);
     else if(action==='report')toast('卓報告はこれから追加予定です');
     else if(action==='wall')showPairWallChat(pairId);
   }));
@@ -1228,19 +1292,19 @@ function pairCharacterIds(p){
 }
 async function openPairEdit(id){
   const p=pairs.find(x=>String(x.id)===String(id));if(!p)return;
-  const ids=pairCharacterIds(p);
+  currentPairId=p.id;const ids=pairCharacterIds(p);
   const opts=characters.length?characters.map(c=>`<option value="${esc(String(c.id))}" ${String(ids[0])===String(c.id)?'selected':''}>${esc(c.name||'名前未設定')}</option>`).join(''):'<option value="">登録済みキャラクターがありません</option>';
   const opts2=characters.length?characters.map(c=>`<option value="${esc(String(c.id))}" ${String(ids[1])===String(c.id)?'selected':''}>${esc(c.name||'名前未設定')}</option>`).join(''):'<option value="">登録済みキャラクターがありません</option>';
-  document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>うちよそを編集</h2><div class="field"><label>うちよその名前</label><input id="editPairName" value="${esc(p.name||'')}" placeholder="例：カナタ × レイ"></div><div class="field"><label>ひとこと</label><input id="editPairDesc" value="${esc(p.desc||'')}" placeholder="例：世界の隅で、ふたり"></div><div class="field"><label>キャラクター1</label><select id="editPairCharA" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)"><option value="">選択しない</option>${opts}</select></div><div class="field"><label>キャラクター2</label><select id="editPairCharB" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)"><option value="">選択しない</option>${opts2}</select></div><div class="section">うちよそ専用サムネイル</div><div id="pairThumbEditPreview">${pairThumbnailMarkup(p,'pair-edit-thumb')}</div><div class="field"><input id="pairThumbFile" type="file" accept="image/*" onchange="previewPairThumbFile(event)"><div class="file-name" id="pairThumbFileName"></div></div><div class="row" style="gap:8px"><button class="secondary" type="button" onclick="document.getElementById('pairThumbFile').click()">画像を変更</button><button class="danger" type="button" style="margin-top:8px" onclick="removePairThumbnail(${JSON.stringify(String(p.id))})">サムネイルを削除</button></div><div class="note">キャラクターの立ち絵とは別に、このうちよそ専用の画像を登録します。透過画像は元のまま保存し、表示時だけ淡いグレーの水彩風背景をつけます。</div><button class="primary" onclick="savePairEdit(${JSON.stringify(String(p.id))})">保存する</button>`;
+  document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>うちよそを編集</h2><div class="field"><label>うちよその名前</label><input id="editPairName" value="${esc(p.name||'')}" placeholder="例：カナタ × レイ"></div><div class="field"><label>ひとこと</label><input id="editPairDesc" value="${esc(p.desc||'')}" placeholder="例：世界の隅で、ふたり"></div><div class="field"><label>キャラクター1</label><select id="editPairCharA" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)"><option value="">選択しない</option>${opts}</select></div><div class="field"><label>キャラクター2</label><select id="editPairCharB" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)"><option value="">選択しない</option>${opts2}</select></div><div class="section">うちよそ専用サムネイル</div><div id="pairThumbEditPreview">${pendingPairThumbCrop?`<div class="pair-thumb-display pair-edit-thumb"><img src="${esc(URL.createObjectURL(pendingPairThumbCrop.blob))}" alt=""></div>`:pairThumbnailMarkup(p,'pair-edit-thumb')}</div><div class="field"><input id="pairThumbFile" type="file" accept="image/*"><div class="file-name" id="pairThumbFileName">${pendingPairThumbCrop?esc(pendingPairThumbCrop.fileName):''}</div></div><div class="row" style="gap:8px"><button class="secondary" type="button" id="pairThumbChangeBtn">画像を変更</button><button class="danger" type="button" style="margin-top:8px" id="pairThumbRemoveBtn">サムネイルを削除</button></div><div class="note">全身立ち絵などを選ぶと、続けて切り抜き画面が開きます。ドラッグと拡大スライダーでバストアップなど好きな範囲を選べます。切り抜いた画像はうちよそ専用サムネイルとして保存します。</div><button class="primary" id="savePairEditBtn">保存する</button>`;
   document.getElementById('modal').style.display='flex';
+  const fileInput=document.getElementById('pairThumbFile');
+  document.getElementById('pairThumbChangeBtn')?.addEventListener('click',()=>fileInput?.click());
+  fileInput?.addEventListener('change',e=>{const f=e.target.files?.[0];if(f)openPairThumbCropEditor(f)});
+  document.getElementById('pairThumbRemoveBtn')?.addEventListener('click',()=>removePairThumbnail(String(p.id)));
+  document.getElementById('savePairEditBtn')?.addEventListener('click',()=>savePairEdit(String(p.id)));
   if(p.thumbnail)hydratePairThumbnail(p);
 }
-function previewPairThumbFile(e){
-  const f=e.target.files?.[0];if(!f)return;
-  if(!f.type.startsWith('image/')){toast('画像ファイルを選んでください');return}
-  document.getElementById('pairThumbFileName').textContent=f.name;
-  const url=URL.createObjectURL(f);const box=document.getElementById('pairThumbEditPreview');if(box)box.innerHTML=`<div class="pair-thumb-display pair-edit-thumb"><img src="${esc(url)}" alt=""></div>`;
-}
+
 async function removePairThumbnail(id){
   const p=pairs.find(x=>String(x.id)===String(id));if(!p)return;
   if(!confirm('このうちよそ専用サムネイルを削除しますか？'))return;
@@ -1258,9 +1322,9 @@ async function savePairEdit(id){
   const oldIds=pairCharacterIds(p);const selected=[a,b].filter(Boolean);const affected=new Set([...oldIds,...selected]);
   p.name=name;p.desc=document.getElementById('editPairDesc')?.value.trim()||'ふたりの物語';p.characterIds=selected;p.characters=[];
   characters.forEach(c=>{c.pairIds=Array.isArray(c.pairIds)?c.pairIds:[];if(selected.includes(String(c.id))){if(!c.pairIds.some(x=>String(x)===String(p.id)))c.pairIds.push(p.id)}else if(oldIds.includes(String(c.id))){c.pairIds=c.pairIds.filter(x=>String(x)!==String(p.id))}});
-  const f=document.getElementById('pairThumbFile')?.files?.[0];
+  const f=pendingPairThumbCrop?.blob ? new File([pendingPairThumbCrop.blob],pendingPairThumbCrop.fileName,{type:pendingPairThumbCrop.mime||pendingPairThumbCrop.blob.type||'image/png'}) : null;
   if(f){const ok=await savePairThumbnailFile(p,f);if(!ok&&supabaseClient&&currentUser&&currentWorkspace){toast('サムネイルの共有保存に失敗しました');return}}
-  save();closeModal();pair(p.id);
+  save();resetPairThumbCrop();closeModal();pair(p.id);
   if(supabaseClient&&currentUser&&currentWorkspace){const okPair=await syncPairToSupabase(p);let okChars=true;for(const cid of affected){const c=characters.find(x=>String(x.id)===String(cid));if(c&&!await syncCharacterToSupabase(c))okChars=false}save();toast(okPair&&okChars?'うちよそを更新しました（共有済み）':okPair?'うちよそを更新しました（キャラクター共有に一部失敗）':'うちよそを更新しました（共有保存に失敗）');}else toast('うちよそを更新しました');
 }
 async function addPair(){let n=document.getElementById('pairName').value.trim();if(!n){toast('うちよその名前を入力してください');return}let aId=document.getElementById('pairCharA')?.value||'';let bId=document.getElementById('pairCharB')?.value||'';if(aId&&bId&&aId===bId){toast('同じキャラクターは2人分には選べません');return}let selected=[aId,bId].filter(Boolean);let p={id:Date.now(),name:n,desc:document.getElementById('pairDesc').value.trim()||'ふたりの物語',date:new Date().toLocaleDateString('ja-JP'),characters:[],characterIds:selected};pairs.push(p);characters.forEach(c=>{if(selected.includes(String(c.id))){c.pairIds=Array.isArray(c.pairIds)?c.pairIds:[];if(!c.pairIds.some(x=>String(x)===String(p.id)))c.pairIds.push(p.id)}});save();closeModal();show('home');if(supabaseClient&&currentUser&&currentWorkspace){const okPair=await syncPairToSupabase(p);let okChars=true;for(const id of selected){const c=characters.find(x=>String(x.id)===String(id));if(c&&!await syncCharacterToSupabase(c))okChars=false}save();if(okPair&&okChars)toast('うちよそを登録しました（キャラクターも共有済み）');else if(okPair)toast('うちよそを登録しました（キャラクター共有に一部失敗）');else toast('うちよそを登録しました（共有保存に失敗）')}else toast('うちよそを登録しました')}
