@@ -368,14 +368,26 @@ function parseSessionLogHtml(html){
   if(!entries.length){const text=(doc.body?.innerText||'').trim();if(text)entries.push({type:'narration',channel:'main',speaker:'▼',color:'#888888',text,html:esc(text),time:'',rollText:''})}
   return {entries,participants,count:entries.length,channels:{main:entries.filter(e=>e.channel==='main').length,other:entries.filter(e=>e.channel==='other').length,wall:entries.filter(e=>e.channel==='wall').length}};
 }
+function normalizeCharacterMatch(v){
+  return String(v||'')
+    .replace(/（[^）]*）/g,'')
+    .replace(/\([^)]*\)/g,'')
+    .replace(/[\s　]/g,'')
+    .replace(/[「」『』【】［］\[\]・]/g,'')
+    .toLowerCase()
+    .trim();
+}
 function characterForLogSpeaker(name){
-  const n=String(name||'').replace(/\s+/g,'').trim(); if(!n)return null;
-  return characters.find(c=>String(c.name||'').replace(/\s+/g,'').trim()===n)||null;
+  const n=normalizeCharacterMatch(name); if(!n)return null;
+  return characters.find(c=>{
+    const cn=normalizeCharacterMatch(c.name);
+    return cn===n || (cn&&n&&((cn.includes(n)||n.includes(cn))));
+  })||null;
 }
 function sessionAvatarHtml(e){
   if(e.type!=='character'||!e.speaker)return '<div class="session-entry-avatar" aria-hidden="true"></div>';
-  const c=characterForLogSpeaker(e.speaker); const src=c?.iconUrls?.[0]||'';
-  return `<div class="session-entry-avatar" data-session-speaker="${esc(e.speaker)}" title="${esc(c?.name||e.speaker)}">${src?`<img src="${esc(src)}" alt="">`:'♙'}</div>`;
+  const c=characterForLogSpeaker(e.speaker);
+  return `<div class="session-entry-avatar" data-session-speaker="${esc(e.speaker)}" title="${esc(c?.name||e.speaker)}" aria-label="${esc(c?.name||e.speaker)}"></div>`;
 }
 function normalizeMatchText(v){return String(v||'').replace(/[\s　]/g,'').replace(/[「」『』【】［］\[\]()（）・]/g,'').toLowerCase()}
 async function hydrateSessionAvatars(){
@@ -385,15 +397,26 @@ async function hydrateSessionAvatars(){
     let item=null;
     const sn=normalizeMatchText(speaker);
     if(c){
+      // まず「この立ち絵はこのキャラクター」と紐づいた画像を使う
       item=gallery.find(g=>g.type==='standing'&&String(g.characterId||'')===String(c.id));
+      // 紐づけがない古い画像は、タイトル・タグ・メモからキャラ名を探す
       if(!item)item=gallery.find(g=>g.type==='standing'&&sn&&[g.title,g.tags,g.memo].some(v=>normalizeMatchText(v).includes(sn)));
     }
+    // 最後のフォールバックとして、そのうちよそに属する立ち絵を使う
     if(!item&&currentPairId){
       const pairChars=(pairs.find(p=>String(p.id)===String(currentPairId))?.characterIds||[]).map(String);
-      if(c&&pairChars.includes(String(c.id))) item=gallery.find(g=>g.type==='standing'&&String(g.pairId||'')===String(currentPairId));
+      if(c&&pairChars.includes(String(c.id))) item=gallery.find(g=>g.type==='standing'&&String(g.characterId||'')===String(c.id))||gallery.find(g=>g.type==='standing'&&String(g.pairId||'')===String(currentPairId));
     }
     if(!item)continue;
-    try{const blob=await getGalleryBlob(item.id);if(!blob)continue;const url=URL.createObjectURL(blob);box.innerHTML=`<img src="${url}" alt="">`;const img=box.querySelector('img');img.style.objectPosition=`${Number(item.focusX??50)}% ${Number(item.focusY??50)}%`;img.onload=()=>URL.revokeObjectURL(url);}catch(e){}
+    try{
+      const blob=await getGalleryBlob(item.id);
+      if(!blob)continue;
+      const url=URL.createObjectURL(blob);
+      box.innerHTML=`<img src="${url}" alt="">`;
+      const img=box.querySelector('img');
+      img.style.objectPosition=`${Number(item.focusX??50)}% ${Number(item.focusY??50)}%`;
+      img.onload=()=>URL.revokeObjectURL(url);
+    }catch(e){console.error('セッション顔コマ表示エラー:',e)}
   }
 }
 function sessionStatusLabel(v){return ({passed:'通過済',unpassed:'未通過',inprogress:'進行中'})[v]||'未設定'}
