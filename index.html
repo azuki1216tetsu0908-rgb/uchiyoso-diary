@@ -326,15 +326,15 @@ function formatPlayedAt(v){if(!v)return 'プレイ日未設定';try{return new D
 function logForPair(pairId){return sessionLogs.filter(x=>String(x.pairId)===String(pairId)).sort((a,b)=>String(b.playedAt||b.createdAt||'').localeCompare(String(a.playedAt||a.createdAt||'')));}
 function normalizeSessionChannel(raw,label){
   const c=String(raw||'').trim().toLowerCase(); const l=String(label||'').trim();
-  // ログ側の表示ラベルを最優先。新形式では data-channel と表示ラベルが
-  // 食い違う場合があるため、[雑談] を絶対に本編へ入れない。
-  if(l==='[雑談]'||l.includes('雑談')||l.includes('その他'))return 'other';
-  if(l.includes('壁打ち'))return 'wall';
-  // [情報] はシナリオ本編に付随するログとして本編側へまとめる。
-  if(l==='[情報]'||l.includes('情報'))return 'main';
-  if(l==='[メイン]'||c==='main'||c==='メイン')return 'main';
+  // このログ形式では data-channel の "other" が雑談。
+  // 表示ラベルより data-channel を優先し、other を絶対に本編へ混ぜない。
+  if(c==='other'||c==='雑談'||c==='chat')return 'other';
   if(c==='wall'||c==='wallchat'||c.includes('wall')||c.includes('壁打ち'))return 'wall';
-  if(c==='other'||c==='雑談')return 'other';
+  if(c==='main'||c==='メイン')return 'main';
+  // data-channel がない旧形式では表示ラベルから判定する。
+  if(l==='[other]'||l.toLowerCase()==='[other]'||l.includes('雑談')||l.includes('その他'))return 'other';
+  if(l.includes('壁打ち'))return 'wall';
+  if(l==='[情報]'||l.includes('情報')||l==='[メイン]'||l.includes('メイン'))return 'main';
   return c||'main';
 }
 function parseSessionLogHtml(html){
