@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#18283f">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>うちよそ日記 v0.3.48</title>
+<title>うちよそ日記 v0.3.49</title>
 <style>
 :root{--bg:#fcfbf7;--card:#fffefa;--ink:#24334a;--muted:#687386;--line:#dfe3e8;--accent:#243b5a;--accent2:#526b8a;--soft:#edf1f5;--shadow:#24334a12}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}.app{min-height:100vh;max-width:720px;margin:auto;padding-bottom:84px}.top{padding:24px 18px 12px}.brand{font-size:25px;font-weight:800;letter-spacing:.03em}.sub{font-size:12px;color:var(--muted);margin-top:4px}.content{padding:8px 16px}.section{margin:18px 0 10px;font-weight:800}.hero{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:14px}.hero h1{margin:0 0 6px;font-size:22px}.hero p{margin:0;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 14px var(--shadow)}.pair{display:flex;gap:12px;align-items:center;cursor:pointer}.thumb{width:58px;height:58px;border-radius:16px;background:#eef1f3;display:grid;place-items:center;font-size:25px;overflow:hidden;flex:none}.thumb img,.avatar img{width:100%;height:100%;object-fit:cover}.pair h3{margin:0;font-size:15px}.pair p{margin:4px 0 0;color:var(--muted);font-size:11px}.action{display:flex;align-items:center;justify-content:center;min-height:96px;cursor:pointer;text-align:center}.action b{display:block;margin-top:5px;font-size:13px}.icon{font-size:25px;color:var(--accent)}.icon-svg{width:38px;height:38px;display:block;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;margin:auto}.icon-svg circle{fill:currentColor;stroke:none}.icon-svg .head{fill:none;stroke:currentColor;stroke-width:3}.home-primary-card{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 6px 16px #243b5a22}.home-primary-card .sub,.home-primary-card p{color:#eef3f8}.home-primary-card .thumb{background:#ffffff18;color:#fff}.home-primary-card .thumb .icon-svg{color:#fff}.home-primary-card .position-badge{background:#ffffff20;color:#fff}.home-primary-card .home-arrow{color:#fff!important}.settings-icon{width:38px;height:38px;display:grid;place-items:center;color:var(--accent);flex:none}.settings-icon .icon-svg{width:32px;height:32px}.home-section-card{background:var(--card);color:var(--ink);border-color:var(--line);box-shadow:0 4px 14px var(--shadow)}
@@ -63,6 +63,8 @@
 .session-log-tabs{display:flex;gap:7px;overflow:auto;margin:10px 0}.session-log-tab{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:8px 12px;white-space:nowrap;cursor:pointer;font-size:11px}.session-log-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .session-entry{display:grid;grid-template-columns:42px minmax(0,1fr);gap:9px}.session-entry-avatar{width:40px;height:40px;border-radius:12px;background:#eef1f3;overflow:hidden;display:grid;place-items:center;color:#7d8790;font-size:17px;flex:none}.session-entry-avatar img{width:100%;height:100%;object-fit:cover;object-position:50% 18%}.session-entry-main{min-width:0}.session-entry-time{font-size:9px;color:var(--muted)}
 .session-entry-system,.session-entry-narration{grid-template-columns:1fr}.session-entry-system .session-entry-avatar,.session-entry-narration .session-entry-avatar{display:none}.report-card .small-btn{width:auto;margin-top:0}.report-log-link{margin-left:auto;white-space:nowrap}
+
+.ss-list{display:grid;gap:10px}.ss-card{cursor:pointer;padding:14px}.ss-card-title{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:5px}.ss-card-meta{font-size:11px;color:var(--muted);margin-bottom:7px}.ss-card-preview{font-size:12px;line-height:1.8;color:#4d5568;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-wrap}.ss-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}.ss-tag{font-size:10px;padding:4px 8px;border-radius:999px;background:#eef1f7;color:#44516d}.ss-body{white-space:pre-wrap;line-height:2;font-size:14px;color:#30394d}.ss-detail-title{font-size:24px;line-height:1.5;margin:8px 0}.ss-detail-meta{font-size:11px;color:var(--muted);line-height:1.8}.ss-char-list{display:flex;flex-wrap:wrap;gap:7px}.ss-char-chip{display:inline-flex;align-items:center;gap:5px;padding:7px 10px;border-radius:999px;background:#f4f5f8;border:1px solid var(--line);font-size:11px}.ss-editor-textarea{min-height:280px;line-height:1.8}.ss-action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.ss-empty{padding:36px 14px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:16px;background:#fff}.ss-filter-note{font-size:11px;color:var(--muted);margin:4px 0 10px}
 </style>
 
 <script type="module">
@@ -196,7 +198,7 @@ function updateAuthGate(){
     gate.style.display='none';
     // 初回ログイン時だけホームを表示。
     // メール確認・トークン更新などのAuthイベントでは現在の画面を維持する。
-    if(!appReady){appReady=true;show('home');setTimeout(async()=>{await loadSharedPairs({refreshView:false});await loadSharedCharacters({refreshView:false});await loadSharedSessionLogs({refreshView:false});show('home');},0);}
+    if(!appReady){appReady=true;show('home');setTimeout(async()=>{await loadSharedPairs({refreshView:false});await loadSharedCharacters({refreshView:false});await loadSharedSessionLogs({refreshView:false});await loadSharedSS({refreshView:false});show('home');},0);}
   }else{
     appReady=false;
     gate.style.display='flex';
@@ -247,6 +249,9 @@ function normalizeSkills(list){return (Array.isArray(list)?list:[]).map((x,i)=>(
 let characters=JSON.parse(localStorage.getItem(CHAR_KEY)||'[]'); characters.forEach(c=>{c.pairRelations=c.pairRelations||{};Object.keys(c.pairRelations).forEach(k=>{const r=c.pairRelations[k]||{};c.pairRelations[k]={partnerName:r.partnerName??'',position:r.position||'未定',callName:r.callName??'',secondPerson:r.secondPerson??'',thirdPersonCall:r.thirdPersonCall??'',partnerPersonality:r.partnerPersonality??'',otherPeople:Array.isArray(r.otherPeople)?r.otherPeople:[]}});c.birthday=c.birthday||'';c.imageColorHue=Number.isFinite(Number(c.imageColorHue))?Number(c.imageColorHue):270;c.imageColor=hueToColor(c.imageColorHue);c.latestAge=c.latestAge??c.age??'';c.latestHeight=c.latestHeight??c.height??'';c.latestProfile=c.latestProfile??'';c.initialData=c.initialData||{age:c.age||'',job:c.job||'',gender:c.gender||'',height:c.height||'',weight:c.weight||'',birthplace:c.birthplace||'',hair:c.hair||'',eyes:c.eyes||'',firstPerson:c.firstPerson||'',secondPerson:c.secondPerson||'',memo:c.memo||'',quotes:[...(c.quotes||[])]};c.initialStats=Array.isArray(c.initialStats)?cloneStats(c.initialStats):cloneStats(c.initialData?.stats||c.stats||[]);c.initialData.stats=cloneStats(c.initialStats);c.stats=cloneStats(c.stats);c.skills=normalizeSkills(c.skills);c.skills.forEach(x=>{x.category=skillCategoryFor(x)});c.statsHistory=Array.isArray(c.statsHistory)?c.statsHistory.map(h=>({at:h.at||new Date().toISOString(),stats:cloneStats(h.stats)})):[];}); let currentPairId=null;
 
 let gallery=JSON.parse(localStorage.getItem(GALLERY_KEY)||'[]');
+const SS_KEY='uchiyoso_ss_v1';
+let ssWorks=JSON.parse(localStorage.getItem(SS_KEY)||'[]');
+function saveSSMeta(){localStorage.setItem(SS_KEY,JSON.stringify(ssWorks));}
 const pairThumbUrlCache=new Map();
 let galleryPairContextId=null;
 let pendingPairThumbCrop=null;
@@ -481,7 +486,7 @@ async function confirmSessionLog(pairId,editId=null){
   if(supabaseClient&&currentUser&&currentWorkspace){const ok=await syncSessionLogToSupabase(x);if(ok){saveSessionLogs();toast(existing?'セッションログを更新しました（共有済み）':'セッションログを登録しました（共有済み）')}else toast(existing?'セッションログを更新しました（共有保存に失敗）':'セッションログを登録しました（共有保存に失敗）')}else toast(existing?'セッションログを更新しました':'セッションログを登録しました');
 }
 async function deleteSessionLog(id){const x=sessionLogs.find(v=>String(v.id)===String(id));if(!x)return;if(!confirm(`「${x.scenarioName||'シナリオ名未設定'}」を削除しますか？\n\nこの操作は取り消せません。`))return;if(supabaseClient&&currentUser&&currentWorkspace&&x.supabaseId){try{const {error}=await supabaseClient.from('session_logs').delete().eq('id',x.supabaseId);if(error)throw error;}catch(e){console.error('共有セッションログ削除エラー:',e);toast('共有側の削除に失敗しました');return;}}sessionLogs=sessionLogs.filter(v=>String(v.id)!==String(id));saveSessionLogs();renderSessionLogs(currentPairId);toast('セッションログを削除しました');}
-function save(){localStorage.setItem(PAIR_KEY,JSON.stringify(pairs));localStorage.setItem(CHAR_KEY,JSON.stringify(characters));localStorage.setItem(APP_PROFILE_KEY,JSON.stringify(appProfile));localStorage.setItem(APP_NOTIFY_KEY,JSON.stringify(appNotifications));saveGalleryMeta()}
+function save(){localStorage.setItem(PAIR_KEY,JSON.stringify(pairs));localStorage.setItem(CHAR_KEY,JSON.stringify(characters));localStorage.setItem(APP_PROFILE_KEY,JSON.stringify(appProfile));localStorage.setItem(APP_NOTIFY_KEY,JSON.stringify(appNotifications));saveGalleryMeta();saveSSMeta()}
 
 
 function toast(t){const x=document.getElementById('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',1800)}
@@ -1008,34 +1013,50 @@ function renderGallery(pairId=null){
     <button class="${galleryFilter==='all'?'active':''}" onclick="setGalleryFilter('all')">すべて</button>
     <button class="${galleryFilter==='illustration'?'active':''}" onclick="setGalleryFilter('illustration')">イラスト</button>
     <button class="${galleryFilter==='standing'?'active':''}" onclick="setGalleryFilter('standing')">立ち絵</button>
+    <button class="${galleryFilter==='ss'?'active':''}" onclick="setGalleryFilter('ss')">SS</button>
   </div>
-  <button class="primary" onclick="openGalleryModal()">＋ 画像を追加</button>
+  ${galleryFilter==='ss'?`<button class="primary" id="ssAddBtn">＋ SSを作成</button><div class="ss-filter-note">短い物語や創作を、文章だけで気軽に残せます。</div>`:`<button class="primary" onclick="openGalleryModal()">＋ 画像を追加</button>`}
   <div id="galleryList" style="margin-top:12px"></div>`;
   const back=document.getElementById('galleryPairBackBtn');if(back)back.addEventListener('click',()=>pair(gp.id));
+  document.getElementById('ssAddBtn')?.addEventListener('click',()=>openSSEditor(null,galleryPairContextId));
   refreshGalleryList();
 }
 function setGalleryFilter(f){galleryFilter=f;renderGallery(galleryPairContextId)}
 function applyGalleryObjectPosition(img,focusX,focusY){
   if(!img||!img.naturalWidth||!img.naturalHeight)return;
-  const cw=img.clientWidth,ch=img.clientHeight;
-  if(!cw||!ch)return;
-  const scale=Math.max(cw/img.naturalWidth,ch/img.naturalHeight);
-  const ow=img.naturalWidth*scale,oh=img.naturalHeight*scale;
-  const fx=Math.max(0,Math.min(100,Number.isFinite(focusX)?focusX:50))/100;
-  const fy=Math.max(0,Math.min(100,Number.isFinite(focusY)?focusY:50))/100;
-  const px=Math.abs(ow-cw)<0.01?50:Math.max(0,Math.min(100,(fx*ow-cw/2)/(ow-cw)*100));
-  const py=Math.abs(oh-ch)<0.01?50:Math.max(0,Math.min(100,(fy*oh-ch/2)/(oh-ch)*100));
-  img.style.objectPosition=`${px}% ${py}%`;
+  const cw=img.clientWidth,ch=img.clientHeight;if(!cw||!ch)return;
+  const scale=Math.max(cw/img.naturalWidth,ch/img.naturalHeight);const ow=img.naturalWidth*scale,oh=img.naturalHeight*scale;
+  const fx=Math.max(0,Math.min(100,Number.isFinite(focusX)?focusX:50))/100,fy=Math.max(0,Math.min(100,Number.isFinite(focusY)?focusY:50))/100;
+  const px=Math.abs(ow-cw)<.01?50:Math.max(0,Math.min(100,(fx*ow-cw/2)/(ow-cw)*100));const py=Math.abs(oh-ch)<.01?50:Math.max(0,Math.min(100,(fy*oh-ch/2)/(oh-ch)*100));img.style.objectPosition=`${px}% ${py}%`;
 }
+function ssTagsArray(v){return String(v||'').split(/[、,\s]+/).map(x=>x.trim()).filter(Boolean).slice(0,30)}
+function ssPreview(text){return String(text||'').replace(/\s+/g,' ').trim().slice(0,120)}
+function ssPairName(x){const p=x?.pairId?pairs.find(v=>String(v.id)===String(x.pairId)):null;return p?.name||''}
+function ssCharacterNames(x){return (Array.isArray(x?.characterIds)?x.characterIds:[]).map(id=>characters.find(c=>String(c.id)===String(id))?.name).filter(Boolean)}
+function ssCardHtml(x){const chars=ssCharacterNames(x);const tags=ssTagsArray(x.tags);return `<article class="card ss-card" data-ss-id="${esc(String(x.id))}"><div class="ss-card-title">${esc(x.title||'無題のSS')}</div><div class="ss-card-meta">${esc(x.author||'作者未設定')}${chars.length?' ・ '+esc(chars.join(' × ')):''}${x.updatedAt?' ・ '+esc(new Date(x.updatedAt).toLocaleDateString('ja-JP')):''}</div><div class="ss-card-preview">${esc(ssPreview(x.body)||'本文はまだありません。')}</div>${tags.length?`<div class="ss-tags">${tags.map(t=>`<span class="ss-tag">${esc(t)}</span>`).join('')}</div>`:''}</article>`}
 async function refreshGalleryList(){
-  const box=document.getElementById('galleryList'); if(!box)return;
-  const scoped=galleryPairContextId?gallery.filter(x=>!x.pairId||String(x.pairId)===String(galleryPairContextId)):gallery;
+  const box=document.getElementById('galleryList');if(!box)return;
+  const scopedImages=galleryPairContextId?gallery.filter(x=>!x.pairId||String(x.pairId)===String(galleryPairContextId)):gallery;
+  const scopedSS=galleryPairContextId?ssWorks.filter(x=>!x.pairId||String(x.pairId)===String(galleryPairContextId)):ssWorks;
+  if(galleryFilter==='ss'){
+    if(!scopedSS.length){box.innerHTML=`<div class="ss-empty">まだSSがありません。<br>「＋ SSを作成」から書き始められます。</div>`;return}
+    box.innerHTML=`<div class="ss-list">${scopedSS.slice().sort((a,b)=>String(b.updatedAt||'').localeCompare(String(a.updatedAt||''))).map(ssCardHtml).join('')}</div>`;
+    box.querySelectorAll('[data-ss-id]').forEach(el=>el.addEventListener('click',()=>openSSDetail(el.dataset.ssId)));return;
+  }
+  if(galleryFilter==='all'){
+    const imageItems=scopedImages;
+    const allCards=[...imageItems.map(x=>({kind:'image',time:x.createdAt||x.date||'',html:`<article class="card gallery-item" onclick="openGalleryDetail('${x.id}')"><img class="gallery-image" id="gimg-${x.id}" alt="" style="object-position:50% 50%"><div class="gallery-info"><div class="gallery-title">${esc(x.title||'無題')}</div><div class="gallery-meta">${x.type==='standing'?'立ち絵':'イラスト'}${x.date?' ・ '+esc(x.date):''}</div></div></article>`}),...scopedSS.map(x=>({kind:'ss',time:x.updatedAt||x.createdAt||'',html:ssCardHtml(x)}))].sort((a,b)=>String(b.time).localeCompare(String(a.time)));
+    if(!allCards.length){box.innerHTML=`<div class="gallery-empty">まだ作品がありません。<br>画像やSSを追加するとここに表示されます。</div>`;return}
+    box.innerHTML=`<div class="gallery-grid">${allCards.filter(x=>x.kind==='image').map(x=>x.html).join('')}</div>${allCards.some(x=>x.kind==='ss')?`<div class="section" style="margin-top:18px">SS</div><div class="ss-list">${allCards.filter(x=>x.kind==='ss').map(x=>x.html).join('')}</div>`:''}`;
+    box.querySelectorAll('[data-ss-id]').forEach(el=>el.addEventListener('click',()=>openSSDetail(el.dataset.ssId)));
+    for(const x of imageItems){try{const blob=await getGalleryBlob(x.id);if(blob){const url=URL.createObjectURL(blob);const img=document.getElementById('gimg-'+x.id);if(img){img.onload=()=>{applyGalleryObjectPosition(img,x.focusX,x.focusY);URL.revokeObjectURL(url)};img.src=url;if(img.complete)applyGalleryObjectPosition(img,x.focusX,x.focusY)}}}catch(e){}}
+    return;
+  }
+  const scoped=scopedImages;
   const items=scoped.filter(x=>galleryFilter==='all'||x.type===galleryFilter);
   if(!items.length){box.innerHTML=`<div class="gallery-empty">まだ画像がありません。<br>「＋ 画像を追加」から保存できます。</div>`;return}
   box.innerHTML=`<div class="gallery-grid">${items.map(x=>`<article class="card gallery-item" onclick="openGalleryDetail('${x.id}')"><img class="gallery-image" id="gimg-${x.id}" alt="" style="object-position:50% 50%"><div class="gallery-info"><div class="gallery-title">${esc(x.title||'無題')}</div><div class="gallery-meta">${x.type==='standing'?'立ち絵':'イラスト'}${x.date?' ・ '+esc(x.date):''}</div></div></article>`).join('')}</div>`;
-  for(const x of items){
-    try{const blob=await getGalleryBlob(x.id);if(blob){const url=URL.createObjectURL(blob);const img=document.getElementById('gimg-'+x.id);if(img){img.onload=()=>{applyGalleryObjectPosition(img,x.focusX,x.focusY);URL.revokeObjectURL(url)};img.src=url;if(img.complete)applyGalleryObjectPosition(img,x.focusX,x.focusY)}}}catch(e){}
-  }
+  for(const x of items){try{const blob=await getGalleryBlob(x.id);if(blob){const url=URL.createObjectURL(blob);const img=document.getElementById('gimg-'+x.id);if(img){img.onload=()=>{applyGalleryObjectPosition(img,x.focusX,x.focusY);URL.revokeObjectURL(url)};img.src=url;if(img.complete)applyGalleryObjectPosition(img,x.focusX,x.focusY)}}}catch(e){}}
 }
 function openGalleryModal(){
   document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>画像を追加</h2>
@@ -1197,7 +1218,49 @@ async function reanalyzeGalleryFace(id){
   }
   x.focusX=focus.x;x.focusY=focus.y;x.faceCount=focus.faces;x.focusManual=false;saveGalleryMeta();closeModal();renderGallery();toast('顔を中心に表示しました');
 }
-async function deleteGalleryItem(id){
+async 
+function sharedSSData(x){const d=JSON.parse(JSON.stringify(x||{}));d.kind='ss';d.local_id=String(x?.id??'');d.shared_version=1;return d}
+function currentPairSupabaseIdForSS(pairId){const p=pairs.find(x=>String(x.id)===String(pairId));return p?.supabaseId||null}
+async function syncSSToSupabase(x){
+  if(!supabaseClient||!currentUser||!x)return false;const w=await getSharedWorkspace();if(!w?.id)return false;
+  try{
+    const localId=String(x.id);const {data:existing,error:findError}=await supabaseClient.from('gallery_items').select('id').eq('workspace_id',w.id).eq('image_type','illustration').filter('data->>kind','eq','ss').filter('data->>local_id','eq',localId).maybeSingle();if(findError)throw findError;
+    const payload={workspace_id:w.id,pair_id:currentPairSupabaseIdForSS(x.pairId),title:String(x.title||''),image_type:'illustration',image_date:null,tags:ssTagsArray(x.tags),memo:String(x.memo||''),storage_path:null,focus_x:50,focus_y:50,face_count:0,focus_manual:false,data:sharedSSData(x)};
+    if(existing?.id){const {error}=await supabaseClient.from('gallery_items').update(payload).eq('id',existing.id);if(error)throw error;x.supabaseId=existing.id}
+    else{const {data,error}=await supabaseClient.from('gallery_items').insert(payload).select('id').single();if(error)throw error;x.supabaseId=data?.id||null}
+    return true;
+  }catch(e){console.error('SS共有保存エラー:',e);return false}
+}
+let ssSyncBusy=false;
+async function loadSharedSS(options={}){
+  if(ssSyncBusy||!supabaseClient||!currentUser)return;ssSyncBusy=true;
+  try{
+    await loadSharedPairs({refreshView:false});await loadSharedCharacters({refreshView:false});const w=await getSharedWorkspace();if(!w?.id)return;
+    const {data:remote,error}=await supabaseClient.from('gallery_items').select('id,pair_id,title,tags,memo,data,created_at,updated_at').eq('workspace_id',w.id).eq('image_type','illustration');if(error)throw error;
+    const rows=(remote||[]).filter(r=>r?.data?.kind==='ss');let changed=false;
+    for(const row of rows){const d=row.data||{};const localId=String(d.local_id||'');if(!localId)continue;const idx=ssWorks.findIndex(x=>String(x.id)===localId);const merged={...(idx>=0?ssWorks[idx]:{}),...d,id:idx>=0?ssWorks[idx].id:localId,supabaseId:row.id,title:String(row.title??d.title??''),tags:Array.isArray(d.tags)?d.tags.join('、'):String(d.tags??row.tags?.join?.('、')??''),memo:String(row.memo??d.memo??''),pairId:d.pairId||ssWorks[idx]?.pairId||'',author:String(d.author??''),body:String(d.body??''),characterIds:Array.isArray(d.characterIds)?d.characterIds:[],createdAt:d.createdAt||row.created_at,updatedAt:d.updatedAt||row.updated_at};if(idx>=0)ssWorks[idx]=merged;else ssWorks.push(merged);changed=true}
+    if(rows.length===0){for(const x of [...ssWorks]){if(!x.supabaseId){const ok=await syncSSToSupabase(x);if(ok)changed=true}}}
+    else{const remoteIds=new Set(rows.map(r=>String(r.id)));const before=ssWorks.length;ssWorks=ssWorks.filter(x=>!x.supabaseId||remoteIds.has(String(x.supabaseId)));if(ssWorks.length!==before)changed=true;for(const x of ssWorks){if(!x.supabaseId){const ok=await syncSSToSupabase(x);if(ok)changed=true}}}
+    if(changed)saveSSMeta();if(options.refreshView&&galleryFilter==='ss')renderGallery(galleryPairContextId);
+  }catch(e){console.error('共有SS読み込みエラー:',e);if(options.showError)toast('共有SSの読み込みに失敗しました')}
+  finally{ssSyncBusy=false}
+}
+function openSSEditor(id=null,pairId=null){
+  const x=id?ssWorks.find(v=>String(v.id)===String(id)):null;const selectedPair=x?.pairId||pairId||'';const selectedChars=new Set(Array.isArray(x?.characterIds)?x.characterIds:[]);const author=x?.author||appProfile.displayName||'';
+  document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>${x?'SSを編集':'SSを作成'}</h2><div class="field"><label>タイトル <span style="color:#a22041">*</span></label><input id="ssTitle" value="${esc(x?.title||'')}" placeholder="例：雨の日の帰り道"></div><div class="field"><label>作者</label><input id="ssAuthor" value="${esc(author)}" placeholder="表示名"></div><div class="field"><label>うちよそ</label><select id="ssPairId" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)"><option value="">指定しない</option>${pairs.map(p=>`<option value="${esc(String(p.id))}" ${String(selectedPair)===String(p.id)?'selected':''}>${esc(p.name||'名前なし')}</option>`).join('')}</select></div><div class="field"><label>登場キャラクター</label><div class="ss-char-list">${characters.length?characters.map(c=>`<label class="ss-char-chip"><input type="checkbox" class="ss-char-check" value="${esc(String(c.id))}" ${selectedChars.has(String(c.id))?'checked':''}>${esc(c.name||'名前なし')}</label>`).join(''):'<span class="sub">登録キャラクターがいません。</span>'}</div></div><div class="field"><label>本文 <span style="color:#a22041">*</span></label><textarea id="ssBody" class="ss-editor-textarea" placeholder="ここにSSを書いてね。HTMLではなく普通の文章で保存されます。">${esc(x?.body||'')}</textarea></div><div class="field"><label>タグ</label><input id="ssTags" value="${esc(x?.tags||'')}" placeholder="例：日常、雨、仲直り"></div><div class="field"><label>メモ</label><textarea id="ssMemo" placeholder="作品についてのメモ">${esc(x?.memo||'')}</textarea></div><div class="ss-action-row"><button class="primary" id="ssSaveBtn">${x?'更新する':'保存する'}</button><button class="secondary" id="ssCancelBtn">キャンセル</button></div>`;
+  document.getElementById('modal').style.display='flex';document.getElementById('ssSaveBtn').addEventListener('click',()=>saveSSEdit(id));document.getElementById('ssCancelBtn').addEventListener('click',closeModal);
+}
+async function saveSSEdit(id){
+  const title=document.getElementById('ssTitle')?.value.trim()||'';const body=document.getElementById('ssBody')?.value||'';if(!title){toast('タイトルを入力してください');return}if(!body.trim()){toast('本文を入力してください');return}
+  const chars=[...document.querySelectorAll('.ss-char-check:checked')].map(el=>el.value);const now=new Date().toISOString();let x=id?ssWorks.find(v=>String(v.id)===String(id)):null;
+  if(x){x.title=title;x.body=body;x.author=document.getElementById('ssAuthor').value.trim();x.pairId=document.getElementById('ssPairId').value||'';x.characterIds=chars;x.tags=document.getElementById('ssTags').value.trim();x.memo=document.getElementById('ssMemo').value.trim();x.updatedAt=now}
+  else{x={id:(crypto.randomUUID?crypto.randomUUID():'ss_'+Date.now()+'_'+Math.floor(Math.random()*1000)),type:'ss',title,body,author:document.getElementById('ssAuthor').value.trim(),pairId:document.getElementById('ssPairId').value||'',characterIds:chars,tags:document.getElementById('ssTags').value.trim(),memo:document.getElementById('ssMemo').value.trim(),createdAt:now,updatedAt:now};ssWorks.unshift(x)}
+  saveSSMeta();if(supabaseClient&&currentUser){const ok=await syncSSToSupabase(x);if(!ok)toast('端末には保存しましたが共有保存に失敗しました')}closeModal();galleryFilter='ss';renderGallery(galleryPairContextId);toast(id?'SSを更新しました':'SSを保存しました')
+}
+function openSSDetail(id){const x=ssWorks.find(v=>String(v.id)===String(id));if(!x)return;const chars=ssCharacterNames(x);const tags=ssTagsArray(x.tags);const gp=x.pairId?pairs.find(p=>String(p.id)===String(x.pairId)):null;document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button>${gp?`<button class="secondary pair-back" id="ssPairBackBtn">← ${esc(gp.name)}へ戻る</button>`:''}<div class="ss-detail-title">${esc(x.title||'無題のSS')}</div><div class="ss-detail-meta">作者：${esc(x.author||'未設定')}<br>作成：${x.createdAt?esc(new Date(x.createdAt).toLocaleString('ja-JP')):'-'}<br>最終更新：${x.updatedAt?esc(new Date(x.updatedAt).toLocaleString('ja-JP')):'-'}</div>${chars.length?`<div class="ss-char-list" style="margin-top:10px">${chars.map(c=>`<span class="ss-char-chip">${esc(c)}</span>`).join('')}</div>`:''}${tags.length?`<div class="ss-tags">${tags.map(t=>`<span class="ss-tag">${esc(t)}</span>`).join('')}</div>`:''}<div class="detail-box ss-body" style="margin-top:14px">${esc(x.body||'')}</div>${x.memo?`<div class="detail-box" style="margin-top:10px"><b>メモ</b><br>${esc(x.memo)}</div>`:''}<div class="ss-action-row"><button class="primary" id="ssEditBtn">編集</button><button class="danger" id="ssDeleteBtn">削除</button></div>`;document.getElementById('modal').style.display='flex';document.getElementById('ssPairBackBtn')?.addEventListener('click',()=>{closeModal();pair(gp.id)});document.getElementById('ssEditBtn').addEventListener('click',()=>openSSEditor(x.id,x.pairId));document.getElementById('ssDeleteBtn').addEventListener('click',()=>deleteSS(x.id))}
+async function deleteSS(id){const x=ssWorks.find(v=>String(v.id)===String(id));if(!x)return;if(!confirm(`「${x.title||'無題のSS'}」を削除しますか？\n\nこの操作は取り消せません。`))return;if(supabaseClient&&currentUser&&x.supabaseId){try{const {error}=await supabaseClient.from('gallery_items').delete().eq('id',x.supabaseId);if(error)throw error}catch(e){console.error('共有SS削除エラー:',e);toast('共有側の削除に失敗しました');return}}ssWorks=ssWorks.filter(v=>String(v.id)!==String(id));saveSSMeta();closeModal();renderGallery(galleryPairContextId);toast('SSを削除しました')}
+window.openSSEditor=openSSEditor;window.openSSDetail=openSSDetail;window.deleteSS=deleteSS;window.setGalleryFilter=setGalleryFilter;
+function deleteGalleryItem(id){
   const x=gallery.find(g=>g.id===id);if(!x)return;
   if(!confirm(`「${x.title||'無題'}」を削除しますか？\n\nこの操作は取り消せません。`))return;
   try{await deleteGalleryBlob(id)}catch(e){}
