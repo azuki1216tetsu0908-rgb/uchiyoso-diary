@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#18283f">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>うちよそ日記 v0.3.59</title>
+<title>うちよそ日記 v0.3.60</title>
 <style>
 :root{--bg:#fcfbf7;--card:#fffefa;--ink:#24334a;--muted:#687386;--line:#dfe3e8;--accent:#243b5a;--accent2:#526b8a;--soft:#edf1f5;--shadow:#24334a12}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}.app{min-height:100vh;max-width:720px;margin:auto;padding-bottom:84px}.top{padding:24px 18px 12px}.brand{font-size:25px;font-weight:800;letter-spacing:.03em}.sub{font-size:12px;color:var(--muted);margin-top:4px}.content{padding:8px 16px}.section{margin:18px 0 10px;font-weight:800}.hero{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:14px}.hero h1{margin:0 0 6px;font-size:22px}.hero p{margin:0;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 14px var(--shadow)}.pair{display:flex;gap:12px;align-items:center;cursor:pointer}.thumb{width:58px;height:58px;border-radius:16px;background:#eef1f3;display:grid;place-items:center;font-size:25px;overflow:hidden;flex:none}.thumb img,.avatar img{width:100%;height:100%;object-fit:cover}.pair h3{margin:0;font-size:15px}.pair p{margin:4px 0 0;color:var(--muted);font-size:11px}.action{display:flex;align-items:center;justify-content:center;min-height:96px;cursor:pointer;text-align:center}.action b{display:block;margin-top:5px;font-size:13px}.icon{font-size:25px;color:var(--accent)}.icon-svg{width:38px;height:38px;display:block;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;margin:auto}.icon-svg circle{fill:currentColor;stroke:none}.icon-svg .head{fill:none;stroke:currentColor;stroke-width:3}.home-primary-card{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 6px 16px #243b5a22}.home-primary-card .sub,.home-primary-card p{color:#eef3f8}.home-primary-card .thumb{background:#ffffff18;color:#fff}.home-primary-card .thumb .icon-svg{color:#fff}.home-primary-card .position-badge{background:#ffffff20;color:#fff}.home-primary-card .home-arrow{color:#fff!important}.settings-icon{width:38px;height:38px;display:grid;place-items:center;color:var(--accent);flex:none}.settings-icon .icon-svg{width:32px;height:32px}.home-section-card{background:var(--card);color:var(--ink);border-color:var(--line);box-shadow:0 4px 14px var(--shadow)}
@@ -206,7 +206,7 @@ function updateAuthGate(){
     gate.style.display='none';
     // 初回ログイン時だけホームを表示。
     // メール確認・トークン更新などのAuthイベントでは現在の画面を維持する。
-    if(!appReady){appReady=true;show('home');setTimeout(async()=>{await loadSharedPairs({refreshView:false});await loadSharedCharacters({refreshView:false});await loadSharedSessionLogs({refreshView:false});await loadSharedSS({refreshView:false});await loadSharedMatrices();show('home');},0);}
+    if(!appReady){appReady=true;show('home');setTimeout(async()=>{await sessionLogStorageReady;await loadSharedPairs({refreshView:false});await loadSharedCharacters({refreshView:false});await loadSharedSessionLogs({refreshView:false});await hydrateSessionLogBlobs();await loadSharedSS({refreshView:false});await loadSharedMatrices();show('home');},0);}
   }else{
     appReady=false;
     gate.style.display='flex';
@@ -243,7 +243,8 @@ function authFriendlyError(e){const m=String(e?.message||e);if(/Invalid login cr
 async function signOutApp(){if(!supabaseClient)return;const {error}=await supabaseClient.auth.signOut();if(error){toast('ログアウトに失敗しました');return}currentUser=null;appReady=false;currentWorkspace=null;localStorage.removeItem(WORKSPACE_KEY);updateAuthGate();toast('ログアウトしました')}
 
 let pairs=JSON.parse(localStorage.getItem(PAIR_KEY)||'null')||[{id:1,name:'カナタ × レイ',desc:'世界の隅で、ふたり',date:'2024.06.12',characters:[]},{id:2,name:'ルカ × ソラ',desc:'君と見た夢の先',date:'2024.02.03',characters:[]}];
-let sessionLogs=JSON.parse(localStorage.getItem(SESSION_LOG_KEY)||'[]');
+let sessionLogs=[];
+try{sessionLogs=JSON.parse(localStorage.getItem(SESSION_LOG_KEY)||'[]');if(!Array.isArray(sessionLogs))sessionLogs=[];}catch(e){console.error('セッションログ一覧の読み込みに失敗しました:',e);sessionLogs=[];}
 const SKILL_GROUPS=['戦闘技能','探索技能','行動技能','交渉技能','知識技能'];
 const DEFAULT_SKILL_CATEGORIES={
   '回避':'戦闘技能','キック':'戦闘技能','組み付き':'戦闘技能','こぶし（パンチ）':'戦闘技能','頭突き':'戦闘技能','投擲':'戦闘技能','マーシャルアーツ':'戦闘技能','拳銃':'戦闘技能','サブマシンガン':'戦闘技能','ショットガン':'戦闘技能','マシンガン':'戦闘技能','ライフル':'戦闘技能',
@@ -298,7 +299,61 @@ async function deleteGalleryBlob(id){
   });
 }
 
-function saveSessionLogs(){localStorage.setItem(SESSION_LOG_KEY,JSON.stringify(sessionLogs));}
+const SESSION_LOG_DB='uchiyoso_session_logs_db_v1', SESSION_LOG_STORE='logs';
+let sessionLogDbPromise=null;
+function openSessionLogDB(){
+  if(sessionLogDbPromise)return sessionLogDbPromise;
+  sessionLogDbPromise=new Promise((resolve,reject)=>{
+    const req=indexedDB.open(SESSION_LOG_DB,1);
+    req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(SESSION_LOG_STORE))db.createObjectStore(SESSION_LOG_STORE)};
+    req.onsuccess=()=>resolve(req.result);req.onerror=()=>{sessionLogDbPromise=null;reject(req.error)};
+  });
+  return sessionLogDbPromise;
+}
+async function putSessionLogBlob(id,data){
+  const db=await openSessionLogDB();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(SESSION_LOG_STORE,'readwrite');
+    tx.objectStore(SESSION_LOG_STORE).put({logHtml:String(data?.logHtml||''),updatedAt:data?.updatedAt||new Date().toISOString()},String(id));
+    tx.oncomplete=()=>{db.close();sessionLogDbPromise=null;resolve()};tx.onerror=()=>{db.close();sessionLogDbPromise=null;reject(tx.error)};
+  });
+}
+async function getSessionLogBlob(id){
+  const db=await openSessionLogDB();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(SESSION_LOG_STORE,'readonly');const req=tx.objectStore(SESSION_LOG_STORE).get(String(id));
+    req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error);tx.oncomplete=()=>{db.close();sessionLogDbPromise=null};
+  });
+}
+async function deleteSessionLogBlob(id){
+  try{const db=await openSessionLogDB();return await new Promise((resolve,reject)=>{const tx=db.transaction(SESSION_LOG_STORE,'readwrite');tx.objectStore(SESSION_LOG_STORE).delete(String(id));tx.oncomplete=()=>{db.close();sessionLogDbPromise=null;resolve()};tx.onerror=()=>{db.close();sessionLogDbPromise=null;reject(tx.error)}})}catch(e){console.error('セッションログ本文の削除に失敗しました:',e)}
+}
+function sessionLogMeta(x){const d={...(x||{})};delete d.logHtml;delete d.parsed;return d;}
+function saveSessionLogs(){
+  try{localStorage.setItem(SESSION_LOG_KEY,JSON.stringify(sessionLogs.map(sessionLogMeta)));return true;}
+  catch(e){console.error('セッションログ一覧の保存に失敗しました:',e);toast('ログ一覧の保存に失敗しました。ログ本文は別保存を試みます。');return false;}
+}
+async function hydrateSessionLogBlobs(){
+  try{
+    const db=await openSessionLogDB();
+    const rows=await new Promise((resolve,reject)=>{const tx=db.transaction(SESSION_LOG_STORE,'readonly');const req=tx.objectStore(SESSION_LOG_STORE).getAll();req.onsuccess=()=>resolve(req.result||[]);req.onerror=()=>reject(req.error);tx.oncomplete=()=>{db.close();sessionLogDbPromise=null}});
+    const byId=new Map(rows.map(v=>[String(v?.id||''),v]));
+    for(const x of sessionLogs){const row=byId.get(String(x.id));if(row?.logHtml){x.logHtml=String(row.logHtml);x.parsed=parseSessionLogHtml(x.logHtml);x.participants=x.participants?.length?x.participants:sessionEntriesParticipants(x.parsed.entries||[]);x.entryCount=x.entryCount||x.parsed.entries.length;}}
+  }catch(e){console.error('セッションログ本文の復元に失敗しました:',e);}
+}
+async function migrateSessionLogsToIndexedDB(){
+  try{
+    let changed=false;
+    for(const x of sessionLogs){
+      if(!x?.id||!x?.logHtml)continue;
+      await putSessionLogBlob(x.id,{logHtml:x.logHtml,updatedAt:x.updatedAt});
+      delete x.logHtml;delete x.parsed;changed=true;
+    }
+    if(changed)saveSessionLogs();
+    await hydrateSessionLogBlobs();
+  }catch(e){console.error('セッションログ保存形式の移行に失敗しました:',e);await hydrateSessionLogBlobs();}
+}
+const sessionLogStorageReady=migrateSessionLogsToIndexedDB();
 function reportListForPair(pairId){const p=pairs.find(v=>String(v.id)===String(pairId));return Array.isArray(p?.reports)?p.reports:[]}
 function savePairReports(pairId,reports){const p=pairs.find(v=>String(v.id)===String(pairId));if(!p)return false;p.reports=Array.isArray(reports)?reports:[];save();return true}
 function reportStatusLabel(v){return ({planned:'予定',inprogress:'進行中',completed:'完了'})[v]||'予定'}
@@ -333,7 +388,9 @@ async function loadSharedSessionLogs(options={}){
       const d=(row.data&&typeof row.data==='object')?row.data:{};const localId=String(d.local_id||'');if(!localId)continue;
       const idx=sessionLogs.findIndex(x=>String(x.id)===localId);
       const pairId=d.local_pair_id||'';
-      const merged={...(idx>=0?sessionLogs[idx]:{}),...d,id:idx>=0?sessionLogs[idx].id:localId,supabaseId:row.id,pairId:pairId||sessionLogs[idx]?.pairId||'',scenarioName:String(row.scenario_name??d.scenarioName??''),playedAt:row.played_at||d.playedAt||'',logHtml:String(row.log_html??d.logHtml??'')};
+      const remoteHtml=String(row.log_html??d.logHtml??'');
+      const merged={...(idx>=0?sessionLogs[idx]:{}),...d,id:idx>=0?sessionLogs[idx].id:localId,supabaseId:row.id,pairId:pairId||sessionLogs[idx]?.pairId||'',scenarioName:String(row.scenario_name??d.scenarioName??''),playedAt:row.played_at||d.playedAt||'',logHtml:remoteHtml};
+      if(remoteHtml)await putSessionLogBlob(merged.id,{logHtml:remoteHtml,updatedAt:row.updated_at||new Date().toISOString()});
       if(idx>=0)sessionLogs[idx]=merged;else sessionLogs.push(merged);changed=true;
     }
     const remoteIds=new Set(rows.map(r=>String(r.id)));
@@ -530,10 +587,11 @@ async function confirmSessionLog(pairId,editId=null){
   const existing=editId?sessionLogs.find(v=>String(v.id)===String(editId)):null;const html=window.pendingSessionLogHtml;const scenario=document.getElementById('sessionScenario')?.value.trim()||'';const systemName=document.getElementById('sessionSystem')?.value.trim()||'';const played=document.getElementById('sessionPlayedAt')?.value||'';const status=document.getElementById('sessionStatus')?.value||'passed';const memo=document.getElementById('sessionMemo')?.value||'';
   if(!scenario){toast('シナリオ名を入力してね');return;} if(!html){toast('HTMLログを選んでね');return;}
   const parsed=window.pendingSessionLogParsed||parseSessionLogHtml(html);const x=existing||{id:Date.now()+Math.floor(Math.random()*1000),pairId,createdAt:new Date().toISOString()};Object.assign(x,{pairId,scenarioName:scenario,systemName,playedAt:played?new Date(played).toISOString():'',status,memo,logHtml:html,parsed,participants:parsed.participants,entryCount:parsed.entries.length,sourceFileName:document.getElementById('sessionFile')?.files?.[0]?.name||existing?.sourceFileName||'',updatedAt:new Date().toISOString()});
+  try{await putSessionLogBlob(x.id,{logHtml:html,updatedAt:x.updatedAt});}catch(e){console.error('セッションログ本文の保存に失敗しました:',e);toast('ログ本文の保存に失敗したため登録を中止しました');return;}
   if(!existing)sessionLogs.push(x);saveSessionLogs();window.pendingSessionLogHtml=null;window.pendingSessionLogParsed=null;closeModal();renderSessionLogs(pairId);
   if(supabaseClient&&currentUser&&currentWorkspace){const ok=await syncSessionLogToSupabase(x);if(ok){saveSessionLogs();toast(existing?'セッションログを更新しました（共有済み）':'セッションログを登録しました（共有済み）')}else toast(existing?'セッションログを更新しました（共有保存に失敗）':'セッションログを登録しました（共有保存に失敗）')}else toast(existing?'セッションログを更新しました':'セッションログを登録しました');
 }
-async function deleteSessionLog(id){const x=sessionLogs.find(v=>String(v.id)===String(id));if(!x)return;if(!confirm(`「${x.scenarioName||'シナリオ名未設定'}」を削除しますか？\n\nこの操作は取り消せません。`))return;if(supabaseClient&&currentUser&&currentWorkspace&&x.supabaseId){try{const {error}=await supabaseClient.from('session_logs').delete().eq('id',x.supabaseId);if(error)throw error;}catch(e){console.error('共有セッションログ削除エラー:',e);toast('共有側の削除に失敗しました');return;}}sessionLogs=sessionLogs.filter(v=>String(v.id)!==String(id));saveSessionLogs();renderSessionLogs(currentPairId);toast('セッションログを削除しました');}
+async function deleteSessionLog(id){const x=sessionLogs.find(v=>String(v.id)===String(id));if(!x)return;if(!confirm(`「${x.scenarioName||'シナリオ名未設定'}」を削除しますか？\n\nこの操作は取り消せません。`))return;if(supabaseClient&&currentUser&&currentWorkspace&&x.supabaseId){try{const {error}=await supabaseClient.from('session_logs').delete().eq('id',x.supabaseId);if(error)throw error;}catch(e){console.error('共有セッションログ削除エラー:',e);toast('共有側の削除に失敗しました');return;}}sessionLogs=sessionLogs.filter(v=>String(v.id)!==String(id));await deleteSessionLogBlob(id);saveSessionLogs();renderSessionLogs(currentPairId);toast('セッションログを削除しました');}
 function save(){localStorage.setItem(PAIR_KEY,JSON.stringify(pairs));localStorage.setItem(CHAR_KEY,JSON.stringify(characters));localStorage.setItem(APP_PROFILE_KEY,JSON.stringify(appProfile));localStorage.setItem(APP_NOTIFY_KEY,JSON.stringify(appNotifications));saveGalleryMeta();saveSSMeta()}
 
 
@@ -1033,7 +1091,7 @@ async function syncMatrixToSupabase(m){if(!supabaseClient||!currentUser||!curren
 let matrixSyncBusy=false;
 async function loadSharedMatrices(){if(matrixSyncBusy||!supabaseClient||!currentUser)return;matrixSyncBusy=true;try{const w=await getSharedWorkspace();if(!w?.id)return;const {data,error}=await supabaseClient.from('gallery_items').select('id,title,data,updated_at').eq('workspace_id',w.id).eq('image_type','illustration');if(error)throw error;const rows=(data||[]).filter(r=>r?.data?.kind==='matrix');for(const row of rows){const d=row.data||{};const localId=String(d.local_id||'');if(!localId)continue;const idx=matrices.findIndex(x=>String(x.id)===localId);const merged={...(idx>=0?matrices[idx]:{}),...d,id:idx>=0?matrices[idx].id:localId,supabaseId:row.id};if(idx>=0)matrices[idx]=merged;else matrices.push(merged)}saveMatrices()}catch(e){console.error('共有マトリクス読み込みエラー:',e)}finally{matrixSyncBusy=false}}
 async function deleteMatrix(id){const m=matrices.find(x=>String(x.id)===String(id));if(!m)return;if(!confirm(`「${m.title||'無題のマトリクス'}」を削除しますか？`))return;if(supabaseClient&&currentUser&&currentWorkspace&&m.supabaseId){try{const {error}=await supabaseClient.from('gallery_items').delete().eq('id',m.supabaseId);if(error)throw error}catch(e){toast('共有側の削除に失敗しました');return}}else if(supabaseClient&&currentUser&&currentWorkspace){try{await supabaseClient.from('gallery_items').delete().eq('workspace_id',currentWorkspace.id).filter('data->>kind','eq','matrix').filter('data->>local_id','eq',String(id))}catch(e){}}matrices=matrices.filter(x=>String(x.id)!==String(id));saveMatrices();renderMatrices();toast('マトリクスを削除しました')}
-function showUpdateReports(){const v=document.getElementById('view');document.getElementById('fab').style.display='none';const reports=[{version:'v0.3.59',date:'2026/09/21',title:'マトリクス一覧をすっきり整理',items:['保存したマトリクスの一覧にプレビューを表示しないようにしました']},{version:'v0.3.58',date:'2026/09/21',title:'マトリクスの軸ラベルを見やすく調整',items:['左右の軸ラベルを縦書きで表示するようにしました','上下左右の軸ラベルを大きく・太くして見やすくしました']},{version:'v0.3.57',date:'2026/09/21',title:'関係性マトリクスを追加',items:['ギャラリーの横に「マトリクス」ページを追加','2軸のラベルを自由に設定できるようにしました','キャラクターを好きな位置へドラッグして配置できます']},{version:'v0.3.56',date:'2026/09/20',title:'アップデート報告を追加',items:['設定からアップデート内容を確認できるようにしました']},{version:'v0.3.55',date:'2026/09/20',title:'卓報告・セッションログを強化',items:['卓報告の整理機能を追加','セッションログの各ブロックを個別に修正できるようにしました']}];v.innerHTML=`<button class="secondary" onclick="show('settings')">← 設定へ戻る</button><div class="section">アップデート報告</div><div class="update-report-intro">最近のアップデート内容を、最新5件だけ表示しています。</div>${reports.map((r,i)=>`<article class="update-report-card"><div class="update-report-head"><span class="update-report-version">${esc(r.version)}</span>${i===0?'<span class="update-report-new">NEW</span>':''}<span class="update-report-date">${esc(r.date)}</span></div><div class="update-report-title">${esc(r.title)}</div><ul class="update-report-list">${r.items.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></article>`).join('')}`}
+function showUpdateReports(){const v=document.getElementById('view');document.getElementById('fab').style.display='none';const reports=[{version:'v0.3.60',date:'2026/09/21',title:'セッションログをたくさん保存できるように改善',items:['大きなHTMLログをlocalStorageではなくIndexedDBに保存するようにしました','既存のセッションログは自動的に新しい保存方式へ移行します','今後ログが増えてもブラウザのlocalStorage容量で詰まりにくくなりました']},{version:'v0.3.59',date:'2026/09/21',title:'マトリクス一覧をすっきり整理',items:['保存したマトリクスの一覧にプレビューを表示しないようにしました']},{version:'v0.3.58',date:'2026/09/21',title:'マトリクスの軸ラベルを見やすく調整',items:['左右の軸ラベルを縦書きで表示するようにしました','上下左右の軸ラベルを大きく・太くして見やすくしました']},{version:'v0.3.57',date:'2026/09/21',title:'関係性マトリクスを追加',items:['ギャラリーの横に「マトリクス」ページを追加','2軸のラベルを自由に設定できるようにしました','キャラクターを好きな位置へドラッグして配置できます']},{version:'v0.3.56',date:'2026/09/20',title:'アップデート報告を追加',items:['設定からアップデート内容を確認できるようにしました']},{version:'v0.3.55',date:'2026/09/20',title:'卓報告・セッションログを強化',items:['卓報告の整理機能を追加','セッションログの各ブロックを個別に修正できるようにしました']}];v.innerHTML=`<button class="secondary" onclick="show('settings')">← 設定へ戻る</button><div class="section">アップデート報告</div><div class="update-report-intro">最近のアップデート内容を、最新5件だけ表示しています。</div>${reports.slice(0,5).map((r,i)=>`<article class="update-report-card"><div class="update-report-head"><span class="update-report-version">${esc(r.version)}</span>${i===0?'<span class="update-report-new">NEW</span>':''}<span class="update-report-date">${esc(r.date)}</span></div><div class="update-report-title">${esc(r.title)}</div><ul class="update-report-list">${r.items.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></article>`).join('')}`}
 function show(tab){
   const valid=['home','calendar','gallery','matrix','observe','settings'];
   if(!valid.includes(tab))tab='home';
@@ -1405,7 +1463,9 @@ async function deletePair(id){
     }
   }
   pairs=pairs.filter(x=>String(x.id)!==String(id));
+  const removedSessionLogs=sessionLogs.filter(x=>String(x.pairId)===String(id));
   sessionLogs=sessionLogs.filter(x=>String(x.pairId)!==String(id));
+  for(const log of removedSessionLogs){await deleteSessionLogBlob(log.id);}
   saveSessionLogs();
   characters.forEach(c=>{if(Array.isArray(c.pairIds))c.pairIds=c.pairIds.filter(x=>String(x)!==String(id));if(c.pairRelations)delete c.pairRelations[String(id)]});
   save();
