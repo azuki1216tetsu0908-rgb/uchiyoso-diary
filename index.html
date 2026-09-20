@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#18283f">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>うちよそ日記 v0.3.46</title>
+<title>うちよそ日記 v0.3.48</title>
 <style>
 :root{--bg:#fcfbf7;--card:#fffefa;--ink:#24334a;--muted:#687386;--line:#dfe3e8;--accent:#243b5a;--accent2:#526b8a;--soft:#edf1f5;--shadow:#24334a12}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}.app{min-height:100vh;max-width:720px;margin:auto;padding-bottom:84px}.top{padding:24px 18px 12px}.brand{font-size:25px;font-weight:800;letter-spacing:.03em}.sub{font-size:12px;color:var(--muted);margin-top:4px}.content{padding:8px 16px}.section{margin:18px 0 10px;font-weight:800}.hero{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:14px}.hero h1{margin:0 0 6px;font-size:22px}.hero p{margin:0;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 14px var(--shadow)}.pair{display:flex;gap:12px;align-items:center;cursor:pointer}.thumb{width:58px;height:58px;border-radius:16px;background:#eef1f3;display:grid;place-items:center;font-size:25px;overflow:hidden;flex:none}.thumb img,.avatar img{width:100%;height:100%;object-fit:cover}.pair h3{margin:0;font-size:15px}.pair p{margin:4px 0 0;color:var(--muted);font-size:11px}.action{display:flex;align-items:center;justify-content:center;min-height:96px;cursor:pointer;text-align:center}.action b{display:block;margin-top:5px;font-size:13px}.icon{font-size:25px;color:var(--accent)}.icon-svg{width:38px;height:38px;display:block;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;margin:auto}.icon-svg circle{fill:currentColor;stroke:none}.icon-svg .head{fill:none;stroke:currentColor;stroke-width:3}.home-primary-card{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 6px 16px #243b5a22}.home-primary-card .sub,.home-primary-card p{color:#eef3f8}.home-primary-card .thumb{background:#ffffff18;color:#fff}.home-primary-card .thumb .icon-svg{color:#fff}.home-primary-card .position-badge{background:#ffffff20;color:#fff}.home-primary-card .home-arrow{color:#fff!important}.settings-icon{width:38px;height:38px;display:grid;place-items:center;color:var(--accent);flex:none}.settings-icon .icon-svg{width:32px;height:32px}.home-section-card{background:var(--card);color:var(--ink);border-color:var(--line);box-shadow:0 4px 14px var(--shadow)}
@@ -325,16 +325,16 @@ async function loadSharedSessionLogs(options={}){
 function formatPlayedAt(v){if(!v)return 'プレイ日未設定';try{return new Date(v).toLocaleString('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});}catch(e){return String(v)}}
 function logForPair(pairId){return sessionLogs.filter(x=>String(x.pairId)===String(pairId)).sort((a,b)=>String(b.playedAt||b.createdAt||'').localeCompare(String(a.playedAt||a.createdAt||'')));}
 function normalizeSessionChannel(raw,label){
-  const c=String(raw||'').trim().toLowerCase(); const l=String(label||'').trim();
-  // このログ形式では data-channel の "other" が雑談。
-  // 表示ラベルより data-channel を優先し、other を絶対に本編へ混ぜない。
+  const c=String(raw||'').trim().toLowerCase();
+  const l=String(label||'').replace(/\s+/g,'').trim().toLowerCase();
+  // CCFOLIA/旧形式: [main] = 本編、[other] = 雑談、[info] = 本編扱い。
+  // 新形式: data-channel="other" = 雑談。
   if(c==='other'||c==='雑談'||c==='chat')return 'other';
   if(c==='wall'||c==='wallchat'||c.includes('wall')||c.includes('壁打ち'))return 'wall';
-  if(c==='main'||c==='メイン')return 'main';
-  // data-channel がない旧形式では表示ラベルから判定する。
-  if(l==='[other]'||l.toLowerCase()==='[other]'||l.includes('雑談')||l.includes('その他'))return 'other';
-  if(l.includes('壁打ち'))return 'wall';
-  if(l==='[情報]'||l.includes('情報')||l==='[メイン]'||l.includes('メイン'))return 'main';
+  if(c==='main'||c==='メイン'||c==='info'||c==='information')return 'main';
+  if(l==='[other]'||l.includes('[other]')||l.includes('雑談')||l.includes('その他'))return 'other';
+  if(l==='[wall]'||l.includes('壁打ち')||l.includes('[wall]'))return 'wall';
+  if(l==='[main]'||l.includes('[main]')||l==='[info]'||l.includes('[info]')||l.includes('メイン')||l.includes('情報'))return 'main';
   return c||'main';
 }
 function parseSessionLogHtml(html){
@@ -351,72 +351,76 @@ function parseSessionLogHtml(html){
       const bodyNode=a.querySelector('.message-text'); const rollNode=a.querySelector('.roll-result');
       const text=(bodyNode?.textContent||'').replace(/\u00a0/g,' ').trim(); const bodyHtml=(bodyNode?.innerHTML||'').trim();
       const rollText=(rollNode?.textContent||'').replace(/\u00a0/g,' ').trim(); const rollHtml=(rollNode?.outerHTML||'').trim();
-      if(!text && !rollText)continue;
+      if(!text&&!rollText)continue;
       const color=(a.querySelector('.speaker')?.getAttribute('style')||'').match(/color\s*:\s*([^;]+)/i)?.[1]?.trim()||'';
       let type='character'; if(a.classList.contains('system')||speaker.toLowerCase()==='system')type='system'; else if(speaker.startsWith('▼')||!speaker)type='narration'; else if(rollNode||/(?:\b(?:CCB|CC|CB|1D|2D|3D|1d|2d|3d)\b|\b\d+R\d+|成功数|致命的失敗|クリティカル|ファンブル|失敗)/i.test(text))type='dice';
       addParticipant(speaker,color);
       entries.push({type,channel,speaker,color,text,html:bodyHtml+(rollHtml?`<div class="session-roll-inline">${rollHtml}</div>`:''),time,rollText});
     }
   } else {
+    // 旧CCFOLIA形式: <p><span>[main]</span><span>名前</span> : <span>本文</span></p>
+    // :scope に依存せず、直下の span を明示的に拾うのでSafari/iPhoneでも安定。
     const nodes=[...doc.body.querySelectorAll('p')];
     for(const p of nodes){
-      const spans=[...p.querySelectorAll(':scope > span')]; if(spans.length<2)continue;
-      const label=(spans[0]?.textContent||'').trim(); const channel=normalizeSessionChannel(label,label); const speaker=(spans[1]?.textContent||'').replace(/\s+/g,' ').trim(); const bodyNode=spans[2]||spans[spans.length-1]; const text=(bodyNode?.textContent||'').replace(/\u00a0/g,' ').trim(); const htmlBody=(bodyNode?.innerHTML||'').trim(); if(!text&&!htmlBody)continue;
-      const color=(p.getAttribute('style')||'').match(/color\s*:\s*([^;]+)/i)?.[1]?.trim()||''; let type=speaker==='system'?'system':speaker==='▼'?'narration':/(?:\b(?:CCB|CC|CB|1D|2D|3D)\b|成功数|失敗|クリティカル|ファンブル)/i.test(text)?'dice':'character'; addParticipant(speaker,color); entries.push({type,channel,speaker,color,text,html:htmlBody,time:'',rollText:''});
+      const spans=[...p.children].filter(el=>el.tagName==='SPAN');
+      if(spans.length<3)continue;
+      const label=(spans[0]?.textContent||'').trim();
+      const channel=normalizeSessionChannel('',label);
+      const speaker=(spans[1]?.textContent||'').replace(/\s+/g,' ').trim();
+      const bodyNode=spans[2];
+      const text=(bodyNode?.textContent||'').replace(/\u00a0/g,' ').trim();
+      const htmlBody=(bodyNode?.innerHTML||'').trim();
+      if(!text&&!htmlBody)continue;
+      const color=(p.getAttribute('style')||'').match(/color\s*:\s*([^;]+)/i)?.[1]?.trim()||'';
+      let type=speaker.toLowerCase()==='system'?'system':speaker==='▼'?'narration':/(?:\b(?:CCB|CC|CB|1D|2D|3D)\b|成功数|失敗|クリティカル|ファンブル)/i.test(text)?'dice':'character';
+      addParticipant(speaker,color);
+      entries.push({type,channel,speaker,color,text,html:htmlBody,time:'',rollText:''});
     }
   }
   if(!entries.length){const text=(doc.body?.innerText||'').trim();if(text)entries.push({type:'narration',channel:'main',speaker:'▼',color:'#888888',text,html:esc(text),time:'',rollText:''})}
   return {entries,participants,count:entries.length,channels:{main:entries.filter(e=>e.channel==='main').length,other:entries.filter(e=>e.channel==='other').length,wall:entries.filter(e=>e.channel==='wall').length}};
 }
-function normalizeCharacterMatch(v){
-  return String(v||'')
-    .replace(/（[^）]*）/g,'')
-    .replace(/\([^)]*\)/g,'')
-    .replace(/[\s　]/g,'')
-    .replace(/[「」『』【】［］\[\]・]/g,'')
-    .toLowerCase()
-    .trim();
-}
 function characterForLogSpeaker(name){
-  const n=normalizeCharacterMatch(name); if(!n)return null;
-  return characters.find(c=>{
-    const cn=normalizeCharacterMatch(c.name);
-    return cn===n || (cn&&n&&((cn.includes(n)||n.includes(cn))));
-  })||null;
+  const n=String(name||'').replace(/\s+/g,'').trim(); if(!n)return null;
+  const norm=normalizeMatchText(n);
+  return characters.find(c=>normalizeMatchText(c.name)===norm||normalizeMatchText(c.name).includes(norm)||norm.includes(normalizeMatchText(c.name)))||null;
+}
+function findStandingForCharacter(c){
+  if(!c)return null;
+  const cid=String(c.id||'');
+  let item=gallery.find(g=>g.type==='standing'&&String(g.characterId||'')===cid);
+  if(item)return item;
+  const cn=normalizeMatchText(c.name||'');
+  if(cn)item=gallery.find(g=>g.type==='standing'&&[g.title,g.tags,g.memo,g.sourceFileName].some(v=>normalizeMatchText(v).includes(cn)));
+  return item||null;
 }
 function sessionAvatarHtml(e){
   if(e.type!=='character'||!e.speaker)return '<div class="session-entry-avatar" aria-hidden="true"></div>';
-  const c=characterForLogSpeaker(e.speaker);
-  return `<div class="session-entry-avatar" data-session-speaker="${esc(e.speaker)}" title="${esc(c?.name||e.speaker)}" aria-label="${esc(c?.name||e.speaker)}"></div>`;
+  const c=characterForLogSpeaker(e.speaker); const src=c?.iconUrls?.[0]||'';
+  return `<div class="session-entry-avatar" data-session-speaker="${esc(e.speaker)}" title="${esc(c?.name||e.speaker)}">${src?`<img src="${esc(src)}" alt="">`:'♙'}</div>`;
 }
 function normalizeMatchText(v){return String(v||'').replace(/[\s　]/g,'').replace(/[「」『』【】［］\[\]()（）・]/g,'').toLowerCase()}
 async function hydrateSessionAvatars(){
   const nodes=[...document.querySelectorAll('[data-session-speaker]')];
   for(const box of nodes){
     const speaker=box.getAttribute('data-session-speaker')||''; const c=characterForLogSpeaker(speaker);
-    let item=null;
-    const sn=normalizeMatchText(speaker);
-    if(c){
-      // まず「この立ち絵はこのキャラクター」と紐づいた画像を使う
-      item=gallery.find(g=>g.type==='standing'&&String(g.characterId||'')===String(c.id));
-      // 紐づけがない古い画像は、タイトル・タグ・メモからキャラ名を探す
-      if(!item)item=gallery.find(g=>g.type==='standing'&&sn&&[g.title,g.tags,g.memo].some(v=>normalizeMatchText(v).includes(sn)));
-    }
-    // 最後のフォールバックとして、そのうちよそに属する立ち絵を使う
-    if(!item&&currentPairId){
-      const pairChars=(pairs.find(p=>String(p.id)===String(currentPairId))?.characterIds||[]).map(String);
-      if(c&&pairChars.includes(String(c.id))) item=gallery.find(g=>g.type==='standing'&&String(g.characterId||'')===String(c.id))||gallery.find(g=>g.type==='standing'&&String(g.pairId||'')===String(currentPairId));
+    let item=findStandingForCharacter(c);
+    if(!item&&currentPairId&&c){
+      const pair=pairs.find(p=>String(p.id)===String(currentPairId));
+      const ids=(pair?.characterIds||[]).map(String);
+      const pairStanding=gallery.filter(g=>g.type==='standing'&&String(g.pairId||'')===String(currentPairId));
+      // うちよそ内に立ち絵が1枚しかない場合だけ、自動でその1枚を使う。
+      // 2枚以上ある場合は別キャラの立ち絵を誤表示しない。
+      if(ids.includes(String(c.id))&&pairStanding.length===1)item=pairStanding[0];
     }
     if(!item)continue;
     try{
-      const blob=await getGalleryBlob(item.id);
-      if(!blob)continue;
-      const url=URL.createObjectURL(blob);
-      box.innerHTML=`<img src="${url}" alt="">`;
+      const blob=await getGalleryBlob(item.id);if(!blob)continue;
+      const url=URL.createObjectURL(blob);box.innerHTML=`<img src="${url}" alt="">`;
       const img=box.querySelector('img');
-      img.style.objectPosition=`${Number(item.focusX??50)}% ${Number(item.focusY??50)}%`;
+      img.style.objectPosition=`${Number(item.focusX??50)}% ${Number(item.focusY??18)}%`;
       img.onload=()=>URL.revokeObjectURL(url);
-    }catch(e){console.error('セッション顔コマ表示エラー:',e)}
+    }catch(e){console.warn('セッション顔コマ読み込み失敗',e)}
   }
 }
 function sessionStatusLabel(v){return ({passed:'通過済',unpassed:'未通過',inprogress:'進行中'})[v]||'未設定'}
@@ -1072,11 +1076,19 @@ async function saveGalleryImage(){
     }
   }catch(e){console.error(e);toast('画像の保存に失敗しました')}
 }
+async function saveGalleryCharacterLink(id){
+  const x=gallery.find(g=>g.id===id);if(!x)return;
+  x.characterId=document.getElementById('galleryDetailCharacterId')?.value||null;
+  save();
+  toast(x.characterId?'キャラクターを紐付けました':'紐付けを解除しました');
+  closeModal();
+}
 async function openGalleryDetail(id){
   const x=gallery.find(g=>g.id===id);if(!x)return;
   const gp=x.pairId?pairs.find(p=>String(p.id)===String(x.pairId)):null;
   document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button>${gp?`<button type="button" class="secondary pair-back" id="galleryDetailPairBackBtn">← ${esc(gp.name)}へ戻る</button>`:''}<h2>${esc(x.title||'無題')}</h2><div id="galleryDetailImage"></div>
   <div class="detail-box" style="margin-top:10px">${esc((x.type==='standing'?'立ち絵':'イラスト')+(x.date?'\\n日付：'+x.date:'')+(x.tags?'\\nタグ：'+x.tags:'')+(x.memo?'\\n\\n'+x.memo:''))}</div>
+  ${x.type==='standing'?`<div class="field" style="margin-top:10px"><label>この立ち絵のキャラクター</label><select id="galleryDetailCharacterId" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)"><option value="">指定しない</option>${characters.map(c=>`<option value="${esc(String(c.id))}" ${String(x.characterId||'')===String(c.id)?'selected':''}>${esc(c.name||'名前なし')}</option>`).join('')}</select><button class="small-btn" style="margin-top:7px;width:100%" onclick="saveGalleryCharacterLink('${x.id}')">キャラクターとの紐付けを保存</button></div>`:''}
   <button class="secondary" onclick="showGalleryImage('${x.id}')">画像を大きく見る</button>
   ${x.type==='standing'?`<button class="secondary" onclick="reanalyzeGalleryFace('${x.id}')">◎ 顔の位置を再解析</button><button class="secondary" onclick="openGalleryFocusEditor('${x.id}')">✥ 表示位置を手動で調整</button>`:''}
   <button class="secondary" onclick="downloadGalleryImage('${x.id}')">↓ 元画像を保存</button>
