@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#18283f">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>うちよそ日記 v0.3.56</title>
+<title>うちよそ日記 v0.3.57</title>
 <style>
 :root{--bg:#fcfbf7;--card:#fffefa;--ink:#24334a;--muted:#687386;--line:#dfe3e8;--accent:#243b5a;--accent2:#526b8a;--soft:#edf1f5;--shadow:#24334a12}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}.app{min-height:100vh;max-width:720px;margin:auto;padding-bottom:84px}.top{padding:24px 18px 12px}.brand{font-size:25px;font-weight:800;letter-spacing:.03em}.sub{font-size:12px;color:var(--muted);margin-top:4px}.content{padding:8px 16px}.section{margin:18px 0 10px;font-weight:800}.hero{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:14px}.hero h1{margin:0 0 6px;font-size:22px}.hero p{margin:0;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 14px var(--shadow)}.pair{display:flex;gap:12px;align-items:center;cursor:pointer}.thumb{width:58px;height:58px;border-radius:16px;background:#eef1f3;display:grid;place-items:center;font-size:25px;overflow:hidden;flex:none}.thumb img,.avatar img{width:100%;height:100%;object-fit:cover}.pair h3{margin:0;font-size:15px}.pair p{margin:4px 0 0;color:var(--muted);font-size:11px}.action{display:flex;align-items:center;justify-content:center;min-height:96px;cursor:pointer;text-align:center}.action b{display:block;margin-top:5px;font-size:13px}.icon{font-size:25px;color:var(--accent)}.icon-svg{width:38px;height:38px;display:block;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;margin:auto}.icon-svg circle{fill:currentColor;stroke:none}.icon-svg .head{fill:none;stroke:currentColor;stroke-width:3}.home-primary-card{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 6px 16px #243b5a22}.home-primary-card .sub,.home-primary-card p{color:#eef3f8}.home-primary-card .thumb{background:#ffffff18;color:#fff}.home-primary-card .thumb .icon-svg{color:#fff}.home-primary-card .position-badge{background:#ffffff20;color:#fff}.home-primary-card .home-arrow{color:#fff!important}.settings-icon{width:38px;height:38px;display:grid;place-items:center;color:var(--accent);flex:none}.settings-icon .icon-svg{width:32px;height:32px}.home-section-card{background:var(--card);color:var(--ink);border-color:var(--line);box-shadow:0 4px 14px var(--shadow)}
@@ -69,6 +69,7 @@
 
 .tweet-list{display:flex;flex-direction:column;gap:9px}.tweet-card{background:#fffefa;border:1px solid var(--line);border-radius:16px;padding:12px}.tweet-meta{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;margin-bottom:7px}.tweet-body{font-size:14px;line-height:1.7;white-space:pre-wrap;word-break:break-word}.tweet-status{display:inline-block;margin-top:8px;padding:3px 7px;border-radius:999px;background:#edf1f5;color:#526b8a;font-size:10px;font-weight:700}.tweet-status.official{background:#e8f3ed;color:#2f6b4f}.tweet-actions{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}.tweet-actions button{margin:0!important;width:auto}.tweet-empty{padding:18px;border:1px dashed var(--line);border-radius:16px;color:var(--muted);text-align:center;font-size:12px}.tweet-note{font-size:11px;color:var(--muted);line-height:1.6}.tweet-editor-textarea{min-height:130px}.tweet-official-box{background:#f5f7fa;border:1px solid var(--line);border-radius:14px;padding:11px;font-size:12px;color:var(--muted);line-height:1.6}
 
+.matrix-list{display:flex;flex-direction:column;gap:10px}.matrix-card{cursor:pointer}.matrix-card-title{font-weight:800;font-size:14px}.matrix-card-meta{font-size:10px;color:var(--muted);margin-top:4px}.matrix-preview{position:relative;height:170px;margin-top:10px;border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden}.matrix-preview:before,.matrix-preview:after{content:'';position:absolute;background:#d8d2df}.matrix-preview:before{width:1px;top:14px;bottom:14px;left:50%}.matrix-preview:after{height:1px;left:14px;right:14px;top:50%}.matrix-axis{position:absolute;font-size:9px;color:var(--muted);pointer-events:none}.matrix-axis.top{top:6px;left:50%;transform:translateX(-50%)}.matrix-axis.bottom{bottom:6px;left:50%;transform:translateX(-50%)}.matrix-axis.left{left:7px;top:50%;transform:translateY(-50%) rotate(-90deg)}.matrix-axis.right{right:7px;top:50%;transform:translateY(-50%) rotate(90deg)}.matrix-node{position:absolute;transform:translate(-50%,-50%);padding:6px 9px;border:1px solid #d8d0e4;border-radius:999px;background:#fff;box-shadow:0 3px 10px #00000012;font-size:11px;font-weight:800;white-space:nowrap;cursor:grab;touch-action:none;user-select:none}.matrix-board{position:relative;height:min(68vh,560px);min-height:360px;border:1px solid var(--line);border-radius:20px;background:#fff;overflow:hidden;touch-action:none}.matrix-board:before,.matrix-board:after{content:'';position:absolute;background:#d8d2df}.matrix-board:before{width:1px;top:28px;bottom:28px;left:50%}.matrix-board:after{height:1px;left:28px;right:28px;top:50%}.matrix-editor-axis{position:absolute;font-size:10px;color:var(--muted);font-weight:700;pointer-events:none}.matrix-editor-axis.top{top:9px;left:50%;transform:translateX(-50%)}.matrix-editor-axis.bottom{bottom:9px;left:50%;transform:translateX(-50%)}.matrix-editor-axis.left{left:10px;top:50%;transform:translateY(-50%) rotate(-90deg)}.matrix-editor-axis.right{right:10px;top:50%;transform:translateY(-50%) rotate(90deg)}.matrix-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.matrix-help{font-size:11px;color:var(--muted);line-height:1.6;margin-top:8px}.matrix-empty{padding:36px 14px;text-align:center;color:var(--muted);font-size:12px}.matrix-node.dragging{cursor:grabbing;box-shadow:0 7px 18px #0000001a;z-index:4} .matrix-mini-label{font-size:10px;color:var(--muted)}
 .update-report-card{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:16px;margin-bottom:12px}.update-report-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.update-report-version{font-weight:800;color:var(--accent)}.update-report-date{font-size:12px;color:var(--muted)}.update-report-title{font-weight:800;margin:10px 0 6px}.update-report-list{margin:0;padding-left:1.2em;color:var(--ink)}.update-report-list li{margin:5px 0}.update-report-new{font-size:11px;padding:3px 8px;border-radius:999px;background:#e8f5ee;color:#27704a;white-space:nowrap}.update-report-intro{color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:14px}
 </style>
 
@@ -154,6 +155,7 @@ window.detectFaceFocalPoint = async function(file){
 <button type="button" data-tab="home" onclick="navigateTo('home')"><span>⌂</span>ホーム</button>
 <button type="button" data-tab="calendar" onclick="navigateTo('calendar')"><span>◷</span>記念日</button>
 <button type="button" data-tab="gallery" onclick="navigateTo('gallery')"><span>▧</span>ギャラリー</button>
+<button type="button" data-tab="matrix" onclick="navigateTo('matrix')"><span>◇</span>マトリクス</button>
 <button type="button" data-tab="observe" onclick="navigateTo('observe')"><span>◌</span>観測</button>
 <button type="button" data-tab="settings" onclick="navigateTo('settings')"><span>⚙</span>設定</button>
 </div></nav>
@@ -161,6 +163,7 @@ window.detectFaceFocalPoint = async function(file){
 <script>
 const PAIR_KEY='uchiyoso_pairs_v1', CHAR_KEY='uchiyoso_characters_v1', GALLERY_KEY='uchiyoso_gallery_v1';
 const APP_PROFILE_KEY='uchiyoso_profile_v1', APP_NOTIFY_KEY='uchiyoso_notifications_v1';
+const MATRIX_KEY='uchiyoso_matrices_v1';
 const WORKSPACE_KEY='uchiyoso_workspace_v1', SESSION_LOG_KEY='uchiyoso_session_logs_v1';
 let currentWorkspace=JSON.parse(localStorage.getItem(WORKSPACE_KEY)||'null');
 
@@ -203,7 +206,7 @@ function updateAuthGate(){
     gate.style.display='none';
     // 初回ログイン時だけホームを表示。
     // メール確認・トークン更新などのAuthイベントでは現在の画面を維持する。
-    if(!appReady){appReady=true;show('home');setTimeout(async()=>{await loadSharedPairs({refreshView:false});await loadSharedCharacters({refreshView:false});await loadSharedSessionLogs({refreshView:false});await loadSharedSS({refreshView:false});show('home');},0);}
+    if(!appReady){appReady=true;show('home');setTimeout(async()=>{await loadSharedPairs({refreshView:false});await loadSharedCharacters({refreshView:false});await loadSharedSessionLogs({refreshView:false});await loadSharedSS({refreshView:false});await loadSharedMatrices();show('home');},0);}
   }else{
     appReady=false;
     gate.style.display='flex';
@@ -254,6 +257,7 @@ function normalizeSkills(list){return (Array.isArray(list)?list:[]).map((x,i)=>(
 let characters=JSON.parse(localStorage.getItem(CHAR_KEY)||'[]'); characters.forEach(c=>{c.pairRelations=c.pairRelations||{};Object.keys(c.pairRelations).forEach(k=>{const r=c.pairRelations[k]||{};c.pairRelations[k]={partnerName:r.partnerName??'',position:r.position||'未定',callName:r.callName??'',secondPerson:r.secondPerson??'',thirdPersonCall:r.thirdPersonCall??'',partnerPersonality:r.partnerPersonality??'',otherPeople:Array.isArray(r.otherPeople)?r.otherPeople:[]}});c.birthday=c.birthday||'';c.imageColorHue=Number.isFinite(Number(c.imageColorHue))?Number(c.imageColorHue):270;c.imageColor=hueToColor(c.imageColorHue);c.latestAge=c.latestAge??c.age??'';c.latestHeight=c.latestHeight??c.height??'';c.latestProfile=c.latestProfile??'';c.initialData=c.initialData||{age:c.age||'',job:c.job||'',gender:c.gender||'',height:c.height||'',weight:c.weight||'',birthplace:c.birthplace||'',hair:c.hair||'',eyes:c.eyes||'',firstPerson:c.firstPerson||'',secondPerson:c.secondPerson||'',memo:c.memo||'',quotes:[...(c.quotes||[])]};c.initialStats=Array.isArray(c.initialStats)?cloneStats(c.initialStats):cloneStats(c.initialData?.stats||c.stats||[]);c.initialData.stats=cloneStats(c.initialStats);c.stats=cloneStats(c.stats);c.skills=normalizeSkills(c.skills);c.skills.forEach(x=>{x.category=skillCategoryFor(x)});c.statsHistory=Array.isArray(c.statsHistory)?c.statsHistory.map(h=>({at:h.at||new Date().toISOString(),stats:cloneStats(h.stats)})):[];c.tweets=Array.isArray(c.tweets)?c.tweets.map(t=>({id:String(t?.id||('tweet_'+Date.now()+'_'+Math.floor(Math.random()*1000))),text:String(t?.text||''),createdAt:t?.createdAt||new Date().toISOString(),updatedAt:t?.updatedAt||t?.createdAt||new Date().toISOString(),official:!!t?.official,officialAt:t?.officialAt||''})).filter(t=>t.text):[];}); let currentPairId=null;
 
 let gallery=JSON.parse(localStorage.getItem(GALLERY_KEY)||'[]');
+let matrices=JSON.parse(localStorage.getItem(MATRIX_KEY)||'[]');
 const SS_KEY='uchiyoso_ss_v1';
 let ssWorks=JSON.parse(localStorage.getItem(SS_KEY)||'[]');
 function saveSSMeta(){localStorage.setItem(SS_KEY,JSON.stringify(ssWorks));}
@@ -263,6 +267,7 @@ let pendingPairThumbCrop=null;
 let pairThumbCropState=null;
 const GALLERY_DB='uchiyoso_gallery_db_v1', GALLERY_STORE='images';
 function saveGalleryMeta(){localStorage.setItem(GALLERY_KEY,JSON.stringify(gallery))}
+function saveMatrices(){localStorage.setItem(MATRIX_KEY,JSON.stringify(matrices))}
 function openGalleryDB(){
   return new Promise((resolve,reject)=>{
     const req=indexedDB.open(GALLERY_DB,1);
@@ -995,8 +1000,46 @@ function saveNotificationSettings(){
   toast('通知設定を保存しました');
   show('settings');
 }
+function matrixDefaultPositions(ids){
+  const n=ids.length||1;return ids.map((id,i)=>({id:String(id),x:n===1?50:22+(i%4)*19,y:n===1?50:28+Math.floor(i/4)*22}));
+}
+function matrixNodeName(id){return characters.find(c=>String(c.id)===String(id))?.name||'名前未設定'}
+function matrixCardPreview(m){
+  const pos=Array.isArray(m.positions)?m.positions:[];
+  return `<div class="matrix-preview"><span class="matrix-axis top">${esc(m.top||'')}</span><span class="matrix-axis bottom">${esc(m.bottom||'')}</span><span class="matrix-axis left">${esc(m.left||'')}</span><span class="matrix-axis right">${esc(m.right||'')}</span>${pos.map(n=>`<span class="matrix-node" style="left:${Number(n.x)||50}%;top:${Number(n.y)||50}%">${esc(matrixNodeName(n.id))}</span>`).join('')}</div>`;
+}
+function renderMatrices(){
+  const v=document.getElementById('view');document.getElementById('fab').style.display='none';
+  const cards=matrices.length?matrices.map(m=>`<article class="card matrix-card" data-matrix-id="${esc(String(m.id))}"><div class="matrix-card-title">${esc(m.title||'無題のマトリクス')}</div><div class="matrix-card-meta">${(m.positions||[]).length}人配置 ・ 最終更新 ${m.updatedAt?esc(new Date(m.updatedAt).toLocaleDateString('ja-JP')):'—'}</div>${matrixCardPreview(m)}<div class="matrix-actions"><button class="secondary matrix-edit" data-id="${esc(String(m.id))}">編集</button><button class="danger matrix-delete" data-id="${esc(String(m.id))}" style="margin-top:8px">削除</button></div></article>`).join(''):`<div class="matrix-empty">まだマトリクスがありません。<br>軸を決めて、キャラクターを好きな位置に置いてみよう。</div>`;
+  v.innerHTML=`<div class="section">マトリクス</div><div class="card"><b>キャラクターの関係性を、好きな2軸で可視化できます。</b><div class="matrix-help">例：左「苦手」→右「好意」、下「距離がある」→上「親しい」など。キャラクター名はドラッグして自由に動かせます。</div></div><button class="primary" id="matrixAddBtn">＋ マトリクスを作成</button><div class="section">保存したマトリクス</div><div class="matrix-list">${cards}</div>`;
+  document.getElementById('matrixAddBtn')?.addEventListener('click',()=>openMatrixEditor());
+  v.querySelectorAll('.matrix-card').forEach(el=>el.addEventListener('click',e=>{if(e.target.closest('button'))return;openMatrixDetail(el.dataset.matrixId)}));
+  v.querySelectorAll('.matrix-edit').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openMatrixEditor(b.dataset.id)}));
+  v.querySelectorAll('.matrix-delete').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();deleteMatrix(b.dataset.id)}));
+}
+function openMatrixEditor(id=null){
+  const x=id?matrices.find(m=>String(m.id)===String(id)):null;const selected=new Set((x?.positions||[]).map(p=>String(p.id)));
+  const checks=characters.length?characters.map(c=>`<label class="ss-char-chip"><input type="checkbox" class="matrix-char-check" value="${esc(String(c.id))}" ${selected.has(String(c.id))?'checked':''}>${esc(c.name||'名前未設定')}</label>`).join(''):'<span class="sub">先にキャラクターを登録してね。</span>';
+  document.getElementById('sheet').innerHTML=`<button class="close" onclick="closeModal()">×</button><h2>${x?'マトリクスを編集':'マトリクスを作成'}</h2><div class="field"><label>タイトル</label><input id="matrixTitle" value="${esc(x?.title||'')}" placeholder="例：晋から見たみんなの距離感"></div><div class="field"><label>縦軸・上</label><input id="matrixTop" value="${esc(x?.top||'親しい')}" placeholder="例：親しい"></div><div class="field"><label>縦軸・下</label><input id="matrixBottom" value="${esc(x?.bottom||'距離がある')}" placeholder="例：距離がある"></div><div class="field"><label>横軸・左</label><input id="matrixLeft" value="${esc(x?.left||'苦手')}" placeholder="例：苦手"></div><div class="field"><label>横軸・右</label><input id="matrixRight" value="${esc(x?.right||'好意')}" placeholder="例：好意"></div><div class="field"><label>配置するキャラクター</label><div class="ss-char-list">${checks}</div></div><div class="note">保存後にマトリクス画面でキャラクターをドラッグして位置を調整できます。</div><button class="primary" id="matrixSaveBtn">${x?'更新する':'作成する'}</button><button class="secondary" id="matrixCancelBtn">キャンセル</button>`;
+  document.getElementById('modal').style.display='flex';document.getElementById('matrixSaveBtn').addEventListener('click',()=>saveMatrix(id));document.getElementById('matrixCancelBtn').addEventListener('click',closeModal);
+}
+function saveMatrix(id=null){
+  const title=document.getElementById('matrixTitle')?.value.trim()||'無題のマトリクス';const ids=[...document.querySelectorAll('.matrix-char-check:checked')].map(el=>el.value);const old=id?matrices.find(m=>String(m.id)===String(id)):null;const oldMap=new Map((old?.positions||[]).map(p=>[String(p.id),p]));const positions=ids.map((cid,i)=>oldMap.get(String(cid))||matrixDefaultPositions(ids)[i]);const m={...(old||{}),id:old?.id||`matrix_${Date.now()}_${Math.floor(Math.random()*1000)}`,title,top:document.getElementById('matrixTop')?.value.trim()||'',bottom:document.getElementById('matrixBottom')?.value.trim()||'',left:document.getElementById('matrixLeft')?.value.trim()||'',right:document.getElementById('matrixRight')?.value.trim()||'',positions,createdAt:old?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};if(old)matrices=matrices.map(v=>String(v.id)===String(m.id)?m:v);else matrices.unshift(m);saveMatrices();closeModal();openMatrixDetail(m.id);syncMatrixToSupabase(m);toast(old?'マトリクスを更新しました':'マトリクスを作成しました')}
+function openMatrixDetail(id){
+  const m=matrices.find(v=>String(v.id)===String(id));if(!m){renderMatrices();return}document.getElementById('fab').style.display='none';const v=document.getElementById('view');
+  v.innerHTML=`<button class="secondary" id="matrixBackBtn">← マトリクス一覧へ戻る</button><div class="section">${esc(m.title||'無題のマトリクス')}</div><div class="matrix-board" id="matrixBoard"><span class="matrix-editor-axis top">${esc(m.top||'')}</span><span class="matrix-editor-axis bottom">${esc(m.bottom||'')}</span><span class="matrix-editor-axis left">${esc(m.left||'')}</span><span class="matrix-editor-axis right">${esc(m.right||'')}</span>${(m.positions||[]).map(n=>`<button type="button" class="matrix-node" data-id="${esc(String(n.id))}" style="left:${Number(n.x)||50}%;top:${Number(n.y)||50}%">${esc(matrixNodeName(n.id))}</button>`).join('')}</div><div class="matrix-help">キャラクター名をドラッグして、好きな位置に置いてね。位置は自動保存されます。</div><div class="matrix-actions"><button class="primary" id="matrixEditBtn">軸・メンバーを編集</button><button class="danger" id="matrixDeleteBtn" style="margin-top:8px">このマトリクスを削除</button></div>`;
+  document.getElementById('matrixBackBtn').addEventListener('click',renderMatrices);document.getElementById('matrixEditBtn').addEventListener('click',()=>openMatrixEditor(m.id));document.getElementById('matrixDeleteBtn').addEventListener('click',()=>deleteMatrix(m.id));
+  const board=document.getElementById('matrixBoard');board.querySelectorAll('.matrix-node').forEach(node=>attachMatrixDrag(node,board,m));
+}
+function attachMatrixDrag(node,board,m){
+  let dragging=false;const move=e=>{if(!dragging)return;const r=board.getBoundingClientRect();let x=((e.clientX-r.left)/r.width)*100,y=((e.clientY-r.top)/r.height)*100;x=Math.max(5,Math.min(95,x));y=Math.max(7,Math.min(93,y));node.style.left=x+'%';node.style.top=y+'%';const p=m.positions.find(v=>String(v.id)===String(node.dataset.id));if(p){p.x=x;p.y=y;m.updatedAt=new Date().toISOString()}};const up=()=>{if(!dragging)return;dragging=false;node.classList.remove('dragging');document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);saveMatrices();syncMatrixToSupabase(m)};node.addEventListener('pointerdown',e=>{e.preventDefault();dragging=true;node.classList.add('dragging');document.addEventListener('pointermove',move);document.addEventListener('pointerup',up)})}
+async function syncMatrixToSupabase(m){if(!supabaseClient||!currentUser||!currentWorkspace)return false;try{const w=currentWorkspace;const payload={workspace_id:w.id,pair_id:null,title:String(m.title||''),image_type:'illustration',image_date:null,tags:['matrix'],memo:'',storage_path:null,focus_x:50,focus_y:50,face_count:0,focus_manual:false,data:{kind:'matrix',local_id:String(m.id),...m}};const {data:existing,error:e1}=await supabaseClient.from('gallery_items').select('id').eq('workspace_id',w.id).eq('image_type','illustration').filter('data->>kind','eq','matrix').filter('data->>local_id','eq',String(m.id)).maybeSingle();if(e1)throw e1;if(existing?.id){const {error}=await supabaseClient.from('gallery_items').update(payload).eq('id',existing.id);if(error)throw error;m.supabaseId=existing.id}else{const {data,error}=await supabaseClient.from('gallery_items').insert(payload).select('id').single();if(error)throw error;m.supabaseId=data?.id||null}saveMatrices();return true}catch(e){console.error('マトリクス共有保存エラー:',e);return false}}
+let matrixSyncBusy=false;
+async function loadSharedMatrices(){if(matrixSyncBusy||!supabaseClient||!currentUser)return;matrixSyncBusy=true;try{const w=await getSharedWorkspace();if(!w?.id)return;const {data,error}=await supabaseClient.from('gallery_items').select('id,title,data,updated_at').eq('workspace_id',w.id).eq('image_type','illustration');if(error)throw error;const rows=(data||[]).filter(r=>r?.data?.kind==='matrix');for(const row of rows){const d=row.data||{};const localId=String(d.local_id||'');if(!localId)continue;const idx=matrices.findIndex(x=>String(x.id)===localId);const merged={...(idx>=0?matrices[idx]:{}),...d,id:idx>=0?matrices[idx].id:localId,supabaseId:row.id};if(idx>=0)matrices[idx]=merged;else matrices.push(merged)}saveMatrices()}catch(e){console.error('共有マトリクス読み込みエラー:',e)}finally{matrixSyncBusy=false}}
+async function deleteMatrix(id){const m=matrices.find(x=>String(x.id)===String(id));if(!m)return;if(!confirm(`「${m.title||'無題のマトリクス'}」を削除しますか？`))return;if(supabaseClient&&currentUser&&currentWorkspace&&m.supabaseId){try{const {error}=await supabaseClient.from('gallery_items').delete().eq('id',m.supabaseId);if(error)throw error}catch(e){toast('共有側の削除に失敗しました');return}}else if(supabaseClient&&currentUser&&currentWorkspace){try{await supabaseClient.from('gallery_items').delete().eq('workspace_id',currentWorkspace.id).filter('data->>kind','eq','matrix').filter('data->>local_id','eq',String(id))}catch(e){}}matrices=matrices.filter(x=>String(x.id)!==String(id));saveMatrices();renderMatrices();toast('マトリクスを削除しました')}
+function showUpdateReports(){const v=document.getElementById('view');document.getElementById('fab').style.display='none';const reports=[{version:'v0.3.57',date:'2026/09/21',title:'関係性マトリクスを追加',items:['ギャラリーの横に「マトリクス」ページを追加','2軸のラベルを自由に設定できるようにしました','キャラクターを好きな位置へドラッグして配置できます']},{version:'v0.3.56',date:'2026/09/20',title:'アップデート報告を追加',items:['設定からアップデート内容を確認できるようにしました']},{version:'v0.3.55',date:'2026/09/20',title:'卓報告・セッションログを強化',items:['卓報告の整理機能を追加','セッションログの各ブロックを個別に修正できるようにしました']},{version:'v0.3.54',date:'2026/09/20',title:'技能表示を整理',items:['技能グループを最初は閉じた状態で表示するようにしました']},{version:'v0.3.53',date:'2026/09/20',title:'技能・つぶやき表示を整理',items:['技能グループを折りたたんで表示できるようにしました','過去のつぶやきを折りたたんで見られるようにしました']}];v.innerHTML=`<button class="secondary" onclick="show('settings')">← 設定へ戻る</button><div class="section">アップデート報告</div><div class="update-report-intro">最近のアップデート内容を、最新5件だけ表示しています。</div>${reports.map((r,i)=>`<article class="update-report-card"><div class="update-report-head"><span class="update-report-version">${esc(r.version)}</span>${i===0?'<span class="update-report-new">NEW</span>':''}<span class="update-report-date">${esc(r.date)}</span></div><div class="update-report-title">${esc(r.title)}</div><ul class="update-report-list">${r.items.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></article>`).join('')}`}
 function show(tab){
-  const valid=['home','calendar','gallery','observe','settings'];
+  const valid=['home','calendar','gallery','matrix','observe','settings'];
   if(!valid.includes(tab))tab='home';
   document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
   const v=document.getElementById('view');
@@ -1023,6 +1066,8 @@ function show(tab){
     v.innerHTML=`<div class="section">記念日</div><div class="card anniv-header-card"><h2>2026年9月</h2><p>大切な日を登録すると、ここから確認できます。</p></div><div class="section">登録予定</div><div class="card row"><span class="icon">○</span><div class="grow"><b>初セッション記念日</b><div class="sub">カナタ × レイ</div></div><span class="pill" style="background:#ffffff22;color:#fff">あと10日</span></div>`;
   }else if(tab==='gallery'){
     renderGallery();
+  }else if(tab==='matrix'){
+    renderMatrices();
   }else if(tab==='observe'){
     v.innerHTML=`<div class="hero"><h1>壁越し観測</h1><p>二人が話しているところを眺めよう</p></div><div class="card chat"><div class="note">カナタとレイが話しています……</div><div class="bubble"><div class="who">レイ</div>ねえ、これ見てよ。このカフェ、雰囲気よさそうじゃない？</div><div class="bubble right"><div class="who">カナタ</div>……また急だな。でも、少しくらいなら付き合う。</div><div class="bubble"><div class="who">レイ</div>やった。じゃあ決まりね。</div><div class="note">※現在はサンプル会話。AI機能は後から接続します。</div></div>`;
   }else{
@@ -1038,7 +1083,7 @@ function renderPairCalendar(pairId){
 }
 
 function navigateTo(tab){
-  if(['home','calendar','gallery','observe','settings'].includes(tab))show(tab);
+  if(['home','calendar','gallery','matrix','observe','settings'].includes(tab))show(tab);
 }
 window.navigateTo=navigateTo;
 window.show=show;
